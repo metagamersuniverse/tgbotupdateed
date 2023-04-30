@@ -36,8 +36,8 @@ bot.onText(/\/start/, async (msg) => {
 });
 
 // Start the bot
-bot.on(/\/winner/, (msg) => {
-  bot.sendMessage(msg.chat.id, 'Oops! I did not understand that. To get started, use the /start command.');
+bot.on('message', (msg) => {
+  bot.sendMessage(msg.chat.id, 'Oops! I did not understand that use the /start command.');
 });
 
 module.exports = bot;
