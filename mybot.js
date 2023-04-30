@@ -33,8 +33,16 @@ bot.onText(/\/balance/, async (msg) => {
 
 // Handle the /start command
 bot.onText(/\/start/, async (msg) => {
-  const message = `Hello! Welcome to the Lottery bot. To get the current lottery amount, use the /balance command. To get information about a past winner, use the /winner command followed by the round number (e.g. /winner 123).`;
-  bot.sendMessage(msg.chat.id, message);
+  const message = `
+<b>Hello! Welcome to the Lottery bot.</b>
+
+To get the current lottery amount, use the <code>/balance</code> command. 
+
+To get information about a past winner, use the <code>/winner</code> command followed by the round number (e.g. <code>/winner 123</code>).
+
+<i>You can also visit our website at https://www.example.com/lottery for more information and updates.</i>
+`;
+  bot.sendMessage(msg.chat.id, message, {parse_mode: "HTML"});
 });
 
 // Handle other messages
