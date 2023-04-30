@@ -30,7 +30,7 @@ bot.onText(/\/balance/, async (msg) => {
 });
 
 // Start the bot
-bot.on(/\/start/, (msg) => {
+bot.on('message', (msg) => {
   bot.sendMessage(msg.chat.id, 'Hello! Welcome to the Lottery bot. To get the current lottery amount, use the /balance command. To get information about a past winner, use the /winner command followed by the round number (e.g. /winner 123).');
 });
 module.exports = bot;
