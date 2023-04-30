@@ -26,10 +26,6 @@ bot.onText(/\/round/, async (msg) => {
   const round = await contract._lotteryRound(); // Call _lotteryRound function
     const message = `Current lottery round: ${round}`;
     bot.sendMessage(msg.chat.id, message);
-  } catch (error) {
-    console.error(`Error retrieving current lottery round: ${error}`);
-    bot.sendMessage(msg.chat.id, 'Oops! Something went wrong. Please try again later.');
-  }
 });
 
 
