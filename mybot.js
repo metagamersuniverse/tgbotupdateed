@@ -20,6 +20,37 @@ bot.onText(/\/winner (.+)/, async (msg, match) => {
   bot.sendMessage(msg.chat.id, message);
 });
 
+// Handle the /round command
+bot.onText(/\/round/, async (msg) => {
+  const contractAddress = '0x7F6228DdA3F9ea6B4beAa24181bf95B2F4a29dB8'; // Replace with actual contract address
+  const contractABI = [
+    {
+      "inputs": [],
+      "name": "_lotteryRound",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ];
+  const contract = new ethers.Contract(contractAddress, contractABI, provider);
+
+  try {
+    const round = await contract._lotteryRound(); // Call _lotteryRound function
+    const message = `Current lottery round: ${round}`;
+    bot.sendMessage(msg.chat.id, message);
+  } catch (error) {
+    console.error(`Error retrieving current lottery round: ${error}`);
+    bot.sendMessage(msg.chat.id, 'Oops! Something went wrong. Please try again later.');
+  }
+});
+
+
 // Handle the /balance command
 bot.onText(/\/balance/, async (msg) => {
   console.log('Balance command received'); // Add console.log() statement here
