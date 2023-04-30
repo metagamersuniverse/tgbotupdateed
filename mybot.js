@@ -22,6 +22,7 @@ bot.onText(/\/winner (.+)/, async (msg, match) => {
 
 // Handle the /balance command
 bot.onText(/\/balance/, async (msg) => {
+  console.log('Balance command received'); // Add console.log() statement here
   const walletAddress = "0x61a02472f539c316c73d3da32155a85a26435973"; // replace with your desired wallet address
   const balance = await provider.getBalance(walletAddress);
   const formattedBalance = ethers.utils.formatEther(balance);
