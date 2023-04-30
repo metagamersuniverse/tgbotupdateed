@@ -37,9 +37,13 @@ bot.onText(/\/start/, async (msg) => {
   bot.sendMessage(msg.chat.id, message);
 });
 
-// Start the bot
+// Handle other messages
 bot.on('message', (msg) => {
-  bot.sendMessage(msg.chat.id, 'Oops! I did not understand that use the /start command.');
+  const unrecognizedCommands = ['/balance', '/winner', '/start'];
+  const command = msg.text.split(' ')[0];
+  if (!unrecognizedCommands.includes(command)) {
+    bot.sendMessage(msg.chat.id, 'Oops! I did not understand that. To get started, use the /start command.');
+  }
 });
 
 module.exports = bot;
