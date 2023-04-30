@@ -27,6 +27,7 @@ bot.onText(/\/balance/, async (msg) => {
   const formattedBalance = ethers.utils.formatEther(balance);
   const message = `Lottery Balance Amount: ${formattedBalance} ETH`;
   bot.sendMessage(msg.chat.id, message);
+  return; // Add return statement here to exit the function
 });
 
 // Handle the /start command
