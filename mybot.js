@@ -23,10 +23,23 @@ bot.onText(/\/winner (.+)/, async (msg, match) => {
 // Handle the /round command
 bot.onText(/\/round/, async (msg) => {
   const contractAddress = '0x7F6228DdA3F9ea6B4beAa24181bf95B2F4a29dB8'; // Replace with actual contract address
+  const round = await contract._lotteryRound(); // Call _lotteryRound function
+    const message = `Current lottery round: ${round}`;
+    bot.sendMessage(msg.chat.id, message);
+  } catch (error) {
+    console.error(`Error retrieving current lottery round: ${error}`);
+    bot.sendMessage(msg.chat.id, 'Oops! Something went wrong. Please try again later.');
+  }
+});
+
+
+// Handle the /minAmount command
+bot.onText(/\/minAmount/, async (msg) => {
+  const contractAddress = '0x7F6228DdA3F9ea6B4beAa24181bf95B2F4a29dB8'; // Replace with actual contract address
   const contractABI = [
     {
       "inputs": [],
-      "name": "_lotteryRound",
+      "name": "_minAmountToParticipate",
       "outputs": [
         {
           "internalType": "uint256",
@@ -41,11 +54,11 @@ bot.onText(/\/round/, async (msg) => {
   const contract = new ethers.Contract(contractAddress, contractABI, provider);
 
   try {
-    const round = await contract._lotteryRound(); // Call _lotteryRound function
-    const message = `Current lottery round: ${round}`;
+    const minAmount = await contract._minAmountToParticipate(); // Call _minAmountToParticipate function
+    const message = `Minimum amount to participate in the lottery: ${minAmount}`;
     bot.sendMessage(msg.chat.id, message);
   } catch (error) {
-    console.error(`Error retrieving current lottery round: ${error}`);
+    console.error(`Error retrieving minimum amount to participate: ${error}`);
     bot.sendMessage(msg.chat.id, 'Oops! Something went wrong. Please try again later.');
   }
 });
