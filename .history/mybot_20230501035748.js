@@ -25,7 +25,7 @@ bot.onText(/\/balance/, async (msg) => {
   const walletAddress = "0x61a02472f539c316c73d3da32155a85a26435973"; // replace with your desired wallet address
   const balance = await provider.getBalance(walletAddress);
   const formattedBalance = ethers.utils.formatEther(balance);
-  const message = `Lottery Balance Amount: ${formattedBalance} ETH`;
+  const message = `Lottery Amount: ${formattedBalance} ETH`;
   bot.sendMessage(msg.chat.id, message);
 });
 
