@@ -1,0 +1,20 @@
+{
+    "name": "my-telegram-bot",
+    "version": 2,
+    "builds": [
+      {
+        "src": "mybot.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      { "src": "/.*", "dest": "/mybot.js" }
+    ],
+    "env": {
+      "TELEGRAM_BOT_TOKEN": "6197218385:AAGJs_GGYcE0JhmP4BEKKyZnm6NUeZwgEZU",
+      "RPC_URL": "https://arb-mainnet.g.alchemy.com/v2/-4-rxeMBTi-yavAgPLLK5TkFBvri4Pvr",
+      "CONTRACT_ADDRESS": "0x7F6228DdA3F9ea6B4beAa24181bf95B2F4a29dB8",
+      "WEBHOOK_URL": "https://my-telegram-4bu7umxt5-dogecapitalventures.vercel.app/"
+    }
+  }
+  
