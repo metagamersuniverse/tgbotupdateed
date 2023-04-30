@@ -48,15 +48,10 @@ bot.onText(/\/minAmount/, async (msg) => {
     }
   ];
   const contract = new ethers.Contract(contractAddress, contractABI, provider);
-
-  try {
-    const minAmount = await contract._minAmountToParticipate(); // Call _minAmountToParticipate function
-    const message = `Minimum amount to participate in the lottery: ${minAmount}`;
+  const minAmount = await contract._minAmountToParticipate(); // Call _minAmountToParticipate function
+    const minAmountInEther = ethers.utils.formatEther(minAmount);
+    const message = `Minimum amount to participate in the lottery: ${minAmountInEther} ETH`;
     bot.sendMessage(msg.chat.id, message);
-  } catch (error) {
-    console.error(`Error retrieving minimum amount to participate: ${error}`);
-    bot.sendMessage(msg.chat.id, 'Oops! Something went wrong. Please try again later.');
-  }
 });
 
 
