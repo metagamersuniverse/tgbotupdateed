@@ -29,8 +29,15 @@ bot.onText(/\/balance/, async (msg) => {
   bot.sendMessage(msg.chat.id, message);
 });
 
+// Handle the /start command
+bot.onText(/\/start/, async (msg) => {
+  const message = `Hello! Welcome to the Lottery bot. To get the current lottery amount, use the /balance command. To get information about a past winner, use the /winner command followed by the round number (e.g. /winner 123).`;
+  bot.sendMessage(msg.chat.id, message);
+});
+
 // Start the bot
 bot.on('message', (msg) => {
-  bot.sendMessage(msg.chat.id, 'Hello! Welcome to the Lottery bot. To get the current lottery amount, use the /balance command. To get information about a past winner, use the /winner command followed by the round number (e.g. /winner 123).');
+  bot.sendMessage(msg.chat.id, 'Oops! I did not understand that. To get started, use the /start command.');
 });
+
 module.exports = bot;
