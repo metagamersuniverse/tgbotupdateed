@@ -41,7 +41,7 @@ const contractABI = [
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "buyLepeFee",
+				"name": "buyLotoFee",
 				"type": "uint256"
 			},
 			{
@@ -58,19 +58,6 @@ const contractABI = [
 			}
 		],
 		"name": "BuyFeesUpdated",
-		"type": "event"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "extraAmount",
-				"type": "uint256"
-			}
-		],
-		"name": "LepePlusReleased",
 		"type": "event"
 	},
 	{
@@ -96,18 +83,25 @@ const contractABI = [
 			},
 			{
 				"indexed": false,
-				"internalType": "uint256",
-				"name": "arbAmount",
-				"type": "uint256"
-			},
-			{
-				"indexed": false,
 				"internalType": "bool",
 				"name": "chainlinkGenerated",
 				"type": "bool"
 			}
 		],
 		"name": "LotteryWinner",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "extraAmount",
+				"type": "uint256"
+			}
+		],
+		"name": "LepePlusReleased",
 		"type": "event"
 	},
 	{
@@ -185,7 +179,7 @@ const contractABI = [
 			{
 				"indexed": false,
 				"internalType": "uint256",
-				"name": "sellLepeFee",
+				"name": "sellLotoFee",
 				"type": "uint256"
 			},
 			{
@@ -320,12 +314,12 @@ const contractABI = [
 	},
 	{
 		"inputs": [],
-		"name": "_lepePlusExecuteAmount",
+		"name": "_liqFeeAddress",
 		"outputs": [
 			{
-				"internalType": "uint256",
+				"internalType": "address payable",
 				"name": "",
-				"type": "uint256"
+				"type": "address"
 			}
 		],
 		"stateMutability": "view",
@@ -355,7 +349,7 @@ const contractABI = [
 		"name": "_lotteryContract",
 		"outputs": [
 			{
-				"internalType": "contract LepeLottery",
+				"internalType": "contract Tripple7",
 				"name": "",
 				"type": "address"
 			}
@@ -391,12 +385,38 @@ const contractABI = [
 	},
 	{
 		"inputs": [],
+		"name": "_lepePlusExecuteAmount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "_minAmountToParticipate",
 		"outputs": [
 			{
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "_mktFeeAddress",
+		"outputs": [
+			{
+				"internalType": "address payable",
+				"name": "",
+				"type": "address"
 			}
 		],
 		"stateMutability": "view",
@@ -474,6 +494,25 @@ const contractABI = [
 			}
 		],
 		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "automatedMarketMakerPairs",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
 		"type": "function"
 	},
 	{
@@ -661,6 +700,19 @@ const contractABI = [
 	},
 	{
 		"inputs": [],
+		"name": "lastRequestId",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
 		"name": "lotteryParticipantsAmount",
 		"outputs": [
 			{
@@ -700,17 +752,12 @@ const contractABI = [
 						"type": "uint256"
 					},
 					{
-						"internalType": "uint256",
-						"name": "arbAmount",
-						"type": "uint256"
-					},
-					{
 						"internalType": "bool",
 						"name": "chainlink",
 						"type": "bool"
 					}
 				],
-				"internalType": "struct LuckyPepe._winnerInfoStruct",
+				"internalType": "struct TrippleSeven._winnerInfoStruct",
 				"name": "",
 				"type": "tuple"
 			}
@@ -791,6 +838,25 @@ const contractABI = [
 				"type": "uint256"
 			}
 		],
+		"name": "requestIds",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
 		"name": "s_requests",
 		"outputs": [
 			{
@@ -834,7 +900,7 @@ const contractABI = [
 			},
 			{
 				"internalType": "uint256",
-				"name": "buyLepeFee",
+				"name": "buyLotoFee",
 				"type": "uint256"
 			},
 			{
@@ -852,16 +918,24 @@ const contractABI = [
 		"inputs": [
 			{
 				"internalType": "address",
-				"name": "newLiqFeeAddress",
-				"type": "address"
-			},
-			{
-				"internalType": "address",
-				"name": "newMktFeeAddress",
+				"name": "newAddress",
 				"type": "address"
 			}
 		],
-		"name": "setFeeAddresses",
+		"name": "setLiqFeeAddress",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newAddress",
+				"type": "address"
+			}
+		],
+		"name": "setMktFeeAddress",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"
@@ -875,7 +949,7 @@ const contractABI = [
 			},
 			{
 				"internalType": "uint256",
-				"name": "sellLepeFee",
+				"name": "sellLotoFee",
 				"type": "uint256"
 			},
 			{
