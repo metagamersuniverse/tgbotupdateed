@@ -16,13 +16,14 @@ bot.onText(/\/winner (.+)/, async (msg, match) => {
   const round = match[1];
   const winnerInfo = await contract.lotteryWinnerInfo(round);
   const prizeAmount = (winnerInfo.prizeAmount / 1e18).toFixed(5);
-  const message = `Win By Random Number: ${winnerInfo.randomNumber.toString()}\nWallet Address: ${winnerInfo.wallet}\nPrize Amount: ${prizeAmount} ETH`;
+  const arbAmount = (winnerInfo.arbAmount / 1e18).toFixed(5);
+  const message = `Win By Random Number: ${winnerInfo.randomNumber.toString()}\nWallet Address: ${winnerInfo.wallet}\nPrize Amount: ${arbAmount} ARB = ${prizeAmount} ETH`;
   bot.sendMessage(msg.chat.id, message);
 });
 
 // Handle the /round command
 bot.onText(/\/round/, async (msg) => {
-  const contractAddress = '0x7F6228DdA3F9ea6B4beAa24181bf95B2F4a29dB8'; // Replace with actual contract address
+  const contractAddress = '0x6CB0e4dA8F621A3901573bD8c8d2C8A0987d78d6'; // Replace with actual contract address
   const round = await contract._lotteryRound(); // Call _lotteryRound function
     const message = `Current lottery round: ${round}`;
     bot.sendMessage(msg.chat.id, message);
@@ -30,8 +31,8 @@ bot.onText(/\/round/, async (msg) => {
 
 
 // Handle the /minAmount command
-bot.onText(/\/minAmount/, async (msg) => {
-  const contractAddress = '0x7F6228DdA3F9ea6B4beAa24181bf95B2F4a29dB8'; // Replace with actual contract address
+bot.onText(/\/minimum/, async (msg) => {
+  const contractAddress = '0x6CB0e4dA8F621A3901573bD8c8d2C8A0987d78d6'; // Replace with actual contract address
   const contractABI = [
     {
       "inputs": [],
@@ -58,7 +59,7 @@ bot.onText(/\/minAmount/, async (msg) => {
 // Handle the /balance command
 bot.onText(/\/balance/, async (msg) => {
   console.log('Balance command received'); // Add console.log() statement here
-  const walletAddress = "0x61a02472f539c316c73d3da32155a85a26435973"; // replace with your desired wallet address
+  const walletAddress = "0x087859e91ee03cb339ddd8df8e8f2a0b95fe07d6"; // replace with your desired wallet address
   const balance = await provider.getBalance(walletAddress);
   const formattedBalance = ethers.utils.formatEther(balance);
   const message = `Lottery Balance Amount: ${formattedBalance} ETH`;
@@ -75,7 +76,7 @@ To get the current lottery amount, use the <code>/balance</code> command.
 
 To get information about a past winner, use the <code>/winner</code> command followed by the round number (e.g. <code>/winner 123</code>).
 
-<i>You can also visit our website at https://www.example.com/lottery for more information and updates.</i>
+<i>You can also visit our website at https://www.luckypepe.io/ for more information and updates.</i>
 `;
   bot.sendMessage(msg.chat.id, message, {parse_mode: "HTML"});
 });
