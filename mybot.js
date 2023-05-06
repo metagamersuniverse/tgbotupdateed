@@ -1,3 +1,4 @@
+const axios = require('axios');
 const TelegramBot = require('node-telegram-bot-api');
 const ethers = require('ethers');
 const { providers } = require('ethers');
@@ -10,6 +11,23 @@ const contract = new ethers.Contract(contractAddress, contractABI, provider);
 
 // Create the Telegram bot
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
+
+// Define a function to fetch price data from the Dexscreener API
+async function getDexscreenerPrice(token1, token2) {
+  const response = await axios.get(`https://api.dexscreener.com/latest/dex/pairs/arbitrum/${token1},${token2}`);
+  const data = response.data;
+  const pair = data.pairs[0];
+  const price = pair.priceUsd;
+  return price;
+}
+
+// Handle the /price command
+bot.onText(/\/price (.+)/, async (msg, match) => {
+  const token = match[1].toUpperCase();
+  const price = await getDexscreenerPrice(token, '0xbf28fc1d36478c562ef25ab7701bd6f72f0d48b9');
+  const message = `The price of ${token} on Arbitrum is ${price} USD`;
+  bot.sendMessage(msg.chat.id, message);
+});
 
 // Handle the /winner command
 bot.onText(/\/winner (.+)/, async (msg, match) => {
