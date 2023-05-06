@@ -13,7 +13,7 @@ const contract = new ethers.Contract(contractAddress, contractABI, provider);
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
 
 async function getDexscreenerData() {
-  const response = await axios.get('https://api.dexscreener.com/latest/dex/pairs/arbitrum/0xC2AB73060B819D63dEBc7aF367a98d0E45af1fF2');
+  const response = await axios.get('https://api.dexscreener.com/latest/dex/pairs/arbitrum/0xbf28fc1d36478c562ef25ab7701bd6f72f0d48b9,0xBF28FC1D36478C562ef25aB7701bd6f72f0d48B9');
   const data = response.data;
   const pair = data.pairs[0];
   const price = pair.priceUsd;
@@ -39,7 +39,7 @@ async function getDexscreenerData() {
   };
 }
 
-bot.onText(/\/price/, async (msg) => {
+//bot.onText(/\/price/, async (msg) => {
   console.log('Price command received');
   const data = await getDexscreenerData();
   const message = `
