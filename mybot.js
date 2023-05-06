@@ -18,8 +18,9 @@ bot.onText(/\/winner (.+)/, async (msg, match) => {
   const prizeAmount = isNaN(winnerInfo.prizeAmount) ? "0.0" : (winnerInfo.prizeAmount / 1e18).toFixed(5);
   const arbAmount = isNaN(winnerInfo.arbAmount) ? "0.0" : (winnerInfo.arbAmount / 1e18).toFixed(5);
   //const message = `Win By Random Number: ${winnerInfo.randomNumber.toString()}\nWallet Address: ${winnerInfo.wallet}\nPrize Amount: ${arbAmount} ARB = ${prizeAmount} ETH`;
-  const message = `<b>Get ready to win big!</b> <i>The lottery is coming soon, but it hasn't started yet.</i> Keep an eye out for updates and be prepared to participate when it opens.`;
-  bot.sendMessage(msg.chat.id, message);
+  const message = `<b>Get ready to win big!</b> The lottery is coming soon, but it hasn't started yet. 
+                 Keep an eye out for updates and be prepared to participate when it opens.`;
+  //bot.sendMessage(msg.chat.id, message);
 });
 
 // Handle the /round command
@@ -27,8 +28,9 @@ bot.onText(/\/round/, async (msg) => {
   const contractAddress = '0x6CB0e4dA8F621A3901573bD8c8d2C8A0987d78d6'; // Replace with actual contract address
   const round = await contract._lotteryRound(); // Call _lotteryRound function
     //const message = `Current lottery round: ${round}`;
-    const message = `<b>Get ready to win big!</b> <i>The lottery is coming soon, but it hasn't started yet.</i> Keep an eye out for updates and be prepared to participate when it opens.`;
-    bot.sendMessage(msg.chat.id, message);
+    const message = `<b>Get ready to win big!</b> The lottery is coming soon, but it hasn't started yet. 
+                 Keep an eye out for updates and be prepared to participate when it opens.`;
+    //bot.sendMessage(msg.chat.id, message);
 });
 
 
@@ -54,8 +56,9 @@ bot.onText(/\/minimum/, async (msg) => {
   const minAmount = await contract._minAmountToParticipate(); // Call _minAmountToParticipate function
     const minAmountInEther = ethers.utils.formatEther(minAmount);
     //const message = `Minimum amount to participate in the lottery: ${minAmountInEther} ETH`;
-    const message = `<b>Get ready to win big!</b> <i>The lottery is coming soon, but it hasn't started yet.</i> Keep an eye out for updates and be prepared to participate when it opens.`;
-    bot.sendMessage(msg.chat.id, message);
+    const message = `<b>Get ready to win big!</b> The lottery is coming soon, but it hasn't started yet. 
+                 Keep an eye out for updates and be prepared to participate when it opens.`;
+    //bot.sendMessage(msg.chat.id, message);
 });
 
 
@@ -66,8 +69,10 @@ bot.onText(/\/balance/, async (msg) => {
   const balance = await provider.getBalance(walletAddress);
   const formattedBalance = ethers.utils.formatEther(balance);
   //const message = `Lottery Balance Amount: ${formattedBalance} ETH`;
-  const message = `<b>Get ready to win big!</b> <i>The lottery is coming soon, but it hasn't started yet.</i> Keep an eye out for updates and be prepared to participate when it opens.`;
-  bot.sendMessage(msg.chat.id, message);
+  const message = `<b>Get ready to win big!</b> The lottery is coming soon, but it hasn't started yet. 
+                 Keep an eye out for updates and be prepared to participate when it opens.`;
+                 bot.sendMessage(msg.chat.id, message, {parse_mode: "HTML"});
+                 //bot.sendMessage(msg.chat.id, message);
   return; // Add return statement here to exit the function
 });
 
