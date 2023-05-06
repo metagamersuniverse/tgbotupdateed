@@ -39,6 +39,23 @@ async function getDexscreenerData() {
   };
 }
 
+// Handle the /ca command
+bot.onText(/\/ca/, async (msg) => {
+  console.log('Contract address command received');
+  const data = await getDexscreenerData();
+  const contractAddress = data.baseToken.address;
+  const message = `The contract address for ${data.baseToken.symbol} is ${contractAddress}`;
+  bot.sendMessage(msg.chat.id, message, {
+    reply_markup: {
+      inline_keyboard: [[
+        { text: "Copy Contract Address", callback_data: contractAddress },
+      ]]
+    }
+  });
+});
+
+
+
 //bot.onText(/\/price/, async (msg) => {
   console.log('Price command received');
   const data = await getDexscreenerData();
