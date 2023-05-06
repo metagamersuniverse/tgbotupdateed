@@ -94,7 +94,7 @@ Keep an eye out for updates and be prepared to participate when it opens.`
 
 
 // Handle the /ca command
-bot.onText(/\/ca/, async (msg) => {
+bot.onText(/\/(ca|contract)/, async (msg) => {
   console.log('ca command received');
   const walletAddress = "0x087859e91ee03cb339ddd8df8e8f2a0b95fe07d6"; // replace with your desired wallet address
   const message = `
@@ -135,6 +135,7 @@ To get help with using the bot, use the /help command.
   bot.sendMessage(msg.chat.id, message, {parse_mode: "HTML"});
 });
 
+
 // Handle the /start command
 bot.onText(/\/help/, async (msg) => {
   const message = `
@@ -144,7 +145,7 @@ bot.onText(/\/help/, async (msg) => {
 - To get the current lottery round, use the /round or /lottery command.
 - To get the minimum amount of $LEPE required to participate in the lottery, use the /minimum command.
 - To get information about a past winner, use the <code>/winner</code> command followed by the round number (e.g. <code>/winner 123</code>).
-- To get information about our contract address, use the /ca command.
+- To get information about our contract address, use the /ca or /contract command.
 - To buy $LEPE, use the /buy command.
 - To buy in Presale, use the /ido command.
 <i>You can also visit our website at https://www.luckypepe.io/ for more information and updates.</i>
@@ -154,7 +155,7 @@ bot.onText(/\/help/, async (msg) => {
 
 // Handle other messages
 bot.on('message', (msg) => {
-  const unrecognizedCommands = ['/balance', '/winner', '/start', '/round', '/minimum', '/price', '/ca', '/guide','/help','/buy','/presale','/ido','/pinksale','/lottery' ];
+  const unrecognizedCommands = ['/balance', '/winner', '/start', '/round', '/minimum', '/price', '/ca','/contract', '/guide','/help','/buy','/presale','/ido','/pinksale','/lottery' ];
   const command = msg.text.split(' ')[0];
   if (!unrecognizedCommands.includes(command)) {
     bot.sendMessage(msg.chat.id, 'Oops! I did not understand that. To get started, use the /start or /help command.');
