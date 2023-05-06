@@ -142,6 +142,7 @@ bot.onText(/\/help/, async (msg) => {
 
 - To get the current lottery amount, use the /balance command.
 - To get the current lottery round, use the /round or /lottery command.
+- To get the minimum amount of $LEPE required to participate in the lottery, use the /minimum command.
 - To get information about a past winner, use the <code>/winner</code> command followed by the round number (e.g. <code>/winner 123</code>).
 - To get information about our contract address, use the /ca command.
 - To buy $LEPE, use the /buy command.
