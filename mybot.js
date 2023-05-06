@@ -170,7 +170,7 @@ bot.on('message', (msg) => {
   const unrecognizedCommands = ['/balance', '/winner', '/start', '/round', '/minimum', '/price', '/ca','/contract', '/guide','/help','/buy','/presale','/ido','/pinksale','/lottery' ];
   const command = msg.text.split(' ')[0];
   if (!unrecognizedCommands.includes(command)) {
-    bot.sendMessage(msg.chat.id, 'Oops! I did not understand that. To get started, use the /start or /help command.');
+    bot.sendMessage(msg.chat.id, 'Oops! I did not understand that. To get started, use the /start or /guide command.');
   }
 });
 
