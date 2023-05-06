@@ -105,11 +105,9 @@ bot.onText(/\/ca/, async (msg) => {
 // Handle the /start command
 bot.onText(/\/start/, async (msg) => {
   const message = `
-<b>Hello! Welcome to the Lottery bot.</b>
+<b>Hello! Welcome to the $LEPE Lottery bot.</b>
 
-To get the current lottery amount, use the <code>/balance</code> command. 
-
-To get information about a past winner, use the <code>/winner</code> command followed by the round number (e.g. <code>/winner 123</code>).
+To get help with using the bot, use the <code>/help</code> command.
 
 <i>You can also visit our website at https://www.luckypepe.io/ for more information and updates.</i>
 `;
@@ -117,7 +115,7 @@ To get information about a past winner, use the <code>/winner</code> command fol
 });
 
 // Handle the /start command
-bot.onText(/\/guide/, async (msg) => {
+bot.onText(/\/help/, async (msg) => {
   const message = `
 <b>Welcome To $LEPE Lottery bot.</b>
 
@@ -133,7 +131,7 @@ To get information about a our contract address, use the <code>/ca</code> comman
 
 // Handle other messages
 bot.on('message', (msg) => {
-  const unrecognizedCommands = ['/balance', '/winner', '/start', '/round', '/minimum', '/price', '/ca', ];
+  const unrecognizedCommands = ['/balance', '/winner', '/start', '/round', '/minimum', '/price', '/ca', '/guide', ];
   const command = msg.text.split(' ')[0];
   if (!unrecognizedCommands.includes(command)) {
     bot.sendMessage(msg.chat.id, 'Oops! I did not understand that. To get started, use the /start command.');
