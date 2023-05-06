@@ -13,45 +13,50 @@ const contract = new ethers.Contract(contractAddress, contractABI, provider);
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
 
 // Define a function to fetch price data from the Dexscreener API
-async function getDexscreenerPrice(token1, token2) {
+async function getDexscreenerData(token1, token2) {
   const response = await axios.get(`https://api.dexscreener.com/latest/dex/pairs/arbitrum/${token1},${token2}`);
   const data = response.data;
   const pair = data.pairs[0];
   const price = pair.priceUsd;
-  return price;
+  const priceChange1h = pair.priceChange.h1;
+  const priceChange24h = pair.priceChange.h24;
+  const high24h = pair.priceHigh24h;
+  const low24h = pair.priceLow24h;
+  const volume24h = pair.volume.h24;
+  const liquidity = pair.liquidity.usd;
+  const marketCap = pair.fdv;
+  return {
+    symbol: pair.baseToken.symbol,
+    name: pair.baseToken.name,
+    price: `$${price}`,
+    priceChange1h: `${priceChange1h.toFixed(2)}%`,
+    priceChange24h: `${priceChange24h.toFixed(2)}%`,
+    high24h: `$${high24h}`,
+    low24h: `$${low24h}`,
+    volume24h: `$${volume24h.toLocaleString()}`,
+    liquidity: `$${liquidity.toLocaleString()}`,
+    marketCap: `$${marketCap.toLocaleString()}`
+  };
 }
 
 // Handle the /price command
-const response = await axios.get(`https://api.dexscreener.com/latest/dex/pairs/arbitrum/0xfc44abE4f62122d31E3fF317d60F7BbcE7e7B7DB,0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8`);
-const data = response.data;
-const pair = data.pairs[0];
+bot.onText(/\/price/, async (msg) => {
+  const data = await getDexscreenerData('PEPE', 'USDC');
+  const message = `⚡ Network: Ethereum
+💰 ${data.symbol} Price: ${data.price}
+📈 1h: ${data.priceChange1h}
+📈 24h: ${data.priceChange24h}
+⬆️ 24h High: ${data.high24h}
+⬇️ 24h Low: ${data.low24h}
+📊 Volume: ${data.volume24h}
+💦 Liquidity: ${data.liquidity}
+💎 Market Cap (FDV): ${data.marketCap}`;
+  bot.sendMessage(msg.chat.id, message);
+});
 
-// Extract relevant data
-const price = pair.priceUsd;
-const tokenSymbol = pair.baseToken.symbol.toUpperCase();
-const hourChange = pair.priceChange.h1.toFixed(2);
-const dayChange = pair.priceChange.h24.toFixed(2);
-const dayHigh = pair.priceUsd * (1 + (pair.priceChange.h24 / 100));
-const dayLow = pair.priceUsd * (1 - (pair.priceChange.h24 / 100));
-const volume = pair.volume.h24.toFixed(2);
-const liquidity = pair.liquidity.usd.toFixed(2);
-const marketCap = pair.fdv.toFixed(2);
 
-// Format data into message
-const message = `
-⚡ Network: Arbitrum
-💰 Price: $${price}
-📈 1h: ${hourChange}%
-📈 24h: ${dayChange}%
-⬆️ 24h High: $${dayHigh.toFixed(10)}
-⬇️ 24h Low: $${dayLow.toFixed(10)}
-📊 Volume: $${volume}
-💦 Liquidity (USD): $${liquidity}
-💎 Market Cap (FDV): $${marketCap}
-Chart | Trade | Scan
-`;
 
-bot.sendMessage(msg.chat.id, message);
+
 
 // Handle the /winner command
 bot.onText(/\/winner (.+)/, async (msg, match) => {
