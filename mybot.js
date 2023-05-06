@@ -42,8 +42,10 @@ async function getDexscreenerData() {
 bot.onText(/\/price/, async (msg) => {
   console.log('Price command received');
   const data = await getDexscreenerData();
-  const message = `⚡ Network: (${data.chainId})
-💰 ${data.symbol} (${data.name}) Price: ${data.price}
+  const message = `
+💰 ${data.symbol} Price: ${data.price}
+⚡ Name: ${data.name}
+⚡ Network: ${data.chainId}
 📈 1h: ${data.priceChange1h}
 📈 24h: ${data.priceChange24h}
 📊 Volume: ${data.volume24h}
