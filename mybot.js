@@ -22,13 +22,36 @@ async function getDexscreenerPrice(token1, token2) {
 }
 
 // Handle the /price command
-bot.onText(/\/price (.+)/, async (msg, match) => {
-  console.log('Balance command received'); // Add console.log() statement here
-  const token = match[1].toUpperCase();
-  const price = await getDexscreenerPrice(token, '0xbf28fc1d36478c562ef25ab7701bd6f72f0d48b9');
-  const message = `The price of ${token} on Arbitrum is ${price} USD`;
-  bot.sendMessage(msg.chat.id, message);
-});
+const response = await axios.get(`https://api.dexscreener.com/latest/dex/pairs/arbitrum/0xfc44abE4f62122d31E3fF317d60F7BbcE7e7B7DB,0xFF970A61A04b1cA14834A43f5dE4533eBDDB5CC8`);
+const data = response.data;
+const pair = data.pairs[0];
+
+// Extract relevant data
+const price = pair.priceUsd;
+const tokenSymbol = pair.baseToken.symbol.toUpperCase();
+const hourChange = pair.priceChange.h1.toFixed(2);
+const dayChange = pair.priceChange.h24.toFixed(2);
+const dayHigh = pair.priceUsd * (1 + (pair.priceChange.h24 / 100));
+const dayLow = pair.priceUsd * (1 - (pair.priceChange.h24 / 100));
+const volume = pair.volume.h24.toFixed(2);
+const liquidity = pair.liquidity.usd.toFixed(2);
+const marketCap = pair.fdv.toFixed(2);
+
+// Format data into message
+const message = `
+⚡ Network: Arbitrum
+💰 Price: $${price}
+📈 1h: ${hourChange}%
+📈 24h: ${dayChange}%
+⬆️ 24h High: $${dayHigh.toFixed(10)}
+⬇️ 24h Low: $${dayLow.toFixed(10)}
+📊 Volume: $${volume}
+💦 Liquidity (USD): $${liquidity}
+💎 Market Cap (FDV): $${marketCap}
+Chart | Trade | Scan
+`;
+
+bot.sendMessage(msg.chat.id, message);
 
 // Handle the /winner command
 bot.onText(/\/winner (.+)/, async (msg, match) => {
