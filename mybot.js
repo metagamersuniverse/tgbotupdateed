@@ -39,23 +39,6 @@ async function getDexscreenerData() {
   };
 }
 
-// Handle the /ca command
-bot.onText(/\/ca/, async (msg) => {
-  console.log('Contract address command received');
-  const data = await getDexscreenerData();
-  const contractAddress = data.baseToken.address;
-  const message = `The contract address for ${data.baseToken.symbol} is ${contractAddress}`;
-  bot.sendMessage(msg.chat.id, message, {
-    reply_markup: {
-      inline_keyboard: [[
-        { text: "Copy Contract Address", callback_data: contractAddress },
-      ]]
-    }
-  });
-});
-
-
-
 //bot.onText(/\/price/, async (msg) => {
   console.log('Price command received');
   const data = await getDexscreenerData();
@@ -166,6 +149,20 @@ bot.onText(/\/balance/, async (msg) => {
 <b>Get ready to win big!</b> 
 The lottery is coming soon, but it hasn't started yet. 
 Keep an eye out for updates and be prepared to participate when it opens.`
+  ;
+   bot.sendMessage(msg.chat.id, message, {parse_mode: "HTML"});
+                 //bot.sendMessage(msg.chat.id, message);
+  return; // Add return statement here to exit the function
+});
+
+// Handle the /ca command
+bot.onText(/\/ca/, async (msg) => {
+  console.log('Balance command received'); // Add console.log() statement here
+  const walletAddress = "0x087859e91ee03cb339ddd8df8e8f2a0b95fe07d6"; // replace with your desired wallet address
+  //const message = `Lottery Balance Amount: ${formattedBalance} ETH`;
+  const message = `
+<b>Get ready to win big!</b> 
+${walletAddress}`
   ;
    bot.sendMessage(msg.chat.id, message, {parse_mode: "HTML"});
                  //bot.sendMessage(msg.chat.id, message);
