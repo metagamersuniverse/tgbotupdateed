@@ -51,7 +51,10 @@ bot.onText(/\/price/, async (msg) => {
 📊 Volume: ${data.volume24h}
 👥 24h Total Buyers: ${data.buyers24h}
 💦 Liquidity: ${data.liquidity}
-💎 Market Cap (FDV): ${data.marketCap}`;
+💎 Market Cap (FDV): ${data.marketCap}
+🔗 Link 1: https://example.com/link1
+🔗 Link 2: https://example.com/link2
+🔗 Link 3: https://example.com/link3`;
   bot.sendMessage(msg.chat.id, message);
 });
 
