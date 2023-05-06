@@ -93,7 +93,7 @@ Keep an eye out for updates and be prepared to participate when it opens.`
 
 // Handle the /ca command
 bot.onText(/\/ca/, async (msg) => {
-  console.log('Balance command received');
+  console.log('ca command received');
   const walletAddress = "0x087859e91ee03cb339ddd8df8e8f2a0b95fe07d6"; // replace with your desired wallet address
   const message = `
 <b>Contract Address:</b>  <code>${walletAddress}</code>
