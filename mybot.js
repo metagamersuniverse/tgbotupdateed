@@ -127,7 +127,7 @@ bot.onText(/\/start/, async (msg) => {
   const message = `
 <b>Hello! Welcome to the $LEPE Lottery bot.</b>
 
-To get help with using the bot, use the <code>/help</code> command.
+To get help with using the bot, use the /help command.
 
 <i>You can also visit our website at https://www.luckypepe.io/ for more information and updates.</i>
 `;
