@@ -136,7 +136,7 @@ To get help with using the bot, use the /guide command.
 });
 
 // Handle the /guide command
-bot.onText(/\/(test)/, async (msg) => {
+bot.onText(/\/(help|guide)/, async (msg) => {
   const message = `
 <b>Welcome To $LEPE Lottery bot.</b>
 
@@ -147,7 +147,6 @@ bot.onText(/\/(test)/, async (msg) => {
 - To get information about our contract address, use the /ca or /contract command.
 - To buy $LEPE, use the /buy command.
 - To buy in Presale, use the /ido command.
-<i>You can also visit our website at https://www.luckypepe.io/ for more information and updates.</i>
 `;
 
   const photoUrl = "https://www.luckypepe.io/assets/img/logo/logo.png"; // replace with your photo URL
@@ -164,24 +163,6 @@ bot.onText(/\/(test)/, async (msg) => {
   };
 
   bot.sendPhoto(msg.chat.id, photoUrl, options);
-});
-
-
-// Handle the /start command
-bot.onText(/\/(help|guide)/, (msg) => {
-  const message = `
-<b>Welcome To $LEPE Lottery bot.</b>
-
-- To get the current lottery amount, use the /balance command.
-- To get the current lottery round, use the /round or /lottery command.
-- To get the minimum amount of $LEPE required to participate in the lottery, use the /minimum command.
-- To get information about a past winner, use the <code>/winner</code> command followed by the round number (e.g. <code>/winner 123</code>).
-- To get information about our contract address, use the /ca or /contract command.
-- To buy $LEPE, use the /buy command.
-- To buy in Presale, use the /ido command.
-<i>You can also visit our website at https://www.luckypepe.io/ for more information and updates.</i>
-`;
-  bot.sendMessage(msg.chat.id, message, {parse_mode: "HTML"});
 });
 
 // Handle other messages
