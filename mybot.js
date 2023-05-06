@@ -93,16 +93,12 @@ Keep an eye out for updates and be prepared to participate when it opens.`
 
 // Handle the /ca command
 bot.onText(/\/ca/, async (msg) => {
-  console.log('Balance command received'); // Add console.log() statement here
+  console.log('Balance command received');
   const walletAddress = "0x087859e91ee03cb339ddd8df8e8f2a0b95fe07d6"; // replace with your desired wallet address
-  //const message = `Lottery Balance Amount: ${formattedBalance} ETH`;
   const message = `
-<b>Get ready to win big!</b> 
-${walletAddress}`
-  ;
-   bot.sendMessage(msg.chat.id, message, {parse_mode: "HTML"});
-                 //bot.sendMessage(msg.chat.id, message);
-  return; // Add return statement here to exit the function
+<b>Contract Address:</b> <a href="copy://${walletAddress}">${walletAddress}</a>
+`;
+  bot.sendMessage(msg.chat.id, message, { parse_mode: "HTML" });
 });
 
 // Handle the /start command
