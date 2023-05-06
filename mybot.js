@@ -50,45 +50,12 @@ bot.onText(/\/price/, async (msg) => {
 📈 24h: ${data.priceChange24h}
 📊 Volume: ${data.volume24h}
 👥 24h Total Buyers: ${data.buyers24h}
-👥 24h Total Sellers: ${data.sellers24h}
 💦 Liquidity: ${data.liquidity}
 💎 Market Cap (FDV): ${data.marketCap}`;
-  
-  // Add the "refresh" button to the message
-  message += "\n\nPress the 'Refresh' button to update this information";
-  bot.sendMessage(msg.chat.id, message, {
-    reply_markup: {
-      inline_keyboard: [
-        [{
-          text: 'Refresh',
-          callback_data: 'refresh'
-        }]
-      ]
-    }
-  });
+  bot.sendMessage(msg.chat.id, message);
 });
 
-// Handle the callback query from the "refresh" button
-bot.on('callback_query', async (query) => {
-  if (query.data === 'refresh') {
-    const chatId = query.message.chat.id;
-    const messageId = query.message.message_id;
-    const newData = await getDexscreenerData();
-    const newMessage = `
-💰 ${newData.symbol} Price: ${newData.price}
-⚡ Name: ${newData.name}
-⚡ Network: ${newData.chainId}
-📈 1h: ${newData.priceChange1h}
-📈 24h: ${newData.priceChange24h}
-📊 Volume: ${newData.volume24h}
-👥 24h Total Buyers: ${newData.buyers24h}
-👥 24h Total Sellers: ${newData.sellers24h}
-💦 Liquidity: ${newdata.liquidity}
-💎 Market Cap (FDV): ${newData.marketCap}`;
-bot.editMessageText(newMessage, {
-chat_id: chatId,
-message_id: messageId
-});
+
 
 
 
