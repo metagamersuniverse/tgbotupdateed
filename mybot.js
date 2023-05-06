@@ -27,7 +27,7 @@ async function getDexscreenerData() {
   return {
     symbol: pair.baseToken.symbol,
     name: pair.baseToken.name,
-    chainId: pair.chainId.toUpperCase(),
+    chainId: pair.chainId,
     price: `$${price}`,
     priceChange1h: `${priceChange1h.toFixed(2)}%`,
     priceChange24h: `${priceChange24h.toFixed(2)}%`,
