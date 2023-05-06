@@ -122,18 +122,29 @@ bot.onText(/\/(buy|ido|presale|pinksale)/, (msg) => {
   };
   bot.sendMessage(msg.chat.id, message, options);
 });
-
-// Handle the /start command
+// Handle the /guide command
 bot.onText(/\/start/, async (msg) => {
   const message = `
 <b>Hello! Welcome to the $LEPE Lottery bot.</b>
 
 To get help with using the bot, use the /guide command.
-
-<i>You can also visit our website at https://www.luckypepe.io/ for more information and updates.</i>
 `;
-  bot.sendMessage(msg.chat.id, message, {parse_mode: "HTML"});
+
+  const photoUrl = "https://www.luckypepe.io/assets/img/logo/logo.png"; // replace with your photo URL
+  const options = {
+    parse_mode: "HTML",
+    caption: message,
+    reply_markup: {
+      inline_keyboard: [
+        [
+          { text: "Visit our website", url: "https://www.luckypepe.io/" }
+        ]
+      ]
+    }
+  };
+  bot.sendPhoto(msg.chat.id, photoUrl, options);
 });
+
 
 // Handle the /guide command
 bot.onText(/\/(help|guide)/, async (msg) => {
