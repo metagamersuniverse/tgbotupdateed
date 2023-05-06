@@ -12,69 +12,6 @@ const contract = new ethers.Contract(contractAddress, contractABI, provider);
 // Create the Telegram bot
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
 
-async function getDexscreenerData() {
-  const response = await axios.get('https://api.dexscreener.com/latest/dex/pairs/arbitrum/0xbf28fc1d36478c562ef25ab7701bd6f72f0d48b9,0xBF28FC1D36478C562ef25aB7701bd6f72f0d48B9');
-  const data = response.data;
-  const pair = data.pairs[0];
-  const price = pair.priceUsd;
-  const priceChange1h = pair.priceChange.h1;
-  const priceChange24h = pair.priceChange.h24;
-  const volume24h = pair.volume.h24;
-  const liquidity = pair.liquidity.usd;
-  const marketCap = pair.fdv;
-  const buyers24h = pair.txns.h24.buys;
-  const sellers24h = pair.txns.h24.sells;
-  return {
-    symbol: pair.baseToken.symbol,
-    name: pair.baseToken.name,
-    chainId: pair.chainId,
-    price: `$${price}`,
-    priceChange1h: `${priceChange1h.toFixed(2)}%`,
-    priceChange24h: `${priceChange24h.toFixed(2)}%`,
-    volume24h: `$${volume24h.toLocaleString()}`,
-    liquidity: `$${liquidity.toLocaleString()}`,
-    marketCap: `$${marketCap.toLocaleString()}`,
-    buyers24h: buyers24h,
-    sellers24h: sellers24h
-  };
-}
-
-//bot.onText(/\/price/, async (msg) => {
-  console.log('Price command received');
-  const data = await getDexscreenerData();
-  const message = `
-💰 ${data.symbol} Price: ${data.price}
-⚡ Name: ${data.name}
-⚡ Network: ${data.chainId}
-📈 1h: ${data.priceChange1h}
-📈 24h: ${data.priceChange24h}
-📊 Volume: ${data.volume24h}
-👥 24h Total Buyers: ${data.buyers24h}
-💦 Liquidity: ${data.liquidity}
-💎 Market Cap (FDV): ${data.marketCap}`;
-
-  const keyboard = {
-    inline_keyboard: [
-      [
-        { text: "📊Chart", url: "https://example.com/link1" },
-        { text: "💰BUY NOW", url: "https://example.com/link2" },
-      ],
-    ],
-  };
-
-  const options = {
-    reply_markup: JSON.stringify(keyboard),
-  };
-
-  bot.sendMessage(msg.chat.id, message, options);
-});
-
-
-
-
-
-
-
 // Handle the /winner command
 bot.onText(/\/winner (.+)/, async (msg, match) => {
   const round = match[1];
@@ -136,7 +73,6 @@ Keep an eye out for updates and be prepared to participate when it opens.`
    bot.sendMessage(msg.chat.id, message, {parse_mode: "HTML"});
     //bot.sendMessage(msg.chat.id, message);
 });
-
 
 // Handle the /balance command
 bot.onText(/\/balance/, async (msg) => {
