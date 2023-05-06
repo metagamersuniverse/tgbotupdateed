@@ -33,8 +33,14 @@ bot.onText(/\/(round|lottery)/, async (msg) => {
   console.log('round/lottery command received'); // Add console.log() statement here
   const contractAddress = '0x6CB0e4dA8F621A3901573bD8c8d2C8A0987d78d6'; // Replace with actual contract address
   const round = await contract._lotteryRound(); // Call _lotteryRound function
-    const message = `Current lottery round: ${round}`;
-    bot.sendMessage(msg.chat.id, message);
+    //const message = `Current lottery round: ${round}`;
+    const message = `
+<b>Get ready to win big!</b> 
+The lottery is coming soon, but it hasn't started yet. 
+Keep an eye out for updates and be prepared to participate when it opens.`
+  ;
+   bot.sendMessage(msg.chat.id, message, {parse_mode: "HTML"});
+    //bot.sendMessage(msg.chat.id, message);
 });
 
 
