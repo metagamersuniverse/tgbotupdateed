@@ -41,6 +41,7 @@ async function getDexscreenerData(token1, token2) {
 
 // Handle the /price command
 bot.onText(/\/price/, async (msg) => {
+  console.log('Price command received'); // Add console.log() statement here
   const data = await getDexscreenerData('PEPE', 'USDC');
   const message = `⚡ Network: Ethereum
 💰 ${data.symbol} Price: ${data.price}
