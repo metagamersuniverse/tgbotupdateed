@@ -137,7 +137,7 @@ To get help with using the bot, use the /help command.
 
 
 // Handle the /start command
-bot.onText(/\/help/, async (msg) => {
+bot.onText(/\/(help|guide)/, (msg) => {
   const message = `
 <b>Welcome To $LEPE Lottery bot.</b>
 
