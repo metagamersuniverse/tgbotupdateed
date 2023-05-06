@@ -20,8 +20,8 @@ async function getDexscreenerData() {
   const price = pair.priceUsd;
   const priceChange1h = pair.priceChange.h1;
   const priceChange24h = pair.priceChange.h24;
-  const Buyers = pair.buys;
-  const Sellers = pair.sells;
+  const Buyers = data.buys;
+  const Sellers = data.sells;
   const volume24h = pair.volume.h24;
   const liquidity = pair.liquidity.usd;
   const marketCap = pair.fdv;
@@ -31,7 +31,7 @@ async function getDexscreenerData() {
     price: `$${price}`,
     priceChange1h: `${priceChange1h.toFixed(2)}%`,
     priceChange24h: `${priceChange24h.toFixed(2)}%`,
-    Buyers: `$${Buyers}`,
+    Buyers: `${Buyers}`,
     Sellers: `$${Sellers}`,
     volume24h: `$${volume24h.toLocaleString()}`,
     liquidity: `$${liquidity.toLocaleString()}`,
