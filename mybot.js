@@ -12,7 +12,6 @@ const contract = new ethers.Contract(contractAddress, contractABI, provider);
 // Create the Telegram bot
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
 
-// Define a function to fetch data from the Dexscreener API
 async function getDexscreenerData() {
   const response = await axios.get('https://api.dexscreener.com/latest/dex/pairs/arbitrum/0xbf28fc1d36478c562ef25ab7701bd6f72f0d48b9,0xBF28FC1D36478C562ef25aB7701bd6f72f0d48B9');
   const data = response.data;
@@ -28,6 +27,7 @@ async function getDexscreenerData() {
   return {
     symbol: pair.baseToken.symbol,
     name: pair.baseToken.name,
+    chainId: pair.chainId,
     price: `$${price}`,
     priceChange1h: `${priceChange1h.toFixed(2)}%`,
     priceChange24h: `${priceChange24h.toFixed(2)}%`,
@@ -39,13 +39,11 @@ async function getDexscreenerData() {
   };
 }
 
-
-// Handle the /price command
 bot.onText(/\/price/, async (msg) => {
-  console.log('Price command received'); // Add console.log() statement here
+  console.log('Price command received');
   const data = await getDexscreenerData();
-  const message = `⚡ Network: (${pair.chainId})
-💰 ${data.symbol} Price: ${data.price}
+  const message = `⚡ Network: Ethereum (${data.chainId})
+💰 ${data.symbol} (${data.name}) Price: ${data.price}
 📈 1h: ${data.priceChange1h}
 📈 24h: ${data.priceChange24h}
 📊 Volume: ${data.volume24h}
@@ -54,6 +52,7 @@ bot.onText(/\/price/, async (msg) => {
 💎 Market Cap (FDV): ${data.marketCap}`;
   bot.sendMessage(msg.chat.id, message);
 });
+
 
 
 
