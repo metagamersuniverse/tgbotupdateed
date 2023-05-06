@@ -56,9 +56,8 @@ bot.onText(/\/price/, async (msg) => {
   const keyboard = {
     inline_keyboard: [
       [
-        { text: "Link 1", url: "https://example.com/link1" },
-        { text: "Link 2", url: "https://example.com/link2" },
-        { text: "Link 3", url: "https://example.com/link3" },
+        { text: "📊Chart", url: "https://example.com/link1" },
+        { text: "💰BUY NOW", url: "https://example.com/link2" },
       ],
     ],
   };
