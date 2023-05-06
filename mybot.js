@@ -91,9 +91,11 @@ Keep an eye out for updates and be prepared to participate when it opens.`
   return; // Add return statement here to exit the function
 });
 
-// Handle the /ca command
 bot.onText(/\/buy/, async (msg) => {
-  console.log('ca command received');
+  console.log('buy command received');
+  const data = await getDexscreenerData();
+  const message = `Here is the link to buy`;
+
   const keyboard = {
     inline_keyboard: [
       [
@@ -106,7 +108,8 @@ bot.onText(/\/buy/, async (msg) => {
   const options = {
     reply_markup: JSON.stringify(keyboard),
   };
-  bot.sendMessage(msg.chat.id, message, { parse_mode: "HTML" });
+
+  bot.sendMessage(msg.chat.id, message, options);
 });
 
 // Handle the /ca command
