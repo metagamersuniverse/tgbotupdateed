@@ -15,9 +15,10 @@ const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
 bot.onText(/\/winner (.+)/, async (msg, match) => {
   const round = match[1];
   const winnerInfo = await contract.lotteryWinnerInfo(round);
-  const prizeAmount = (winnerInfo.prizeAmount / 1e18).toFixed(5);
-  const arbAmount = (winnerInfo.arbAmount / 1e18).toFixed(5);
-  const message = `Win By Random Number: ${winnerInfo.randomNumber.toString()}\nWallet Address: ${winnerInfo.wallet}\nPrize Amount: ${arbAmount} ARB = ${prizeAmount} ETH`;
+  const prizeAmount = isNaN(winnerInfo.prizeAmount) ? "0.0" : (winnerInfo.prizeAmount / 1e18).toFixed(5);
+  const arbAmount = isNaN(winnerInfo.arbAmount) ? "0.0" : (winnerInfo.arbAmount / 1e18).toFixed(5);
+  //const message = `Win By Random Number: ${winnerInfo.randomNumber.toString()}\nWallet Address: ${winnerInfo.wallet}\nPrize Amount: ${arbAmount} ARB = ${prizeAmount} ETH`;
+  const message = `Lottery Not Started yet.Be Pataient.`;
   bot.sendMessage(msg.chat.id, message);
 });
 
@@ -25,7 +26,8 @@ bot.onText(/\/winner (.+)/, async (msg, match) => {
 bot.onText(/\/round/, async (msg) => {
   const contractAddress = '0x6CB0e4dA8F621A3901573bD8c8d2C8A0987d78d6'; // Replace with actual contract address
   const round = await contract._lotteryRound(); // Call _lotteryRound function
-    const message = `Current lottery round: ${round}`;
+    //const message = `Current lottery round: ${round}`;
+    const message = `Lottery Not Started yet.Be Pataient.`;
     bot.sendMessage(msg.chat.id, message);
 });
 
@@ -51,7 +53,8 @@ bot.onText(/\/minimum/, async (msg) => {
   const contract = new ethers.Contract(contractAddress, contractABI, provider);
   const minAmount = await contract._minAmountToParticipate(); // Call _minAmountToParticipate function
     const minAmountInEther = ethers.utils.formatEther(minAmount);
-    const message = `Minimum amount to participate in the lottery: ${minAmountInEther} ETH`;
+    //const message = `Minimum amount to participate in the lottery: ${minAmountInEther} ETH`;
+    const message = `Lottery Not Started yet.Be Pataient.`;
     bot.sendMessage(msg.chat.id, message);
 });
 
@@ -62,7 +65,8 @@ bot.onText(/\/balance/, async (msg) => {
   const walletAddress = "0x087859e91ee03cb339ddd8df8e8f2a0b95fe07d6"; // replace with your desired wallet address
   const balance = await provider.getBalance(walletAddress);
   const formattedBalance = ethers.utils.formatEther(balance);
-  const message = `Lottery Balance Amount: ${formattedBalance} ETH`;
+  //const message = `Lottery Balance Amount: ${formattedBalance} ETH`;
+  const message = `Lottery Not Started yet.Be Pataient.`;
   bot.sendMessage(msg.chat.id, message);
   return; // Add return statement here to exit the function
 });
@@ -83,7 +87,7 @@ To get information about a past winner, use the <code>/winner</code> command fol
 
 // Handle other messages
 bot.on('message', (msg) => {
-  const unrecognizedCommands = ['/balance', '/winner', '/start', '/round', '/minAmount'];
+  const unrecognizedCommands = ['/balance', '/winner', '/start', '/round', '/minimum', ];
   const command = msg.text.split(' ')[0];
   if (!unrecognizedCommands.includes(command)) {
     bot.sendMessage(msg.chat.id, 'Oops! I did not understand that. To get started, use the /start command.');
