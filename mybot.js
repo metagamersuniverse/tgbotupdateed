@@ -89,8 +89,6 @@ bot.editMessageText(newMessage, {
 chat_id: chatId,
 message_id: messageId
 });
-}
-});
 
 
 
