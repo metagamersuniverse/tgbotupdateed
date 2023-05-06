@@ -135,6 +135,37 @@ To get help with using the bot, use the /guide command.
   bot.sendMessage(msg.chat.id, message, {parse_mode: "HTML"});
 });
 
+// Handle the /guide command
+bot.onText(/\/(test)/, async (msg) => {
+  const message = `
+<b>Welcome To $LEPE Lottery bot.</b>
+
+- To get the current lottery amount, use the /balance command.
+- To get the current lottery round, use the /round or /lottery command.
+- To get the minimum amount of $LEPE required to participate in the lottery, use the /minimum command.
+- To get information about a past winner, use the <code>/winner</code> command followed by the round number (e.g. <code>/winner 123</code>).
+- To get information about our contract address, use the /ca or /contract command.
+- To buy $LEPE, use the /buy command.
+- To buy in Presale, use the /ido command.
+<i>You can also visit our website at https://www.luckypepe.io/ for more information and updates.</i>
+`;
+
+  const photoUrl = "https://www.luckypepe.io/assets/img/logo/logo.png"; // replace with your photo URL
+  const options = {
+    parse_mode: "HTML",
+    caption: message,
+    reply_markup: {
+      inline_keyboard: [
+        [
+          { text: "Visit our website", url: "https://www.luckypepe.io/" }
+        ]
+      ]
+    }
+  };
+
+  bot.sendPhoto(msg.chat.id, photoUrl, options);
+});
+
 
 // Handle the /start command
 bot.onText(/\/(help|guide)/, (msg) => {
