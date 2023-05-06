@@ -92,6 +92,24 @@ Keep an eye out for updates and be prepared to participate when it opens.`
 });
 
 // Handle the /ca command
+bot.onText(/\/buy/, async (msg) => {
+  console.log('ca command received');
+  const keyboard = {
+    inline_keyboard: [
+      [
+        { text: "📊Chart", url: "https://example.com/link1" },
+        { text: "💰BUY NOW", url: "https://example.com/link2" },
+      ],
+    ],
+  };
+
+  const options = {
+    reply_markup: JSON.stringify(keyboard),
+  };
+  bot.sendMessage(msg.chat.id, message, { parse_mode: "HTML" });
+});
+
+// Handle the /ca command
 bot.onText(/\/ca/, async (msg) => {
   console.log('ca command received');
   const walletAddress = "0x087859e91ee03cb339ddd8df8e8f2a0b95fe07d6"; // replace with your desired wallet address
@@ -134,7 +152,7 @@ bot.on('message', (msg) => {
   const unrecognizedCommands = ['/balance', '/winner', '/start', '/round', '/minimum', '/price', '/ca', '/guide','/help', ];
   const command = msg.text.split(' ')[0];
   if (!unrecognizedCommands.includes(command)) {
-    bot.sendMessage(msg.chat.id, 'Oops! I did not understand that. To get started, use the /start command.');
+    bot.sendMessage(msg.chat.id, 'Oops! I did not understand that. To get started, use the /start or /help command.');
   }
 });
 
