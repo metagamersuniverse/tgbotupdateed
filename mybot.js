@@ -96,8 +96,9 @@ bot.onText(/\/ca/, async (msg) => {
   console.log('ca command received');
   const walletAddress = "0x087859e91ee03cb339ddd8df8e8f2a0b95fe07d6"; // replace with your desired wallet address
   const message = `
-<b>Contract Address:</b>  <code>${walletAddress}</code>
-`;
+<b>Contract Address:
+</b>  <code>${walletAddress}</code>
+(Tap To Copy)`;
   bot.sendMessage(msg.chat.id, message, { parse_mode: "HTML" });
 });
 
