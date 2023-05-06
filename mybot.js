@@ -20,8 +20,8 @@ async function getDexscreenerData() {
   const price = pair.priceUsd;
   const priceChange1h = pair.priceChange.h1;
   const priceChange24h = pair.priceChange.h24;
-  const high24h = pair.priceHigh24h;
-  const low24h = pair.priceLow24h;
+  const Buyers = pair.buys;
+  const Sellers = pair.sells;
   const volume24h = pair.volume.h24;
   const liquidity = pair.liquidity.usd;
   const marketCap = pair.fdv;
@@ -31,8 +31,8 @@ async function getDexscreenerData() {
     price: `$${price}`,
     priceChange1h: `${priceChange1h.toFixed(2)}%`,
     priceChange24h: `${priceChange24h.toFixed(2)}%`,
-    high24h: `$${high24h}`,
-    low24h: `$${low24h}`,
+    Buyers: `$${Buyers}`,
+    Sellers: `$${Sellers}`,
     volume24h: `$${volume24h.toLocaleString()}`,
     liquidity: `$${liquidity.toLocaleString()}`,
     marketCap: `$${marketCap.toLocaleString()}`
@@ -47,8 +47,8 @@ bot.onText(/\/price/, async (msg) => {
 💰 ${data.symbol} Price: ${data.price}
 📈 1h: ${data.priceChange1h}
 📈 24h: ${data.priceChange24h}
-⬆️ 24h High: ${data.high24h}
-⬇️ 24h Low: ${data.low24h}
+⬆️ 24h High: ${data.Buyers}
+⬇️ 24h Low: ${data.Sellers}
 📊 Volume: ${data.volume24h}
 💦 Liquidity: ${data.liquidity}
 💎 Market Cap (FDV): ${data.marketCap}`;
