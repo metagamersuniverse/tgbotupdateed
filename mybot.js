@@ -139,10 +139,11 @@ bot.onText(/\/help/, async (msg) => {
   const message = `
 <b>Welcome To $LEPE Lottery bot.</b>
 
-To get the current lottery amount, use the <code>/balance</code> command. 
+To get the current lottery amount, use the /balance command. 
 
 To get information about a past winner, use the <code>/winner</code> command followed by the round number (e.g. <code>/winner 123</code>).
-To get information about a our contract address, use the <code>/ca</code> command.
+To get information about a our contract address, use the /ca command.
+To buy $LEPE, use the /buy command.
 
 <i>You can also visit our website at https://www.luckypepe.io/ for more information and updates.</i>
 `;
