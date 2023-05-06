@@ -29,7 +29,8 @@ Keep an eye out for updates and be prepared to participate when it opens.`
 });
 
 // Handle the /round command
-bot.onText(/\/round/, async (msg) => {
+bot.onText(/\/(round|lottery)/, async (msg) => {
+  console.log('round/lottery command received'); // Add console.log() statement here
   const contractAddress = '0x6CB0e4dA8F621A3901573bD8c8d2C8A0987d78d6'; // Replace with actual contract address
   const round = await contract._lotteryRound(); // Call _lotteryRound function
     //const message = `Current lottery round: ${round}`;
@@ -140,7 +141,7 @@ bot.onText(/\/help/, async (msg) => {
 <b>Welcome To $LEPE Lottery bot.</b>
 
 - To get the current lottery amount, use the /balance command.
-- To get the current lottery round, use the /round command.
+- To get the current lottery round, use the /round or /lottery command.
 - To get information about a past winner, use the <code>/winner</code> command followed by the round number (e.g. <code>/winner 123</code>).
 - To get information about our contract address, use the /ca command.
 - To buy $LEPE, use the /buy command.
@@ -152,7 +153,7 @@ bot.onText(/\/help/, async (msg) => {
 
 // Handle other messages
 bot.on('message', (msg) => {
-  const unrecognizedCommands = ['/balance', '/winner', '/start', '/round', '/minimum', '/price', '/ca', '/guide','/help','/buy','/presale','/ido','/pinksale' ];
+  const unrecognizedCommands = ['/balance', '/winner', '/start', '/round', '/minimum', '/price', '/ca', '/guide','/help','/buy','/presale','/ido','/pinksale','/lottery' ];
   const command = msg.text.split(' ')[0];
   if (!unrecognizedCommands.includes(command)) {
     bot.sendMessage(msg.chat.id, 'Oops! I did not understand that. To get started, use the /start or /help command.');
