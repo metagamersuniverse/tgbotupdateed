@@ -118,7 +118,7 @@ To get information about a past winner, use the <code>/winner</code> command fol
 
 // Handle other messages
 bot.on('message', (msg) => {
-  const unrecognizedCommands = ['/balance', '/winner', '/start', '/round', '/minimum', '/price', ];
+  const unrecognizedCommands = ['/balance', '/winner', '/start', '/round', '/minimum', '/price', '/ca', ];
   const command = msg.text.split(' ')[0];
   if (!unrecognizedCommands.includes(command)) {
     bot.sendMessage(msg.chat.id, 'Oops! I did not understand that. To get started, use the /start command.');
