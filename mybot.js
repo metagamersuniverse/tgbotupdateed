@@ -104,7 +104,7 @@ bot.onText(/\/ca/, async (msg) => {
 });
 
 // Handle the /buy command
-bot.onText(/\/buy/, (msg) => {
+//bot.onText(/\/buy/, (msg) => {
   console.log('ca command received');
   const message = `
 <b>To buy a $LEPE, please visit one of the following websites:</b>
@@ -114,8 +114,27 @@ bot.onText(/\/buy/, (msg) => {
     reply_markup: {
       inline_keyboard: [
         [
-          { text: "Option 1", url: "https://www.example.com/ticket" },
-          { text: "Option 2", url: "https://www.anotherexample.com/ticket" }
+          { text: "📊Chart", url: "https://www.dexview.com/arbitrum/0x6CB0e4dA8F621A3901573bD8c8d2C8A0987d78d6" },
+          { text: "💰BUY NOW", url: "https://app.sushi.com/swap?inputCurrency=ETH&outputCurrency=0x6CB0e4dA8F621A3901573bD8c8d2C8A0987d78d6&chainId=42161" }
+        ]
+      ]
+    }
+  };
+  bot.sendMessage(msg.chat.id, message, options);
+});
+
+// Handle the /buy command
+bot.onText(/\/(buy|ido|presale|pinksale)/, (msg) => {
+  console.log('ca command received');
+  const message = `
+<b>To buy a $LEPE, please visit one of the following websites:</b>
+`;
+  const options = {
+    parse_mode: "HTML",
+    reply_markup: {
+      inline_keyboard: [
+        [
+          { text: "💰BUY NOW", url: "https://www.pinksale.finance/launchpad/0x0bcbBCd3186E5d857AF2A4C4A158d5027037032F?chain=Arbitrum" }
         ]
       ]
     }
