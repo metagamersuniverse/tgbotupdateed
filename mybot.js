@@ -12,13 +12,10 @@ const contract = new ethers.Contract(contractAddress, contractABI, provider);
 // Create the Telegram bot
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
 
-// Define a function to fetch price data from the Dexscreener API
-async function getDexscreenerData(token1, token2) {
-  const response = await axios.get(`https://api.dexscreener.com/latest/dex/pairs/arbitrum/${token1},${token2}`);
+// Define a function to fetch data from the Dexscreener API
+async function getDexscreenerData() {
+  const response = await axios.get('https://api.dexscreener.com/latest/dex/pairs/arbitrum/0xbf28fc1d36478c562ef25ab7701bd6f72f0d48b9,0xBF28FC1D36478C562ef25aB7701bd6f72f0d48B9');
   const data = response.data;
-  if (!data.pairs || data.pairs.length === 0) {
-    throw new Error(`Pair not found: ${token1}-${token2}`);
-  }
   const pair = data.pairs[0];
   const price = pair.priceUsd;
   const priceChange1h = pair.priceChange.h1;
@@ -45,9 +42,8 @@ async function getDexscreenerData(token1, token2) {
 // Handle the /price command
 bot.onText(/\/price/, async (msg) => {
   console.log('Price command received'); // Add console.log() statement here
-  try {
-    const data = await getDexscreenerData('PEPE', 'USDC');
-    const message = `⚡ Network: Ethereum
+  const data = await getDexscreenerData();
+  const message = `⚡ Network: Ethereum
 💰 ${data.symbol} Price: ${data.price}
 📈 1h: ${data.priceChange1h}
 📈 24h: ${data.priceChange24h}
@@ -56,10 +52,7 @@ bot.onText(/\/price/, async (msg) => {
 📊 Volume: ${data.volume24h}
 💦 Liquidity: ${data.liquidity}
 💎 Market Cap (FDV): ${data.marketCap}`;
-    bot.sendMessage(msg.chat.id, message);
-  } catch (error) {
-    bot.sendMessage(msg.chat.id, error.message);
-  }
+  bot.sendMessage(msg.chat.id, message);
 });
 
 
