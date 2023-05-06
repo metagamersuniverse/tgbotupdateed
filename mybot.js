@@ -23,6 +23,7 @@ async function getDexscreenerPrice(token1, token2) {
 
 // Handle the /price command
 bot.onText(/\/price (.+)/, async (msg, match) => {
+  console.log('Balance command received'); // Add console.log() statement here
   const token = match[1].toUpperCase();
   const price = await getDexscreenerPrice(token, '0xbf28fc1d36478c562ef25ab7701bd6f72f0d48b9');
   const message = `The price of ${token} on Arbitrum is ${price} USD`;
