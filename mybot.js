@@ -51,12 +51,25 @@ bot.onText(/\/price/, async (msg) => {
 📊 Volume: ${data.volume24h}
 👥 24h Total Buyers: ${data.buyers24h}
 💦 Liquidity: ${data.liquidity}
-💎 Market Cap (FDV): ${data.marketCap}
-🔗 Link 1: https://example.com/link1
-🔗 Link 2: https://example.com/link2
-🔗 Link 3: https://example.com/link3`;
-  bot.sendMessage(msg.chat.id, message);
+💎 Market Cap (FDV): ${data.marketCap}`;
+
+  const keyboard = {
+    inline_keyboard: [
+      [
+        { text: "Link 1", url: "https://example.com/link1" },
+        { text: "Link 2", url: "https://example.com/link2" },
+        { text: "Link 3", url: "https://example.com/link3" },
+      ],
+    ],
+  };
+
+  const options = {
+    reply_markup: JSON.stringify(keyboard),
+  };
+
+  bot.sendMessage(msg.chat.id, message, options);
 });
+
 
 
 
