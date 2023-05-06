@@ -70,9 +70,9 @@ bot.onText(/\/balance/, async (msg) => {
   const formattedBalance = ethers.utils.formatEther(balance);
   //const message = `Lottery Balance Amount: ${formattedBalance} ETH`;
   const message = `
-  <b>Get ready to win big!</b> 
-  The lottery is coming soon, but it hasn't started yet. 
-  Keep an eye out for updates and be prepared to participate when it opens.`
+<b>Get ready to win big!</b> 
+The lottery is coming soon, but it hasn't started yet. 
+Keep an eye out for updates and be prepared to participate when it opens.`
   ;
                  bot.sendMessage(msg.chat.id, message, {parse_mode: "HTML"});
                  //bot.sendMessage(msg.chat.id, message);
