@@ -91,26 +91,6 @@ Keep an eye out for updates and be prepared to participate when it opens.`
   return; // Add return statement here to exit the function
 });
 
-bot.onText(/\/buy/, async (msg) => {
-  console.log('buy command received');
-  const data = await getDexscreenerData();
-  const message = `Here is the link to buy`;
-
-  const keyboard = {
-    inline_keyboard: [
-      [
-        { text: "📊Chart", url: "https://example.com/link1" },
-        { text: "💰BUY NOW", url: "https://example.com/link2" },
-      ],
-    ],
-  };
-
-  const options = {
-    reply_markup: JSON.stringify(keyboard),
-  };
-
-  bot.sendMessage(msg.chat.id, message, options);
-});
 
 // Handle the /ca command
 bot.onText(/\/ca/, async (msg) => {
@@ -121,6 +101,26 @@ bot.onText(/\/ca/, async (msg) => {
 </b>  <code>${walletAddress}</code>
 (Tap To Copy)`;
   bot.sendMessage(msg.chat.id, message, { parse_mode: "HTML" });
+});
+
+// Handle the /buy command
+bot.onText(/\/buy/, (msg) => {
+  console.log('ca command received');
+  const message = `
+<b>To buy a $LEPE, please visit one of the following websites:</b>
+`;
+  const options = {
+    parse_mode: "HTML",
+    reply_markup: {
+      inline_keyboard: [
+        [
+          { text: "Option 1", url: "https://www.example.com/ticket" },
+          { text: "Option 2", url: "https://www.anotherexample.com/ticket" }
+        ]
+      ]
+    }
+  };
+  bot.sendMessage(msg.chat.id, message, options);
 });
 
 // Handle the /start command
