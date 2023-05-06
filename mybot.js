@@ -131,7 +131,7 @@ To get information about a our contract address, use the <code>/ca</code> comman
 
 // Handle other messages
 bot.on('message', (msg) => {
-  const unrecognizedCommands = ['/balance', '/winner', '/start', '/round', '/minimum', '/price', '/ca', '/guide', ];
+  const unrecognizedCommands = ['/balance', '/winner', '/start', '/round', '/minimum', '/price', '/ca', '/guide','/help', ];
   const command = msg.text.split(' ')[0];
   if (!unrecognizedCommands.includes(command)) {
     bot.sendMessage(msg.chat.id, 'Oops! I did not understand that. To get started, use the /start command.');
