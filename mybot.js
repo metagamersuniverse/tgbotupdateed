@@ -14,6 +14,7 @@ const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true, deb
 
 // Handle the /winner command
 bot.onText(/\/winner (.+)/, async (msg, match) => {
+  console.log('winner command received'); // Add console.log() statement here
   const round = match[1];
   const winnerInfo = await contract.lotteryWinnerInfo(round);
   const prizeAmount = isNaN(winnerInfo.prizeAmount) ? "0.0" : (winnerInfo.prizeAmount / 1e18).toFixed(5);
@@ -46,6 +47,7 @@ Keep an eye out for updates and be prepared to participate when it opens.`
 
 // Handle the /minAmount command
 bot.onText(/\/minimum/, async (msg) => {
+  console.log('minimum command received'); // Add console.log() statement here
   const contractAddress = '0x6CB0e4dA8F621A3901573bD8c8d2C8A0987d78d6'; // Replace with actual contract address
   const contractABI = [
     {
@@ -95,7 +97,7 @@ Keep an eye out for updates and be prepared to participate when it opens.`
 
 // Handle the /ca command
 bot.onText(/\/(ca|contract)/, async (msg) => {
-  console.log('ca command received');
+  console.log('ca/contract command received');
   const walletAddress = "0x087859e91ee03cb339ddd8df8e8f2a0b95fe07d6"; // replace with your desired wallet address
   const message = `
 <b>Contract Address:
@@ -106,7 +108,7 @@ bot.onText(/\/(ca|contract)/, async (msg) => {
 
 // Handle the /buy command
 bot.onText(/\/(buy|ido|presale|pinksale)/, (msg) => {
-  console.log('ca command received');
+  console.log('buy/ido/presale/pinksale command received');
   const message = `
 <b>To buy a $LEPE, please visit one of the following websites:</b>
 `;
@@ -124,6 +126,7 @@ bot.onText(/\/(buy|ido|presale|pinksale)/, (msg) => {
 });
 // Handle the /guide command
 bot.onText(/\/start/, async (msg) => {
+  console.log('start command received'); // Add console.log() statement here
   const message = `
 <b>Hello! Welcome to the $LEPE Lottery bot.</b>
 
@@ -148,6 +151,7 @@ To get help with using the bot, use the /guide command.
 
 // Handle the /guide command
 bot.onText(/\/(help|guide)/, async (msg) => {
+  console.log('help/guide command received'); // Add console.log() statement here
   const message = `
 <b>Welcome To $LEPE Lottery bot.</b>
 
