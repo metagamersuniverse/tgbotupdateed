@@ -152,10 +152,10 @@ To get help with using the bot, use the /guide command.
 
 //handle new member
 bot.on('new_chat_members', async (msg) => {
-  console.log('new member command received'); // Add console.log() statement here
+  console.log('New member command received');
   
   const newUser = msg.new_chat_member;
-  const message = `Welcome to $LEPE Community, ${newUser.first_name}!`;
+  const message = `Welcome to LEPE Community, ${newUser.first_name}!`;
   const keyboard = {
     inline_keyboard: [
       [
@@ -167,7 +167,14 @@ bot.on('new_chat_members', async (msg) => {
     ]
   };
   bot.sendMessage(msg.chat.id, message, {reply_markup: keyboard});
+
+  // Check for the /checknew command
+  if (msg.text === '/checknew') {
+    console.log('Checking new member function...');
+    bot.sendMessage(msg.chat.id, 'Checking new member function...');
+  }
 });
+
 // Handle the /guide command
 bot.onText(/\/(help|guide)/, async (msg) => {
   console.log('help/guide command received'); // Add console.log() statement here
