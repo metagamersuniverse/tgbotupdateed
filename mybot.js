@@ -111,13 +111,15 @@ bot.onText(/\/(buy|ido|presale|pinksale)/, (msg) => {
   console.log('buy/ido/presale/pinksale command received');
   const message = `
 <b>To buy a $LEPE, please visit one of the following websites:</b>
+- Presale Start Time - 2023.05.09 15:00 (UTC)
+- Presale End Time - 2023.05.10 15:00 (UTC)
 `;
   const options = {
     parse_mode: "HTML",
     reply_markup: {
       inline_keyboard: [
         [
-          { text: "💰BUY NOW", url: "https://www.pinksale.finance/launchpad/0x0bcbBCd3186E5d857AF2A4C4A158d5027037032F?chain=Arbitrum" }
+          { text: "💰BUY ON PRESALE", url: "https://www.pinksale.finance/launchpad/0x0bcbBCd3186E5d857AF2A4C4A158d5027037032F?chain=Arbitrum" }
         ]
       ]
     }
