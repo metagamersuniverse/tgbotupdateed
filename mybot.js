@@ -176,12 +176,24 @@ bot.onText(/\/(help|guide)/, async (msg) => {
   bot.sendPhoto(msg.chat.id, photoUrl, options);
 });
 
-// Handle other messages
 bot.on('message', (msg) => {
-  const unrecognizedCommands = ['/balance', '/winner', '/start', '/round', '/minimum', '/price', '/ca','/contract', '/guide','/help','/buy','/presale','/ido','/pinksale','/lottery' ];
   const command = msg.text.split(' ')[0];
-  if (!unrecognizedCommands.includes(command)) {
-    bot.sendMessage(msg.chat.id, 'Oops! I did not understand that. To get started, use the /start or /guide command.');
+  if (command === '/balance') {
+    // handle balance command
+  } else if (command === '/winner') {
+    // handle winner command
+  } else if (command === '/round' || command === '/lottery') {
+    // handle round/lottery command
+  } else if (command === '/minimum') {
+    // handle minimum command
+  } else if (command === '/ca' || command === '/contract') {
+    // handle ca/contract command
+  } else if (command === '/buy') {
+    // handle buy command
+  } else if (command === '/ido' || command === '/presale' || command === '/pinksale') {
+    // handle ido/presale/pinksale command
+  } else if (command === '/help' || command === '/guide' || command === '/start') {
+    // handle help/guide/start command
   }
 });
 
