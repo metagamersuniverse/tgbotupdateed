@@ -150,7 +150,24 @@ To get help with using the bot, use the /guide command.
   bot.sendPhoto(msg.chat.id, photoUrl, options);
 });
 
-
+//handle new member
+bot.on('new_chat_members', async (msg) => {
+  console.log('new member command received'); // Add console.log() statement here
+  
+  const newUser = msg.new_chat_member;
+  const message = `Welcome to $LEPE Community, ${newUser.first_name}!`;
+  const keyboard = {
+    inline_keyboard: [
+      [
+        {
+          text: 'Visit our website',
+          url: 'https://www.luckypepe.io/'
+        }
+      ]
+    ]
+  };
+  bot.sendMessage(msg.chat.id, message, {reply_markup: keyboard});
+});
 // Handle the /guide command
 bot.onText(/\/(help|guide)/, async (msg) => {
   console.log('help/guide command received'); // Add console.log() statement here
