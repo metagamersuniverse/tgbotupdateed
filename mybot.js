@@ -10,7 +10,7 @@ const contractABI = require('./contractABI');
 const contract = new ethers.Contract(contractAddress, contractABI, provider);
 
 // Create the Telegram bot
-const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true });
+const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true, debug: true });
 
 // Handle the /winner command
 bot.onText(/\/winner (.+)/, async (msg, match) => {
