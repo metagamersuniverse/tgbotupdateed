@@ -12,6 +12,42 @@ const contract = new ethers.Contract(contractAddress, contractABI, provider);
 // Create the Telegram bot
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true, debug: true });
 
+// Set up a timer to check the current round at regular intervals
+// Set up a timer to check the current round at regular intervals
+setInterval(async () => {
+    const currentRound = await contract._lotteryRound();
+    const previousRound = currentRound - 1;
+  
+    // Check if the previous round has ended
+    const hasRoundEnded = await contract.hasRoundEnded(previousRound);
+    if (hasRoundEnded) {
+      // Get the winner information for the previous round
+      const winnerInfo = await contract.lotteryWinnerInfo(previousRound);
+      const prizeAmount = isNaN(winnerInfo.prizeAmount) ? "0.0" : (winnerInfo.prizeAmount / 1e18).toFixed(5);
+      const arbAmount = isNaN(winnerInfo.arbAmount) ? "0.0" : (winnerInfo.arbAmount / 1e18).toFixed(5);
+      const message = `🎉 Round ${previousRound} of the $LEPE Lottery has ended! 🎉\n\nCongratulations to the winner:\nWin By Random Number: ${winnerInfo.randomNumber.toString()}\nWallet Address: ${winnerInfo.wallet}\nPrize Amount: ${arbAmount} ARB = ${prizeAmount} ETH`;
+  
+      // Send the winner information to all users in the chat
+      const chatId = process.env.CHAT_ID;
+      bot.sendMessage(chatId, message);
+      
+      // Check if the next round has started
+      if (currentRound > previousRound) {
+        const nextRound = currentRound;
+        const nextRoundMessage = `Round ${nextRound} has begun. Good luck to all participants! 🍀`;
+        bot.sendMessage(chatId, nextRoundMessage);
+      }
+    } else if (previousRound === 0) {
+      // Notify users that the lottery has started
+      const chatId = process.env.CHAT_ID;
+      const message = "The $LEPE Lottery has started! 🎉";
+      const sentMessage = await bot.sendMessage(chatId, message);
+  
+      // Pin the message to the chat
+      bot.pinChatMessage(chatId, sentMessage.message_id);
+    }
+  }, 60000); // Check every minute
+
 
 // Handle the /winner command
 bot.onText(/\/winner (.+)/, async (msg, match) => {
@@ -20,14 +56,9 @@ bot.onText(/\/winner (.+)/, async (msg, match) => {
   const winnerInfo = await contract.lotteryWinnerInfo(round);
   const prizeAmount = isNaN(winnerInfo.prizeAmount) ? "0.0" : (winnerInfo.prizeAmount / 1e18).toFixed(5);
   const arbAmount = isNaN(winnerInfo.arbAmount) ? "0.0" : (winnerInfo.arbAmount / 1e18).toFixed(5);
-  //const message = `Win By Random Number: ${winnerInfo.randomNumber.toString()}\nWallet Address: ${winnerInfo.wallet}\nPrize Amount: ${arbAmount} ARB = ${prizeAmount} ETH`;
-  const message = `
-<b>Get ready to win big!</b> 
-The lottery is coming soon, but it hasn't started yet. 
-Keep an eye out for updates and be prepared to participate when it opens.`
-  ;
-   bot.sendMessage(msg.chat.id, message, {parse_mode: "HTML"});
-  //bot.sendMessage(msg.chat.id, message);
+  const message = `Win By Random Number: ${winnerInfo.randomNumber.toString()}\nWallet Address: ${winnerInfo.wallet}\nPrize Amount: ${arbAmount} ARB = ${prizeAmount} ETH`;
+  
+  bot.sendMessage(msg.chat.id, message);
 });
 
 // Handle the /round command
@@ -35,14 +66,9 @@ bot.onText(/\/(round|lottery)/, async (msg) => {
   console.log('round/lottery command received'); // Add console.log() statement here
   const contractAddress = '0x6CB0e4dA8F621A3901573bD8c8d2C8A0987d78d6'; // Replace with actual contract address
   const round = await contract._lotteryRound(); // Call _lotteryRound function
-    //const message = `Current lottery round: ${round}`;
-    const message = `
-<b>Get ready to win big!</b> 
-The lottery is coming soon, but it hasn't started yet. 
-Keep an eye out for updates and be prepared to participate when it opens.`
-  ;
-   bot.sendMessage(msg.chat.id, message, {parse_mode: "HTML"});
-    //bot.sendMessage(msg.chat.id, message);
+    const message = `Current lottery round: ${round}`;
+    
+    bot.sendMessage(msg.chat.id, message);
 });
 
 
@@ -68,14 +94,9 @@ bot.onText(/\/minimum/, async (msg) => {
   const contract = new ethers.Contract(contractAddress, contractABI, provider);
   const minAmount = await contract._minAmountToParticipate(); // Call _minAmountToParticipate function
     const minAmountInEther = ethers.utils.formatEther(minAmount);
-    //const message = `Minimum amount to participate in the lottery: ${minAmountInEther} ETH`;
-    const message = `
-<b>Get ready to win big!</b> 
-The lottery is coming soon, but it hasn't started yet. 
-Keep an eye out for updates and be prepared to participate when it opens.`
-  ;
-   bot.sendMessage(msg.chat.id, message, {parse_mode: "HTML"});
-    //bot.sendMessage(msg.chat.id, message);
+    const message = `Minimum amount to participate in the lottery: ${minAmountInEther} ETH`;
+    
+    bot.sendMessage(msg.chat.id, message);
 });
 
 // Handle the /balance command
@@ -84,14 +105,9 @@ bot.onText(/\/balance/, async (msg) => {
   const walletAddress = "0x087859e91ee03cb339ddd8df8e8f2a0b95fe07d6"; // replace with your desired wallet address
   const balance = await provider.getBalance(walletAddress);
   const formattedBalance = ethers.utils.formatEther(balance);
-  //const message = `Lottery Balance Amount: ${formattedBalance} ETH`;
-  const message = `
-<b>Get ready to win big!</b> 
-The lottery is coming soon, but it hasn't started yet. 
-Keep an eye out for updates and be prepared to participate when it opens.`
-  ;
-   bot.sendMessage(msg.chat.id, message, {parse_mode: "HTML"});
-                 //bot.sendMessage(msg.chat.id, message);
+  const message = `Lottery Balance Amount: ${formattedBalance} ETH`;
+  
+  bot.sendMessage(msg.chat.id, message);
   return; // Add return statement here to exit the function
 });
 
