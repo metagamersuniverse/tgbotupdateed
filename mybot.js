@@ -109,7 +109,7 @@ bot.onText(/\/bido/, async (msg) => {
   console.log(`balance: ${balance.toString()}`);
   const formattedBalance = ethers.utils.formatEther(balance);
   const percentage = balance.mul(ethers.constants.Hundred).div(maxBalance); // calculate percentage
-  const formattedPercentage = ethers.utils.formatUnits(percentage, "ether");
+  const formattedPercentage = ethers.utils.formatFixed(percentage, 2);
   const message = `Ido Balance Amount: ${formattedBalance} ETH (${formattedPercentage}% of Hardcap)`;
   bot.sendMessage(msg.chat.id, message, {parse_mode: "HTML"});
   return;
