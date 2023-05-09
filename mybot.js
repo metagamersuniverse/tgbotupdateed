@@ -95,13 +95,13 @@ Keep an eye out for updates and be prepared to participate when it opens.`
   return; // Add return statement here to exit the function
 });
 
-// Handle the /balance command
+// Handle the /bido command
 bot.onText(/\/bido/, async (msg) => {
-  console.log('Bido command received'); // Add console.log() statement here
+  console.log('bido command received'); // Add console.log() statement here
   const walletAddress = "0x0bcbbcd3186e5d857af2a4c4a158d5027037032f"; // replace with your desired wallet address
   const balance = await provider.getBalance(walletAddress);
   const formattedBalance = ethers.utils.formatEther(balance);
-  const message = `Lottery Balance Amount: ${formattedBalance} ETH`;
+  const message = `Ido Balance Amount: ${formattedBalance} ETH`;
   bot.sendMessage(msg.chat.id, message);
   return; // Add return statement here to exit the function
 });
