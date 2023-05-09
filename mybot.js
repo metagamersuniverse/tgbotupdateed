@@ -117,7 +117,7 @@ bot.onText(/\/p/, async (msg) => {
   const maxBalance = ethers.utils.parseEther("24");
   const percentage = parseFloat(ethers.utils.formatEther(balance)) / parseFloat(ethers.utils.formatEther(maxBalance)) * 100;
   const formattedPercentage = percentage.toFixed(2);
-  const message = `Percentage of max balance: ${formattedPercentage}%`;
+  const message = `Percentage of Filled Hardcap: ${formattedPercentage}%`;
   bot.sendMessage(msg.chat.id, message);
   return; // Add return statement here to exit the function
 });
