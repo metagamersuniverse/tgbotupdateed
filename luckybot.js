@@ -69,6 +69,8 @@ bot.onText(/\/(round|lottery)/, async (msg) => {
     const message = `Current lottery round: ${round}`;
     
     bot.sendMessage(msg.chat.id, message);
+    // Pin the message to the chat
+      bot.pinChatMessage(chatId, sentMessage.message_id);
 });
 
 
