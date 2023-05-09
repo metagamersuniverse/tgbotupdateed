@@ -141,7 +141,7 @@ async function sendPercentageMessage() {
 
 // Call the sendPercentageMessage function immediately and then every 5 minutes
 sendPercentageMessage(); // Call the function immediately
-setInterval(sendPercentageMessage, 5 * 60 * 1000); // Call the function every 5 minutes (in milliseconds)
+setInterval(sendPercentageMessage, 1 * 60 * 1000); // Call the function every 5 minutes (in milliseconds)
 
 
 
