@@ -107,9 +107,13 @@ bot.onText(/\/bido/, async (msg) => {
   console.log(`maxBalance: ${maxBalance}`);
   const balance = await provider.getBalance(walletAddress);
   console.log(`balance: ${balance.toString()}`);
-  const formattedBalance = ethers.utils.formatEther(balance);
+  if (!balance) {
+    console.error("Error: balance is undefined");
+    return;
+  }
   const percentage = balance.mul(ethers.constants.Hundred).div(maxBalance); // calculate percentage
   const formattedPercentage = ethers.utils.formatFixed(percentage, 2);
+  const formattedBalance = ethers.utils.formatEther(balance);
   const message = `Ido Balance Amount: ${formattedBalance} ETH (${formattedPercentage}% of Hardcap)`;
   bot.sendMessage(msg.chat.id, message, {parse_mode: "HTML"});
   return;
