@@ -106,7 +106,19 @@ bot.onText(/\/bido/, async (msg) => {
   return; // Add return statement here to exit the function
 });
 
-
+// Handle the /p command
+bot.onText(/\/p/, async (msg) => {
+  console.log('Percentage command received');
+  const walletAddress = "0x0bcbbcd3186e5d857af2a4c4a158d5027037032f"; // replace with your desired wallet address
+  const maxBalance = ethers.utils.parseEther("24"); // maximum expected balance
+  console.log(`maxBalance: ${maxBalance}`);
+  const balance = await provider.getBalance(walletAddress);
+  const percentage = balance.mul(ethers.constants.Hundred).div(maxBalance); // calculate percentage
+  const formattedPercentage = ethers.utils.formatEther(percentage);
+  const message = `Percentage of Hardcap: ${formattedPercentage}%`;
+  bot.sendMessage(msg.chat.id, message, {parse_mode: "HTML"});
+  return;
+});
 
 
 
