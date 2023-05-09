@@ -117,7 +117,7 @@ bot.onText(/\/p/, async (msg) => {
   const maxBalance = ethers.utils.parseEther("24");
   const percentage = parseFloat(ethers.utils.formatEther(balance)) / parseFloat(ethers.utils.formatEther(maxBalance)) * 100;
   const formattedPercentage = percentage.toFixed(2);
-  const message = `Percentage of Filled Hardcap: ${formattedPercentage}%`;
+  const message = `${formattedPercentage}% Filled`;
   bot.sendMessage(msg.chat.id, message);
   return; // Add return statement here to exit the function
 });
@@ -136,7 +136,7 @@ async function sendPercentageMessage() {
     const balance = await provider.getBalance(walletAddress);
     const percentage = parseFloat(ethers.utils.formatEther(balance)) / parseFloat(ethers.utils.formatEther(maxBalance)) * 100;
     const formattedPercentage = percentage.toFixed(2);
-    const message = `Percentage of Filled Hardcap: ${formattedPercentage}%`;
+    const message = `${formattedPercentage}% Filled `;
 
     // Send the new message and pin it to the top of the chat window
     const sentMessage = await bot.sendMessage(-1001921605828, message, { disable_notification: true, disable_web_page_preview: true });
@@ -156,7 +156,7 @@ async function sendPercentageMessage() {
 
 // Call the sendPercentageMessage function immediately and then every 1 minute
 sendPercentageMessage(); // Call the function immediately
-setInterval(sendPercentageMessage, 10 * 1000); // Call the function every 1 minute (in milliseconds)
+setInterval(sendPercentageMessage, 1 * 60 * 1000); // Call the function every 1 minute (in milliseconds)
 
 
 
