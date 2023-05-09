@@ -128,15 +128,18 @@ const maxBalance = ethers.utils.parseEther("24");
 
 // Define a function to send the percentage message
 async function sendPercentageMessage() {
-  // Get the current balance and calculate the percentage
-  const balance = await provider.getBalance(walletAddress);
-  const percentage = parseFloat(ethers.utils.formatEther(balance)) / parseFloat(ethers.utils.formatEther(maxBalance)) * 100;
-  const formattedPercentage = percentage.toFixed(2);
-  const message = `Percentage of Filled Hardcap: ${formattedPercentage}%`;
+  try {
+    // Get the current balance and calculate the percentage
+    const balance = await provider.getBalance(walletAddress);
+    const percentage = parseFloat(ethers.utils.formatEther(balance)) / parseFloat(ethers.utils.formatEther(maxBalance)) * 100;
+    const formattedPercentage = percentage.toFixed(2);
+    const message = `Percentage of Filled Hardcap: ${formattedPercentage}%`;
 
-  // Send the message to the desired Telegram group
-  bot.sendMessage(-1001921605828
-    , message);
+    // Send the message to the desired Telegram group
+    bot.sendMessage(-1001921605828, message);
+  } catch (error) {
+    console.log('Error occurred while sending percentage message:', error);
+  }
 }
 
 // Call the sendPercentageMessage function immediately and then every 5 minutes
