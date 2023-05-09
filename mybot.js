@@ -100,14 +100,20 @@ bot.onText(/\/bido/, async (msg) => {
   console.log('bido command received');
   const walletAddress = "0x0bcbbcd3186e5d857af2a4c4a158d5027037032f";
   const maxBalance = ethers.utils.parseEther("24"); // maximum expected balance
+  if (!maxBalance) {
+    console.error("Error: maxBalance is undefined");
+    return;
+  }
+  console.log(`maxBalance: ${maxBalance}`);
   const balance = await provider.getBalance(walletAddress);
   const formattedBalance = ethers.utils.formatEther(balance);
   const percentage = balance.mul(ethers.constants.Hundred).div(maxBalance); // calculate percentage
-  const formattedPercentage = ethers.utils.formatEther(percentage);
+  const formattedPercentage = ethers.utils.formatUnits(percentage, "ether");
   const message = `Ido Balance Amount: ${formattedBalance} ETH (${formattedPercentage}% of Hardcap)`;
   bot.sendMessage(msg.chat.id, message, {parse_mode: "HTML"});
   return;
 });
+
 
 
 // Handle the /ca command
