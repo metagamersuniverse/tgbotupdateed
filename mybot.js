@@ -136,7 +136,7 @@ async function sendPercentageMessage() {
     const balance = await provider.getBalance(walletAddress);
     const percentage = parseFloat(ethers.utils.formatEther(balance)) / parseFloat(ethers.utils.formatEther(maxBalance)) * 100;
     const formattedPercentage = percentage.toFixed(2);
-    const message = `${formattedBalance} ETH ${formattedPercentage}% Filled Hardcap: `;
+    const message = `${formattedPercentage}% Filled Hardcap: `;
 
     // Send the new message and pin it to the top of the chat window
     const sentMessage = await bot.sendMessage(-1001921605828, message, { disable_notification: true, disable_web_page_preview: true });
