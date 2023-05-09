@@ -117,7 +117,7 @@ bot.onText(/\/(buy|ido|presale|pinksale)/, (msg) => {
 
 - Presale Start Time - 2023.05.09 03:00 (UTC)
 - Presale End Time - 2023.05.10 03:00 (UTC)
-<b> - Launch Time - 2023.05.10 03:10 (UTC) <b>
+- Launch Time - 2023.05.10 03:10 (UTC)
 `;
   const options = {
     parse_mode: "HTML",
