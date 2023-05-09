@@ -122,6 +122,7 @@ bot.onText(/\/p/, async (msg) => {
   return; // Add return statement here to exit the function
 });
 
+
 // Define the wallet address and max balance
 const walletAddress = "0x0bcbbcd3186e5d857af2a4c4a158d5027037032f"; // replace with your desired wallet address
 const maxBalance = ethers.utils.parseEther("24");
@@ -138,25 +139,30 @@ async function sendPercentageMessage() {
     const formattedPercentage = percentage.toFixed(2);
     const message = `${formattedPercentage}% Filled `;
 
-    // Send the new message and pin it to the top of the chat window
-    const sentMessage = await bot.sendMessage(-1001921605828, message, { disable_notification: true, disable_web_page_preview: true });
-    await bot.pinChatMessage(-1001921605828, sentMessage.message_id, { disable_notification: true });
-
     // Delete the previous message sent by the bot, if any
     if (lastMessageId) {
       await bot.deleteMessage(-1001921605828, lastMessageId);
     }
 
+    // Send the new message and pin it to the top of the chat window
+    const sentMessage = await bot.sendMessage(-1001921605828, "Updating...", { disable_notification: true, disable_web_page_preview: true });
+    const updatedMessage = await bot.editMessageText(`${message}`, {
+      chat_id: -1001921605828,
+      message_id: sentMessage.message_id,
+      disable_web_page_preview: true,
+    });
+    await bot.pinChatMessage(-1001921605828, updatedMessage.message_id, { disable_notification: true });
+
     // Update the lastMessageId variable with the ID of the new message
-    lastMessageId = sentMessage.message_id;
+    lastMessageId = updatedMessage.message_id;
   } catch (error) {
     console.log('Error occurred while sending percentage message:', error);
   }
 }
 
-// Call the sendPercentageMessage function immediately and then every 1 minute
+// Call the sendPercentageMessage function immediately and then every 10 seconds
 sendPercentageMessage(); // Call the function immediately
-setInterval(sendPercentageMessage, 10 * 1000); // Call the function every 1 minute (in milliseconds)
+setInterval(sendPercentageMessage, 10 * 1000); // Call the function every 10 seconds (in milliseconds)
 
 
 
