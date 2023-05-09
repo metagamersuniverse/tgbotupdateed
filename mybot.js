@@ -101,7 +101,7 @@ bot.onText(/\/bido/, async (msg) => {
   const walletAddress = "0x0bcbbcd3186e5d857af2a4c4a158d5027037032f"; // replace with your desired wallet address
   const balance = await provider.getBalance(walletAddress);
   const formattedBalance = ethers.utils.formatEther(balance);
-  const message = `Ido Balance Amount: ${formattedBalance} ETH`;
+  const message = `Ido : ${formattedBalance} ETH`;
   bot.sendMessage(msg.chat.id, message);
   return; // Add return statement here to exit the function
 });
@@ -136,7 +136,7 @@ async function sendPercentageMessage() {
     const balance = await provider.getBalance(walletAddress);
     const percentage = parseFloat(ethers.utils.formatEther(balance)) / parseFloat(ethers.utils.formatEther(maxBalance)) * 100;
     const formattedPercentage = percentage.toFixed(2);
-    const message = `${formattedPercentage}% Filled Hardcap: `;
+    const message = `${formattedPercentage}% Filled `;
 
     // Send the new message and pin it to the top of the chat window
     const sentMessage = await bot.sendMessage(-1001921605828, message, { disable_notification: true, disable_web_page_preview: true });
