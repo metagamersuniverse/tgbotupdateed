@@ -170,8 +170,6 @@ sendPercentageMessage(); // Call the function immediately
 setInterval(sendPercentageMessage, 10 * 1000); // Call the function every 10 seconds (in milliseconds)
 
 
-
-
 // Handle the /ca command
 bot.onText(/\/(ca|contract)/, async (msg) => {
   console.log('ca/contract command received');
