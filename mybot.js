@@ -108,18 +108,17 @@ bot.onText(/\/bido/, async (msg) => {
 
 // Handle the /p command
 // Handle the /p command
+// Handle the /p command
 bot.onText(/\/p/, async (msg) => {
   console.log('Percentage command received');
   const walletAddress = "0x0bcbbcd3186e5d857af2a4c4a158d5027037032f"; // replace with your desired wallet address
-  const maxBalance = ethers.utils.parseEther("24"); // maximum expected balance
-  console.log(`maxBalance: ${maxBalance}`);
   const balance = await provider.getBalance(walletAddress);
-  const percentage = balance.mul(ethers.constants.Hundred).div(maxBalance); // calculate percentage
-  const formattedPercentage = ethers.utils.formatEther(percentage);
-  const message = `Current Lottery Percentage: ${formattedPercentage}%`;
+  const maxBalance = 24000000000000000000;
+  const percentage = parseFloat(ethers.utils.formatEther(balance)) / maxBalance * 100;
+  const message = `Percentage of max balance: ${percentage.toFixed(2)}%`;
   bot.sendMessage(msg.chat.id, message);
-  return;
 });
+
 
 
 
