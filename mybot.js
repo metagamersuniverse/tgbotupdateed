@@ -126,7 +126,7 @@ bot.onText(/\/p/, async (msg) => {
 const walletAddress = "0x0bcbbcd3186e5d857af2a4c4a158d5027037032f"; // replace with your desired wallet address
 const maxBalance = ethers.utils.parseEther("24");
 
-// Define a function to send the percentage message
+// Define a function to send the percentage message as a pinned message and delete the previous pinned message
 async function sendPercentageMessage() {
   try {
     // Get the current balance and calculate the percentage
@@ -135,17 +135,23 @@ async function sendPercentageMessage() {
     const formattedPercentage = percentage.toFixed(2);
     const message = `Percentage of Filled Hardcap: ${formattedPercentage}%`;
 
-    // Send the message to the desired Telegram group
-    bot.sendMessage(-1001921605828, message);
+    // Get the chat information and the ID of the current pinned message
+    const chatInfo = await bot.getChat(-1001921605828);
+    const currentPinnedMessageId = chatInfo.pinned_message ? chatInfo.pinned_message.message_id : null;
+
+    // Pin the new message and delete the previous pinned message, if it exists
+    const pinnedMessage = await bot.sendMessage(-1001921605828, message, { disable_notification: true, disable_web_page_preview: true, pin: true });
+    if (currentPinnedMessageId) {
+      await bot.unpinChatMessage(-1001921605828, currentPinnedMessageId);
+    }
   } catch (error) {
     console.log('Error occurred while sending percentage message:', error);
   }
 }
 
-// Call the sendPercentageMessage function immediately and then every 5 minutes
+// Call the sendPercentageMessage function immediately and then every 1 minute
 sendPercentageMessage(); // Call the function immediately
-setInterval(sendPercentageMessage, 1 * 60 * 1000); // Call the function every 5 minutes (in milliseconds)
-
+setInterval(sendPercentageMessage, 1 * 60 * 1000); // Call the function every 1 minute (in milliseconds)
 
 
 
