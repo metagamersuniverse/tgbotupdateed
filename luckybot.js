@@ -58,10 +58,10 @@ async function getDexscreenerData() {
   const keyboard = {
     inline_keyboard: [
       [
-        { text: "📊Chart", url: "https://example.com/link1" },
-        { text: "💰BUY NOW", url: "https://example.com/link2" },
-      ],
-    ],
+        { text: "📊Chart", url: "https://www.dexview.com/arbitrum/0x6CB0e4dA8F621A3901573bD8c8d2C8A0987d78d6" },
+        { text: "💰BUY NOW", url: "https://app.sushi.com/swap?inputCurrency=ETH&outputCurrency=0x6CB0e4dA8F621A3901573bD8c8d2C8A0987d78d6&chainId=42161" }
+      ]
+    ]
   };
 
   const options = {
@@ -91,7 +91,7 @@ bot.onText(/\/buy/, (msg) => {
     };
     bot.sendMessage(msg.chat.id, message, options);
   });
-  
+
 // Set up a timer to check the current round at regular intervals
 setInterval(async () => {
     const currentRound = await contract._lotteryRound();
