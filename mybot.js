@@ -113,8 +113,10 @@ bot.onText(/\/(buy|ido|presale|pinksale)/, (msg) => {
   const message = `
 <b>To buy a $LEPE, please visit one of the following websites:</b>
 
-<b> - IDO Start Time - IDO is running... <b>
-<b> - IDO End Time - 2023.05.10 03:00 (UTC) <b>
+<b>Presale is running...</b>
+
+- Presale Start Time - 2023.05.09 03:00 (UTC)
+- Presale End Time - 2023.05.10 03:00 (UTC)
 <b> - Launch Time - 2023.05.10 03:10 (UTC) <b>
 `;
   const options = {
@@ -122,7 +124,7 @@ bot.onText(/\/(buy|ido|presale|pinksale)/, (msg) => {
     reply_markup: {
       inline_keyboard: [
         [
-          { text: "💰BUY ON IDO", url: "https://www.pinksale.finance/launchpad/0x0bcbBCd3186E5d857AF2A4C4A158d5027037032F?chain=Arbitrum" }
+          { text: "💰BUY ON PRESALE", url: "https://www.pinksale.finance/launchpad/0x0bcbBCd3186E5d857AF2A4C4A158d5027037032F?chain=Arbitrum" }
         ]
       ]
     }
@@ -190,7 +192,7 @@ bot.onText(/\/(help|guide)/, async (msg) => {
 - To get information about a past winner, use the <code>/winner</code> command followed by the round number (e.g. <code>/winner 123</code>).
 - To get information about our contract address, use the /ca or /contract command.
 - To buy $LEPE, use the /buy command.
-- To buy in IDO, use the /ido command.
+- To buy in Presale, use the /ido command.
 `;
 
   const photoUrl = "https://www.luckypepe.io/assets/img/logo/logo.png"; // replace with your photo URL
