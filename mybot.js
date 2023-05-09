@@ -95,21 +95,23 @@ Keep an eye out for updates and be prepared to participate when it opens.`
   return; // Add return statement here to exit the function
 });
 
-
+// Handle the /balance command
 bot.onText(/\/bido/, async (msg) => {
-  console.log('bido command received');
-  const walletAddress = "0x0bcbbcd3186e5d857af2a4c4a158d5027037032f";
-  const maxBalance = ethers.utils.parseEther("24"); // maximum expected balance
-  console.log(`maxBalance: ${maxBalance}`);
+  console.log('Balance command received'); // Add console.log() statement here
+  const walletAddress = "0x0bcbbcd3186e5d857af2a4c4a158d5027037032f"; // replace with your desired wallet address
   const balance = await provider.getBalance(walletAddress);
-  console.log(`balance: ${balance.toString()}`);
-  const percentage = balance.mul(ethers.constants.Hundred).div(maxBalance); // calculate percentage
-  const formattedPercentage = ethers.utils.formatUnits(percentage, "ether");
   const formattedBalance = ethers.utils.formatEther(balance);
-  const message = `Ido Balance Amount: ${formattedBalance} ETH (${formattedPercentage}% of Hardcap)`;
-  bot.sendMessage(msg.chat.id, message, {parse_mode: "HTML"});
-  return;
+  //const message = `Lottery Balance Amount: ${formattedBalance} ETH`;
+  const message = `
+<b>Get ready to win big!</b> 
+The lottery is coming soon, but it hasn't started yet. 
+Keep an eye out for updates and be prepared to participate when it opens.`
+  ;
+   bot.sendMessage(msg.chat.id, message, {parse_mode: "HTML"});
+                 //bot.sendMessage(msg.chat.id, message);
+  return; // Add return statement here to exit the function
 });
+
 
 
 
