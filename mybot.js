@@ -107,6 +107,7 @@ bot.onText(/\/bido/, async (msg) => {
 });
 
 // Handle the /p command
+// Handle the /p command
 bot.onText(/\/p/, async (msg) => {
   console.log('Percentage command received');
   const walletAddress = "0x0bcbbcd3186e5d857af2a4c4a158d5027037032f"; // replace with your desired wallet address
@@ -115,10 +116,11 @@ bot.onText(/\/p/, async (msg) => {
   const balance = await provider.getBalance(walletAddress);
   const percentage = balance.mul(ethers.constants.Hundred).div(maxBalance); // calculate percentage
   const formattedPercentage = ethers.utils.formatEther(percentage);
-  const message = `Percentage of Hardcap: ${formattedPercentage}%`;
-  bot.sendMessage(msg.chat.id, message, {parse_mode: "HTML"});
+  const message = `Current Lottery Percentage: ${formattedPercentage}%`;
+  bot.sendMessage(msg.chat.id, message);
   return;
 });
+
 
 
 
