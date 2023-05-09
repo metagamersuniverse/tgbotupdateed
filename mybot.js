@@ -113,11 +113,9 @@ bot.onText(/\/(buy|ido|presale|pinksale)/, (msg) => {
   const message = `
 <b>To buy a $LEPE, please visit one of the following websites:</b>
 
-<b>Presale is running...</b>
-
-- Presale Start Time - 2023.05.09 15:00 (UTC)
-- Presale End Time - 2023.05.10 15:00 (UTC)
-- Launch Time - After pool end.
+<b> - Presale Start Time - Presale is running... <b>
+<b> - Presale End Time - 2023.05.10 03:00 (UTC) <b>
+<b> - Launch Time - 2023.05.10 03:10 (UTC) <b>
 `;
   const options = {
     parse_mode: "HTML",
