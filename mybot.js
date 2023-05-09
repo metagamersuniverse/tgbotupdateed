@@ -106,6 +106,7 @@ bot.onText(/\/bido/, async (msg) => {
   }
   console.log(`maxBalance: ${maxBalance}`);
   const balance = await provider.getBalance(walletAddress);
+  console.log(`balance: ${balance.toString()}`);
   const formattedBalance = ethers.utils.formatEther(balance);
   const percentage = balance.mul(ethers.constants.Hundred).div(maxBalance); // calculate percentage
   const formattedPercentage = ethers.utils.formatUnits(percentage, "ether");
