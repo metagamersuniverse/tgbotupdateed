@@ -30,7 +30,6 @@ bot.onText(/\/winner (.+)/, async (msg, match) => {
 });
 
 
-
 // Handle the /round command
 bot.onText(/\/(round|lottery)/, async (msg) => {
   console.log('round/lottery command received'); // Add console.log() statement here
@@ -91,8 +90,6 @@ bot.onText(/\/minimum/, async (msg) => {
 });
 
 
-
-
 // Handle the /balance command
 bot.onText(/\/balance/, async (msg) => {
   console.log('Balance command received'); // Add console.log() statement here
@@ -104,6 +101,48 @@ bot.onText(/\/balance/, async (msg) => {
   return; // Add return statement here to exit the function
 });
 
+// Handle the /balance command
+bot.onText(/\/b/, async (msg) => {
+  console.log('Balance command received');
+
+  // Retrieve lottery balance in ETH
+  const lotteryAddress = '0x6CB0e4dA8F621A3901573bD8c8d2C8A0987d78d6';
+  const lotteryABI = [
+    {
+      "inputs": [],
+      "name": "_lotteryBalance",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ];
+  const lotteryContract = new ethers.Contract(lotteryAddress, lotteryABI, provider);
+  const balanceInWei = await lotteryContract._lotteryBalance();
+  const balanceInEth = ethers.utils.formatEther(balanceInWei);
+
+  // Retrieve ARB price from the API
+  const pairAddress = '0xC6F780497A95e246EB9449f5e4770916DCd6396A';
+  const apiEndpoint = `https://api.dexscreener.com/latest/dex/pairs/arbitrum/${pairAddress}`;
+  const response = await axios.get(apiEndpoint);
+  console.log(response.data);
+  const data = response.data;
+  const priceNative = parseFloat(data.pairs[0].priceNative); // Get the price of the token in the trading pair
+
+  // Calculate balance in ARB
+  const balanceInArb = (balanceInEth / priceNative).toFixed(2);
+
+  const message = `Lottery Balance Amount: ${balanceInEth} ETH = ${balanceInArb} ARB`;
+  bot.sendMessage(msg.chat.id, message);
+  return;
+});
+
+
 // Handle the /bido command
 bot.onText(/\/bido/, async (msg) => {
   console.log('bido command received'); // Add console.log() statement here
@@ -114,7 +153,7 @@ bot.onText(/\/bido/, async (msg) => {
   bot.sendMessage(msg.chat.id, message);
   return; // Add return statement here to exit the function
 });
-
+and modify this code according my previus code that
 // Handle the /ca command
 bot.onText(/\/(ca|contract)/, async (msg) => {
   console.log('ca/contract command received');
