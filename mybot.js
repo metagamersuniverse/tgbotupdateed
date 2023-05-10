@@ -19,7 +19,7 @@ bot.onText(/\/winner (.+)/, async (msg, match) => {
   const winnerInfo = await contract.lotteryWinnerInfo(round);
   const prizeAmount = isNaN(winnerInfo.prizeAmount) ? "0.0" : (winnerInfo.prizeAmount / 1e18).toFixed(5);
   if (prizeAmount === "0.0") {
-    const message = `Round ${round} of the $LEPE Lottery hasn't completed yet. Please be patient!`;
+    const message = `🎉 Round ${round} of the $LEPE Lottery hasn't completed yet. Please be patient! 🎉`;
     bot.sendMessage(msg.chat.id, message);
   } else {
     console.log(`Fetching winner info for round ${round}...`);
