@@ -13,15 +13,24 @@ const contract = new ethers.Contract(contractAddress, contractABI, provider);
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true, debug: true });
 
 
-const chatId = -1001921605828; // replace with the group chat ID
-console.log(`Sending starting message to group ${chatId}...`);
+// Set the start time for the lottery checker
+const startTime = new Date('2023-05-10T15:10:00Z');
 
-// Send a starting message to the group
-bot.sendMessage(chatId, "Starting lottery checker...", { parse_mode: "HTML", disable_web_page_preview: true })
-  .then(() => {
-    console.log(`Started lottery checker in group ${chatId}.`);
+// Calculate the time remaining until the start time
+const timeRemaining = startTime.getTime() - Date.now();
 
-    // Set up a timer to check the current round at regular intervals
+if (timeRemaining > 0) 
+  console.log(`Waiting for ${timeRemaining / 1000} seconds until the lottery checker starts...`);
+  setTimeout(() => {
+    const chatId = YOUR_CHAT_ID; // replace with the group chat ID
+    console.log(`Sending starting message to group ${chatId}...`);
+
+    // Send a starting message to the group
+    bot.sendMessage(chatId, "Starting lottery checker...", { parse_mode: "HTML", disable_web_page_preview: true })
+      .then(() => {
+        console.log(`Started lottery checker in group ${chatId}.`);
+
+        // Set up a timer to check the current round at regular intervals
     setInterval(async () => {
       console.log('Checking current round...');
       const currentRound = await contract._lotteryRound();
@@ -339,4 +348,4 @@ bot.on('message', (msg) => {
   }
 });
 
-module.exports = bot;
+module.exports = bot;})
