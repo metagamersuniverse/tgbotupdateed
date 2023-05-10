@@ -83,9 +83,19 @@ bot.onText(/\/minimum/, async (msg) => {
   const minAmountInEther = ethers.utils.formatEther(minAmount);
   const winningAmount = await contract._lotteryExecuteAmount();
   const winningAmountInEther = ethers.utils.formatEther(winningAmount);
-  const message = `Minimum amount to participate in the lottery: ${minAmountInEther} LEPE\nWinning amount is: ${winningAmountInEther} ETH`;
+
+  // Retrieve arbitrage price from the API
+  const pairAddress = '0xC6F780497A95e246EB9449f5e4770916DCd6396A'; // Replace with the address of the trading pair you want to check
+  const apiEndpoint = `https://api.dexscreener.com/latest/dex/pairs/arbitrum/${pairAddress}`;
+  const response = await axios.get(apiEndpoint);
+  const data = response.data;
+  const priceNative = parseFloat(data[0].priceNative); // Get the price of the token in the trading pair
+  const arbitrageAmount = winningAmountInEther / priceNative; // Calculate the arbitrage amount in ARB
+
+  const message = `Minimum amount to participate in the lottery: ${minAmountInEther} LEPE\nWinning amount is: ${winningAmountInEther} ETH = ${arbitrageAmount.toFixed(2)} ARB`;
   bot.sendMessage(msg.chat.id, message);
 });
+
 
 
 // Handle the /balance command
