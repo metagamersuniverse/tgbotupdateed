@@ -110,6 +110,7 @@ bot.onText(/\/b/, async (msg) => {
   const balanceInWei = await provider.getBalance(walletAddress);
   const balanceInEth = ethers.utils.formatEther(balanceInWei);
 
+  
   // Retrieve ARB price from the API
   const pairAddress = '0xC6F780497A95e246EB9449f5e4770916DCd6396A';
   const apiEndpoint = `https://api.dexscreener.com/latest/dex/pairs/arbitrum/${pairAddress}`;
