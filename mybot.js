@@ -69,7 +69,10 @@ bot.sendMessage(chatId, "Starting lottery checker...", { parse_mode: "HTML", dis
       }
     }, 60000); // 1 minute interval
   })
-  .catch
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+  
 
 
     
