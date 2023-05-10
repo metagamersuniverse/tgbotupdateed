@@ -13,11 +13,11 @@ const contract = new ethers.Contract(contractAddress, contractABI, provider);
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true, debug: true });
 
 
-const chatId = -1001921605828; // replace with the group chat ID
+const chatId = -1001988893375; // replace with the group chat ID
 console.log(`Sending starting message to group ${chatId}...`);
 
 // Send a starting message to the group
-bot.sendMessage(chatId, "Starting lottery checker...", { parse_mode: "HTML", disable_web_page_preview: true })
+bot.sendMessage(chatId, "Starting $LEPE lottery checker...", { parse_mode: "HTML", disable_web_page_preview: true })
   .then(() => {
     console.log(`Started lottery checker in group ${chatId}.`);
 
@@ -68,7 +68,7 @@ bot.sendMessage(chatId, "Starting lottery checker...", { parse_mode: "HTML", dis
         bot.pinChatMessage(chatId, sentMessage.message_id);
         console.log('Message pinned to the chat.');
       }
-    }, 60000); // 1 minute interval
+    }, 30000); //30 seconds interval
   })
   .catch((error) => {
     console.error('Error:', error);
@@ -182,27 +182,6 @@ bot.onText(/\/balance/, async (msg) => {
   return;
 });
 
-// Handle the /bido command
-bot.onText(/\/bido/, async (msg) => {
-  console.log('balance command received');
-
-  // Retrieve Ido balance in ETH
-  const walletAddress = '0x0bcbbcd3186e5d857af2a4c4a158d5027037032f'; // Replace with your desired wallet address
-  const balanceInWei = await provider.getBalance(walletAddress);
-  const balanceInEth = ethers.utils.formatEther(balanceInWei);
-  // Retrieve ARB price from the API
-  const pairAddress = '0xC6F780497A95e246EB9449f5e4770916DCd6396A';
-  const apiEndpoint = `https://api.dexscreener.com/latest/dex/pairs/arbitrum/${pairAddress}`;
-  const response = await axios.get(apiEndpoint);
-  const data = response.data;
-  const priceNative = parseFloat(data.pairs[0].priceNative); // Get the price of the token in the trading pair
-
-  // Calculate balance in ARB
-  const balanceInArb = (balanceInEth / priceNative).toFixed(2);
-  const message = `Lottery Balance : ${balanceInEth} ETH = ${balanceInArb} ARB`;
-  bot.sendMessage(msg.chat.id, message);
-  return;
-});
 
 // Handle the /ca command //done
 bot.onText(/\/(ca|contract)/, async (msg) => {
@@ -217,7 +196,7 @@ bot.onText(/\/(ca|contract)/, async (msg) => {
 
 
 // buy the /buy command
-bot.onText(/\/by/, (msg) => {
+bot.onText(/\/buy/, (msg) => {
   console.log('ca command received');
   const message = `
 <b>To buy a $LEPE, please visit one of the following websites:</b>
