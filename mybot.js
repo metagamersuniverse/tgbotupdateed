@@ -149,6 +149,8 @@ bot.onText(/\/buy/, (msg) => {
   console.log('ca command received');
   const message = `
 <b>To buy a $LEPE, please visit one of the following websites:</b>
+- Listed on Sushiswap
+- Listed on DexView
 `;
   const options = {
     parse_mode: "HTML",
