@@ -71,7 +71,6 @@ async function getDexscreenerData() {
   bot.sendMessage(msg.chat.id, message, options);
 });
 
-
 // buy the /buy command
 bot.onText(/\/buy/, (msg) => {
     console.log('ca command received');
