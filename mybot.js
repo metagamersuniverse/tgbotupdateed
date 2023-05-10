@@ -90,19 +90,9 @@ bot.onText(/\/minimum/, async (msg) => {
 });
 
 
-// Handle the /balance command
-bot.onText(/\/balance/, async (msg) => {
-  console.log('Balance command received'); // Add console.log() statement here
-  const walletAddress = "0x087859e91ee03cb339ddd8df8e8f2a0b95fe07d6"; // replace with your desired wallet address
-  const balance = await provider.getBalance(walletAddress);
-  const formattedBalance = ethers.utils.formatEther(balance);
-  const message = `Lottery Balance Amount: ${formattedBalance} ETH`;
-  bot.sendMessage(msg.chat.id, message);
-  return; // Add return statement here to exit the function
-});
 
 // Handle the /bido command
-bot.onText(/\/b/, async (msg) => {
+bot.onText(/\/balance/, async (msg) => {
   console.log('bido command received');
 
   // Retrieve Ido balance in ETH
