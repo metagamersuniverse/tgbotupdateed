@@ -14,18 +14,20 @@ const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true, deb
 
 // Set up a timer to check the current round at regular intervals
 console.log("Starting lottery checker...");
+// Set up a timer to check the current round at regular intervals
 setInterval(async () => {
-  console.log("Checking current round...");
+  console.log('Checking current round...');
   const currentRound = await contract._lotteryRound();
-  console.log("Current round:", currentRound);
   const previousRound = currentRound > 0 ? currentRound - 1 : 0;
   const nextRound = currentRound + 1;
 
   // Check if the previous round has ended
   const winnerInfo = await contract.lotteryWinnerInfo(previousRound);
-  console.log("Winner info:", winnerInfo);
+  console.log(`Winner info for round ${previousRound}:`, winnerInfo);
 
   if (winnerInfo.randomNumber > 0) {
+    console.log(`Round ${previousRound} has ended. Notifying the group chat...`);
+
     // Get the winner information for the previous round
     const prizeAmount = isNaN(winnerInfo.prizeAmount) ? "0.0" : (winnerInfo.prizeAmount / 1e18).toFixed(5);
     const arbAmount = isNaN(winnerInfo.arbAmount) ? "0.0" : (winnerInfo.arbAmount / 1e18).toFixed(5);
@@ -35,32 +37,34 @@ setInterval(async () => {
 
     // Send the notification to the group chat
     const chatId = -1001866015003; //main group code -1001860835394;
-    console.log("Sending message to chat:", chatId, "Message:", message);
     const sentMessage = await bot.sendMessage(chatId, message, { parse_mode: "HTML", disable_web_page_preview: true });
-    console.log("Message sent:", sentMessage);
+    console.log('Notification sent:', message);
 
     // Check if the next round has started
     if (currentRound < nextRound) {
       const nextRoundMessage = `Round ${nextRound} has begun. Good luck to all participants! 🍀`;
-      console.log("Sending message to chat:", chatId, "Message:", nextRoundMessage);
       bot.sendMessage(chatId, nextRoundMessage);
+      console.log(`Notifying the group chat: ${nextRoundMessage}`);
     }
 
     // Pin the message to the chat
     bot.pinChatMessage(chatId, sentMessage.message_id);
+    console.log('Message pinned to the chat.');
   } 
   else if (previousRound === 0) {
+    console.log('Lottery has started. Notifying the group chat...');
     // Notify users that the lottery has started
     const chatId = -1001866015003; //main group code -1001860835394;
     const message = "The $LEPE Lottery has started! 🎉";
-    console.log("Sending message to chat:", chatId, "Message:", message);
     const sentMessage = await bot.sendMessage(chatId, message, { parse_mode: "HTML", disable_web_page_preview: true });
-    console.log("Message sent:", sentMessage);
+    console.log('Notification sent:', message);
 
     // Pin the message to the chat
     bot.pinChatMessage(chatId, sentMessage.message_id);
+    console.log('Message pinned to the chat.');
   }
 }, 60000); // Check every minute
+a// Check every minute
 
 // Handle the /winner command
 bot.onText(/\/winner (.+)/, async (msg, match) => {
