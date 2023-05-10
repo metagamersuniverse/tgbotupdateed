@@ -145,7 +145,7 @@ bot.onText(/\/(ca|contract)/, async (msg) => {
 });
 
 // buy the /buy command
-bot.onText(/\/buy/, (msg) => {
+bot.onText(/\/by/, (msg) => {
   console.log('ca command received');
   const message = `
 <b>To buy a $LEPE, please visit one of the following websites:</b>
