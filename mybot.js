@@ -67,8 +67,9 @@ bot.sendMessage(chatId, "Starting lottery checker...", { parse_mode: "HTML", dis
         bot.pinChatMessage(chatId, sentMessage.message_id);
         console.log('Message pinned to the chat.');
       }
-    },
-    bot.onText(/\/winner (.+)/, async (msg, match) => {
+    };
+    
+bot.onText(/\/winner (.+)/, async (msg, match) => {
       const round = match[1];
     
       try {
