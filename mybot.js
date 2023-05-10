@@ -47,7 +47,7 @@ Keep an eye out for updates and be prepared to participate when it opens.`
 
 
 // Handle the /minAmount command
-bot.onText(/\/minimume/, async (msg) => {
+bot.onText(/\/minimum/, async (msg) => {
   console.log('minimum command received'); // Add console.log() statement here
   const contractAddress = '0x6CB0e4dA8F621A3901573bD8c8d2C8A0987d78d6'; // Replace with actual contract address
   const contractABI = [
