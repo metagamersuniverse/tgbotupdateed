@@ -34,6 +34,7 @@ bot.onText(/\/winner (.+)/, async (msg, match) => {
 
 
 
+
 // Handle the /round command
 bot.onText(/\/(round|lottery)/, async (msg) => {
   console.log('round/lottery command received'); // Add console.log() statement here
