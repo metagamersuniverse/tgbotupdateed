@@ -94,50 +94,49 @@ bot.onText(/\/buy/, (msg) => {
 
 // Set up a timer to check the current round at regular intervals
 setInterval(async () => {
-    const currentRound = await contract._lotteryRound();
-    const previousRound = currentRound - 1;
-  
-    // Check if the previous round has ended
-    const hasRoundEnded = await contract.hasRoundEnded(previousRound);
-    if (hasRoundEnded) {
-      // Get the winner information for the previous round
-      const winnerInfo = await contract.lotteryWinnerInfo(previousRound);
-      const prizeAmount = isNaN(winnerInfo.prizeAmount) ? "0.0" : (winnerInfo.prizeAmount / 1e18).toFixed(5);
-      const arbAmount = isNaN(winnerInfo.arbAmount) ? "0.0" : (winnerInfo.arbAmount / 1e18).toFixed(5);
-  
-      // Construct the winner's message
-      const winnerMessage = winnerInfo.winnerMessage ? `\n\n${winnerInfo.winnerMessage}` : "";
-  
-      // Construct the clickable link to the wallet address
-      const walletLink = `https://arbiscan.io/address/${winnerInfo.wallet}`;
-  
-      // Construct the notification message with the clickable link
-      const message = `🎉 Round ${previousRound} of the $LEPE Lottery has ended! 🎉\n\nHey everyone,${winnerMessage}\n\nHere are the details of the win:\nWin By Random Number: ${winnerInfo.randomNumber.toString()}\nWallet Address: <a href="${walletLink}">${winnerInfo.wallet}</a>\nPrize Amount: ${arbAmount} ARB = ${prizeAmount} ETH`;
-  
-      // Send the notification to the group chat
-      const chatId = -1001860835394;
-      const sentMessage = await bot.sendMessage(chatId, message, { parse_mode: "HTML", disable_web_page_preview: true });
-  
-      // Check if the next round has started
-      if (currentRound > previousRound) {
-        const nextRound = currentRound;
-        const nextRoundMessage = `Round ${nextRound} has begun. Good luck to all participants! 🍀`;
-        bot.sendMessage(chatId, nextRoundMessage);
-      }
-  
-      // Pin the message to the chat
-      bot.pinChatMessage(chatId, sentMessage.message_id);
-    } else if (previousRound === 0) {
-      // Notify users that the lottery has started
-      const chatId = -1001860835394;
-      const message = "The $LEPE Lottery has started! 🎉";
-      const sentMessage = await bot.sendMessage(chatId, message, { parse_mode: "HTML", disable_web_page_preview: true });
-  
-      // Pin the message to the chat
-      bot.pinChatMessage(chatId, sentMessage.message_id);
-    }
-  }, 60000); // Check every minute
+  const currentRound = await contract._lotteryRound();
+  const previousRound = currentRound - 1;
 
+  // Check if the previous round has ended
+  const hasRoundEnded = await contract.hasRoundEnded(previousRound);
+  if (hasRoundEnded) {
+    // Get the winner information for the previous round
+    const winnerInfo = await contract.lotteryWinnerInfo(previousRound);
+    const prizeAmount = isNaN(winnerInfo.prizeAmount) ? "0.0" : (winnerInfo.prizeAmount / 1e18).toFixed(5);
+    const arbAmount = isNaN(winnerInfo.arbAmount) ? "0.0" : (winnerInfo.arbAmount / 1e18).toFixed(5);
+
+    // Construct the winner's message
+    const winnerMessage = winnerInfo.winnerMessage ? `Hey everyone, ${winnerInfo.winnerMessage}` : "";
+
+    // Construct the clickable link to the wallet address
+    const walletLink = `https://arbiscan.io/address/${winnerInfo.wallet}`;
+
+    // Construct the notification message with the clickable link
+    const message = `🎉 Round ${previousRound} of the $LEPE Lottery has ended! 🎉\n\n${winnerMessage}\n\nHere are the details of my win:\nWin By Random Number: ${winnerInfo.randomNumber.toString()}\nWallet Address: <a href="${walletLink}">${winnerInfo.wallet}</a>\nPrize Amount: ${arbAmount} ARB = ${prizeAmount} ETH\n\nGood luck to all participants in the next round! 🍀`;
+
+    // Send the notification to the group chat
+    const chatId = -1001860835394;
+    const sentMessage = await bot.sendMessage(chatId, message, { parse_mode: "HTML", disable_web_page_preview: true });
+
+    // Check if the next round has started
+    if (currentRound > previousRound) {
+      const nextRound = currentRound;
+      const nextRoundMessage = `Round ${nextRound} has begun. Good luck to all participants! 🍀`;
+      bot.sendMessage(chatId, nextRoundMessage);
+    }
+
+    // Pin the message to the chat
+    bot.pinChatMessage(chatId, sentMessage.message_id);
+  } else if (previousRound === 0) {
+    // Notify users that the lottery has started
+    const chatId = -1001860835394;
+    const message = "The $LEPE Lottery has started! 🎉";
+    const sentMessage = await bot.sendMessage(chatId, message, { parse_mode: "HTML", disable_web_page_preview: true });
+
+    // Pin the message to the chat
+    bot.pinChatMessage(chatId, sentMessage.message_id);
+  }
+}, 60000); // Check every minute
 
   
 // Handle the /winner command
