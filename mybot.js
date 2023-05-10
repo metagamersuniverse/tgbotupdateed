@@ -12,7 +12,8 @@ const contract = new ethers.Contract(contractAddress, contractABI, provider);
 // Create the Telegram bot
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true, debug: true });
 
-const chatId = -1001866015003; // replace with the group chat ID
+
+const chatId = -1001921605828; // replace with the group chat ID
 console.log(`Sending starting message to group ${chatId}...`);
 
 // Send a starting message to the group
@@ -67,7 +68,14 @@ bot.sendMessage(chatId, "Starting lottery checker...", { parse_mode: "HTML", dis
         bot.pinChatMessage(chatId, sentMessage.message_id);
         console.log('Message pinned to the chat.');
       }
-    });
+    }, 60000); // 1 minute interval
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
+  
+
+
     
 bot.onText(/\/winner (.+)/, async (msg, match) => {
       const round = match[1];
@@ -331,4 +339,4 @@ bot.on('message', (msg) => {
   }
 });
 
-module.exports = bot});
+module.exports = bot;
