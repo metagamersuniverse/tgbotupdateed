@@ -68,7 +68,7 @@ bot.onText(/\/minimum/, async (msg) => {
   const contract = new ethers.Contract(contractAddress, contractABI, provider);
   const minAmount = await contract._minAmountToParticipate(); // Call _minAmountToParticipate function
   const minAmountInEther = ethers.utils.formatEther(minAmount);
-  const message = `Minimum amount to participate in the lottery: ${minAmountInEther} ETH`;
+  const message = `Minimum amount to participate in the lottery: ${minAmountInEther} LEPE`;
   bot.sendMessage(msg.chat.id, message);
 });
 
