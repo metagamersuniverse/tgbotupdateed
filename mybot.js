@@ -54,8 +54,6 @@ bot.sendMessage(chatId, "Starting $LEPE lottery checker...", { parse_mode: "HTML
         }
 
         // Pin the message to the chat
-        bot.pinChatMessage(chatId, sentMessage.message_id);
-        console.log('Message pinned to the chat.');
       } 
       else if (previousRound === 0) {
         console.log('Lottery hasnt started. Notifying the group chat...');
@@ -65,8 +63,6 @@ bot.sendMessage(chatId, "Starting $LEPE lottery checker...", { parse_mode: "HTML
         console.log('Notification sent:', message);
 
         // Pin the message to the chat
-        bot.pinChatMessage(chatId, sentMessage.message_id);
-        console.log('Message pinned to the chat.');
       }
     }, 30000); //30 seconds interval
   })
