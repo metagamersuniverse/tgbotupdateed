@@ -12,8 +12,7 @@ const contract = new ethers.Contract(contractAddress, contractABI, provider);
 // Create the Telegram bot
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true, debug: true });
 
-
-const chatId = -1001921605828; // replace with the group chat ID
+const chatId = -1001866015003; // replace with the group chat ID
 console.log(`Sending starting message to group ${chatId}...`);
 
 // Send a starting message to the group
@@ -57,26 +56,18 @@ bot.sendMessage(chatId, "Starting lottery checker...", { parse_mode: "HTML", dis
         bot.pinChatMessage(chatId, sentMessage.message_id);
         console.log('Message pinned to the chat.');
       } 
-      else {
-        // Check if the previous round has ended
-        const winnerInfo = await contract.lotteryWinnerInfo(previousRound);
-        console.log(`Winner info for round ${previousRound}:`, winnerInfo);
-
-        if (winnerInfo.wallet !== "0x0000000000000000000000000000000000000000") {
-          console.log(`Round ${previousRound} has ended. Notifying the group chat...`);
+      else if (previousRound === 0) {
+        console.log('Lottery has started. Notifying the group chat...');
+        // Notify users that the lottery has started
+        const message = "The $LEPE Lottery has started! 🎉";
+        const sentMessage = await bot.sendMessage(chatId, message, { parse_mode: "HTML", disable_web_page_preview: true });
+        console.log('Notification sent:', message);
 
         // Pin the message to the chat
         bot.pinChatMessage(chatId, sentMessage.message_id);
         console.log('Message pinned to the chat.');
       }
-    } 10000; // 1 minute interval
-  })
-  .catch((error) => {
-    console.error('Error:', error);
-  });
-  
-
-
+    });
     
 bot.onText(/\/winner (.+)/, async (msg, match) => {
       const round = match[1];
@@ -340,4 +331,4 @@ bot.on('message', (msg) => {
   }
 });
 
-module.exports = bot;})
+module.exports = bot});
