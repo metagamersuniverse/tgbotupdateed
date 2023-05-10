@@ -68,7 +68,7 @@ bot.sendMessage(chatId, "Starting lottery checker...", { parse_mode: "HTML", dis
         bot.pinChatMessage(chatId, sentMessage.message_id);
         console.log('Message pinned to the chat.');
       }
-    }, 60000); // 1 minute interval
+    }, 10000); // 1 minute interval
   })
   .catch((error) => {
     console.error('Error:', error);
