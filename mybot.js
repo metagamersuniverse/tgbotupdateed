@@ -12,7 +12,7 @@ const contract = new ethers.Contract(contractAddress, contractABI, provider);
 // Create the Telegram bot
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true, debug: true });
 
-const chatId = -1001866015003; // replace with the group chat ID
+const chatId = -1001922356297; // replace with the group chat ID
 console.log(`Sending starting message to group ${chatId}...`);
 
 // Send a starting message to the group
