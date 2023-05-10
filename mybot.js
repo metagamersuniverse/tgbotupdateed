@@ -15,15 +15,21 @@ const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true, deb
 
 // Handle the /winner command
 bot.onText(/\/winner (.+)/, async (msg, match) => {
-  console.log(`Fetching winner info for round ${match[1]}...`); // Add console.log() statement here
   const round = match[1];
   const winnerInfo = await contract.lotteryWinnerInfo(round);
-  const prizeAmount = isNaN(winnerInfo.prizeAmount) ? "0.0" : (winnerInfo.prizeAmount / 1e18).toFixed(5);
-  const arbAmount = isNaN(winnerInfo.arbAmount) ? "0.0" : (winnerInfo.arbAmount / 1e18).toFixed(5);
-  const walletLink = `https://arbiscan.io/address/${winnerInfo.wallet}`; // create link to wallet address
-  const message = `🎉 Round ${round} of the $LEPE Lottery has ended! 🎉\n\nHere are the details of the win:\nWin By Random Number: ${winnerInfo.randomNumber.toString()}\nWallet Address: <a href="${walletLink}">${winnerInfo.wallet}</a>\nPrize Amount: ${arbAmount} ARB = ${prizeAmount} ETH`;
-  bot.sendMessage(msg.chat.id, message, { parse_mode: "HTML", disable_web_page_preview: true }); // set parse_mode to HTML and disable preview
+  if (winnerInfo.randomNumber === 0) {
+    const message = `Round ${round} of the $LEPE Lottery hasn't completed yet. Please be patient!`;
+    bot.sendMessage(msg.chat.id, message);
+  } else {
+    console.log(`Fetching winner info for round ${round}...`);
+    const prizeAmount = isNaN(winnerInfo.prizeAmount) ? "0.0" : (winnerInfo.prizeAmount / 1e18).toFixed(5);
+    const arbAmount = isNaN(winnerInfo.arbAmount) ? "0.0" : (winnerInfo.arbAmount / 1e18).toFixed(5);
+    const walletLink = `https://arbiscan.io/address/${winnerInfo.wallet}`; // create link to wallet address
+    const message = `🎉 Round ${round} of the $LEPE Lottery has ended! 🎉\n\nHere are the details of the win:\nWin By Random Number: ${winnerInfo.randomNumber.toString()}\nWallet Address: <a href="${walletLink}">${winnerInfo.wallet}</a>\nPrize Amount: ${arbAmount} ARB = ${prizeAmount} ETH`;
+    bot.sendMessage(msg.chat.id, message, { parse_mode: "HTML", disable_web_page_preview: true }); // set parse_mode to HTML and disable preview
+  }
 });
+
 
 
 
