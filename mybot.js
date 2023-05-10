@@ -12,15 +12,17 @@ const contract = new ethers.Contract(contractAddress, contractABI, provider);
 // Create the Telegram bot
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true, debug: true });
 
-// automated winner details in every minutes
 // Set up a timer to check the current round at regular intervals
 setInterval(async () => {
+  console.log("Checking current round...");
   const currentRound = await contract._lotteryRound();
+  console.log("Current round:", currentRound);
   const previousRound = currentRound > 0 ? currentRound - 1 : 0;
   const nextRound = currentRound + 1;
 
   // Check if the previous round has ended
   const winnerInfo = await contract.lotteryWinnerInfo(previousRound);
+  console.log("Winner info:", winnerInfo);
 
   if (winnerInfo.randomNumber > 0) {
     // Get the winner information for the previous round
@@ -32,11 +34,14 @@ setInterval(async () => {
 
     // Send the notification to the group chat
     const chatId = -1001866015003; //main group code -1001860835394;
+    console.log("Sending message to chat:", chatId, "Message:", message);
     const sentMessage = await bot.sendMessage(chatId, message, { parse_mode: "HTML", disable_web_page_preview: true });
+    console.log("Message sent:", sentMessage);
 
     // Check if the next round has started
     if (currentRound < nextRound) {
       const nextRoundMessage = `Round ${nextRound} has begun. Good luck to all participants! 🍀`;
+      console.log("Sending message to chat:", chatId, "Message:", nextRoundMessage);
       bot.sendMessage(chatId, nextRoundMessage);
     }
 
@@ -47,7 +52,9 @@ setInterval(async () => {
     // Notify users that the lottery has started
     const chatId = -1001866015003; //main group code -1001860835394;
     const message = "The $LEPE Lottery has started! 🎉";
+    console.log("Sending message to chat:", chatId, "Message:", message);
     const sentMessage = await bot.sendMessage(chatId, message, { parse_mode: "HTML", disable_web_page_preview: true });
+    console.log("Message sent:", sentMessage);
 
     // Pin the message to the chat
     bot.pinChatMessage(chatId, sentMessage.message_id);
