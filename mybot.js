@@ -58,9 +58,9 @@ bot.sendMessage(chatId, "Starting lottery checker...", { parse_mode: "HTML", dis
         console.log('Message pinned to the chat.');
       } 
       else if (previousRound === 0) {
-        console.log('Lottery has started. Notifying the group chat...');
+        console.log('Lottery hasnt started. Notifying the group chat...');
         // Notify users that the lottery has started
-        const message = "The $LEPE Lottery has started! 🎉";
+        const message = "$LEPE Lottery hasn't  started yet. Please be patient!! 🎉";        
         const sentMessage = await bot.sendMessage(chatId, message, { parse_mode: "HTML", disable_web_page_preview: true });
         console.log('Notification sent:', message);
 
