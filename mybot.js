@@ -21,18 +21,13 @@ setInterval(async () => {
 
   // Check if the previous round has ended
   const winnerInfo = await contract.lotteryWinnerInfo(previousRound);
+
   if (winnerInfo.randomNumber > 0) {
     // Get the winner information for the previous round
     const prizeAmount = isNaN(winnerInfo.prizeAmount) ? "0.0" : (winnerInfo.prizeAmount / 1e18).toFixed(5);
     const arbAmount = isNaN(winnerInfo.arbAmount) ? "0.0" : (winnerInfo.arbAmount / 1e18).toFixed(5);
-
-    // Construct the winner's message
     const winnerMessage = winnerInfo.winnerMessage ? `Hey everyone, ${winnerInfo.winnerMessage}` : "";
-
-    // Construct the clickable link to the wallet address
     const walletLink = `https://arbiscan.io/address/${winnerInfo.wallet}`;
-
-    // Construct the notification message with the clickable link
     const message = `🎉 Round ${previousRound} of the $LEPE Lottery has ended! 🎉\n\n${winnerMessage}\n\nHere are the details of my win:\nWin By Random Number: ${winnerInfo.randomNumber.toString()}\nWallet Address: <a href="${walletLink}">${winnerInfo.wallet}</a>\nPrize Amount: ${arbAmount} ARB = ${prizeAmount} ETH\n\nGood luck to all participants in the next round! 🍀`;
 
     // Send the notification to the group chat
@@ -47,7 +42,8 @@ setInterval(async () => {
 
     // Pin the message to the chat
     bot.pinChatMessage(chatId, sentMessage.message_id);
-  } else if (previousRound === 0) {
+  } 
+  else if (previousRound === 0) {
     // Notify users that the lottery has started
     const chatId = -1001866015003; //main group code -1001860835394;
     const message = "The $LEPE Lottery has started! 🎉";
@@ -57,7 +53,6 @@ setInterval(async () => {
     bot.pinChatMessage(chatId, sentMessage.message_id);
   }
 }, 60000); // Check every minute
-
 
 // Handle the /winner command
 bot.onText(/\/winner (.+)/, async (msg, match) => {
