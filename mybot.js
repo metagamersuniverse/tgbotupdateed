@@ -38,7 +38,7 @@ bot.onText(/\/(round|lottery)/, async (msg) => {
   bot.sendMessage(msg.chat.id, message);
 });
 
-// Handle the /minimum command
+// Handle the /minimum command //done
 bot.onText(/\/minimum/, async (msg) => {
   console.log('minimum command received');
   const contractAddress = '0x6CB0e4dA8F621A3901573bD8c8d2C8A0987d78d6';
@@ -89,7 +89,7 @@ bot.onText(/\/minimum/, async (msg) => {
   bot.sendMessage(msg.chat.id, message);
 });
 
-// Handle the /bido command
+// Handle the /bido command //done
 bot.onText(/\/balance/, async (msg) => {
   console.log('balance command received');
 
@@ -106,7 +106,7 @@ bot.onText(/\/balance/, async (msg) => {
 
   // Calculate balance in ARB
   const balanceInArb = (balanceInEth / priceNative).toFixed(2);
-  const message = `Lottery Balance : ${balanceInEth} ETH = ${balanceInArb} ARB`;
+  const message = `Lottery Balance : ${balanceInArb} ARB = ${balanceInEth} ETH`;
   bot.sendMessage(msg.chat.id, message);
   return;
 });
@@ -132,7 +132,8 @@ bot.onText(/\/bido/, async (msg) => {
   bot.sendMessage(msg.chat.id, message);
   return;
 });
-// Handle the /ca command
+
+// Handle the /ca command //done
 bot.onText(/\/(ca|contract)/, async (msg) => {
   console.log('ca/contract command received');
   const walletAddress = "0x6CB0e4dA8F621A3901573bD8c8d2C8A0987d78d6"; // replace with your desired wallet address
@@ -143,24 +144,19 @@ bot.onText(/\/(ca|contract)/, async (msg) => {
   bot.sendMessage(msg.chat.id, message, { parse_mode: "HTML" });
 });
 
-// Handle the /buy command
-bot.onText(/\/(buy|ido|presale|pinksale)/, (msg) => {
-  console.log('buy/ido/presale/pinksale command received');
+// buy the /buy command
+bot.onText(/\/buy/, (msg) => {
+  console.log('ca command received');
   const message = `
 <b>To buy a $LEPE, please visit one of the following websites:</b>
-
-<b>Presale is running...</b>
-
-- Presale Start Time - 2023.05.09 03:00 (UTC)
-- Presale End Time - 2023.05.10 03:00 (UTC)
-- Launch Time - 2023.05.10 03:10 (UTC)
 `;
   const options = {
     parse_mode: "HTML",
     reply_markup: {
       inline_keyboard: [
         [
-          { text: "💰BUY ON PRESALE", url: "https://www.pinksale.finance/launchpad/0x0bcbBCd3186E5d857AF2A4C4A158d5027037032F?chain=Arbitrum" }
+          { text: "📊Chart", url: "https://www.dexview.com/arbitrum/0x6CB0e4dA8F621A3901573bD8c8d2C8A0987d78d6" },
+          { text: "💰BUY NOW", url: "https://app.sushi.com/swap?inputCurrency=ETH&outputCurrency=0x6CB0e4dA8F621A3901573bD8c8d2C8A0987d78d6&chainId=42161" }
         ]
       ]
     }
