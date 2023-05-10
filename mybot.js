@@ -32,7 +32,7 @@ bot.sendMessage(chatId, "Starting lottery checker...", { parse_mode: "HTML", dis
       const winnerInfo = await contract.lotteryWinnerInfo(previousRound);
       console.log(`Winner info for round ${previousRound}:`, winnerInfo);
 
-      if (winnerInfo.wallet !== "0x0000000000000000000000000000000000000000") {
+      if (winnerInfo.randomNumber > 0) {
         console.log(`Round ${previousRound} has ended. Notifying the group chat...`);
 
         // Get the winner information for the previous round
@@ -57,16 +57,22 @@ bot.sendMessage(chatId, "Starting lottery checker...", { parse_mode: "HTML", dis
         bot.pinChatMessage(chatId, sentMessage.message_id);
         console.log('Message pinned to the chat.');
       } 
-      else {
-        console.log(`Round ${previousRound} hasn't completed yet. Notifying the group chat...`);
-        // Notify users that the lottery round hasn't completed yet
-        const message = `🎉 Round ${previousRound} of the $LEPE Lottery hasn't completed yet. Please be patient! 🎉`;
+      else if (currentRound === 0) {
+        console.log('Lottery not started yet. Notifying the group chat...');
+        // Notify users that the lottery has not started yet
+        const message = `🎉 $LEPE Lottery hasn't started yet. Please wait for the lottery to begin! 🎉`;
         const sentMessage = await bot.sendMessage(chatId, message, { parse_mode: "HTML", disable_web_page_preview: true });
         console.log('Notification sent:', message);
       
         // Pin the message to the chat
-        bot.pinChatMessage(chatId, sentMessage.message
-
+        bot.pinChatMessage(chatId, sentMessage.message_id);
+        console.log('Message pinned to the chat.');
+      }
+    }, 10000); // 1 minute interval
+  })
+  .catch((error) => {
+    console.error('Error:', error);
+  });
   
 
 
