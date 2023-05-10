@@ -101,32 +101,6 @@ bot.onText(/\/balance/, async (msg) => {
   return; // Add return statement here to exit the function
 });
 
-// Handle the /bido command
-bot.onText(/\/b/, async (msg) => {
-  console.log('bido command received');
-
-  // Retrieve Ido balance in ETH
-  const walletAddress = '0x0bcbbcd3186e5d857af2a4c4a158d5027037032f'; // Replace with your desired wallet address
-  const balanceInWei = await provider.getBalance(walletAddress);
-  const balanceInEth = ethers.utils.formatEther(balanceInWei);
-
-  // Retrieve ARB price from the API
-  const pairAddress = '0xC6F780497A95e246EB9449f5e4770916DCd6396A';
-  const apiEndpoint = `https://api.dexscreener.com/latest/dex/pairs/arbitrum/${pairAddress}`;
-  const response = await axios.get(apiEndpoint);
-  console.log(response.data);
-  const data = response.data;
-  const priceNative = parseFloat(data.pairs[0].priceNative); // Get the price of the token in the trading pair
-
-  // Calculate balance in ARB
-  const balanceInArb = (balanceInEth / priceNative).toFixed(2);
-
-  const message = `Ido : ${balanceInEth} ETH = ${balanceInArb} ARB`;
-  bot.sendMessage(msg.chat.id, message);
-  return;
-});
-
-
 
 // Handle the /bido command
 bot.onText(/\/bido/, async (msg) => {
