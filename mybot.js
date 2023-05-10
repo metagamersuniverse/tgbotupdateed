@@ -91,7 +91,7 @@ bot.onText(/\/minimum/, async (msg) => {
   console.log(response.data);
   const data = response.data;
   const priceNative = parseFloat(data.pairs[0].priceNative); // Get the price of the token in the trading pair
-  const arbitrageAmount = priceNative / winningAmountInEther; // Calculate the arbitrage amount in ARB
+  const arbitrageAmount = winningAmountInEther / priceNative; // Calculate the arbitrage amount in ARB
 
   const message = `Minimum amount to participate in the lottery: ${minAmountInEther} LEPE\nWinning amount is: ${winningAmountInEther} ETH = ${arbitrageAmount.toFixed(2)} ARB`;
   bot.sendMessage(msg.chat.id, message);
