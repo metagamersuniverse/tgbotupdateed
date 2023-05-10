@@ -12,58 +12,62 @@ const contract = new ethers.Contract(contractAddress, contractABI, provider);
 // Create the Telegram bot
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true, debug: true });
 
-// Set up a timer to check the current round at regular intervals
-console.log("Starting lottery checker...");
-// Set up a timer to check the current round at regular intervals
-setInterval(async () => {
-  console.log('Checking current round...');
-  const currentRound = await contract._lotteryRound();
-  const previousRound = currentRound > 0 ? currentRound - 1 : 0;
-  const nextRound = currentRound + 1;
+const chatId = -1001866015003; // replace with the group chat ID
+console.log(`Sending starting message to group ${chatId}...`);
 
-  // Check if the previous round has ended
-  const winnerInfo = await contract.lotteryWinnerInfo(previousRound);
-  console.log(`Winner info for round ${previousRound}:`, winnerInfo);
+// Send a starting message to the group
+bot.sendMessage(chatId, "Starting lottery checker...", { parse_mode: "HTML", disable_web_page_preview: true })
+  .then(() => {
+    console.log(`Started lottery checker in group ${chatId}.`);
 
-  if (winnerInfo.randomNumber > 0) {
-    console.log(`Round ${previousRound} has ended. Notifying the group chat...`);
+    // Set up a timer to check the current round at regular intervals
+    setInterval(async () => {
+      console.log('Checking current round...');
+      const currentRound = await contract._lotteryRound();
+      const previousRound = currentRound > 0 ? currentRound - 1 : 0;
+      const nextRound = currentRound + 1;
 
-    // Get the winner information for the previous round
-    const prizeAmount = isNaN(winnerInfo.prizeAmount) ? "0.0" : (winnerInfo.prizeAmount / 1e18).toFixed(5);
-    const arbAmount = isNaN(winnerInfo.arbAmount) ? "0.0" : (winnerInfo.arbAmount / 1e18).toFixed(5);
-    const winnerMessage = winnerInfo.winnerMessage ? `Hey everyone, ${winnerInfo.winnerMessage}` : "";
-    const walletLink = `https://arbiscan.io/address/${winnerInfo.wallet}`;
-    const message = `🎉 Round ${previousRound} of the $LEPE Lottery has ended! 🎉\n\n${winnerMessage}\n\nHere are the details of my win:\nWin By Random Number: ${winnerInfo.randomNumber.toString()}\nWallet Address: <a href="${walletLink}">${winnerInfo.wallet}</a>\nPrize Amount: ${arbAmount} ARB = ${prizeAmount} ETH\n\nGood luck to all participants in the next round! 🍀`;
+      // Check if the previous round has ended
+      const winnerInfo = await contract.lotteryWinnerInfo(previousRound);
+      console.log(`Winner info for round ${previousRound}:`, winnerInfo);
 
-    // Send the notification to the group chat
-    const chatId = -1001866015003; //main group code -1001860835394;
-    const sentMessage = await bot.sendMessage(chatId, message, { parse_mode: "HTML", disable_web_page_preview: true });
-    console.log('Notification sent:', message);
+      if (winnerInfo.randomNumber > 0) {
+        console.log(`Round ${previousRound} has ended. Notifying the group chat...`);
 
-    // Check if the next round has started
-    if (currentRound < nextRound) {
-      const nextRoundMessage = `Round ${nextRound} has begun. Good luck to all participants! 🍀`;
-      bot.sendMessage(chatId, nextRoundMessage);
-      console.log(`Notifying the group chat: ${nextRoundMessage}`);
-    }
+        // Get the winner information for the previous round
+        const prizeAmount = isNaN(winnerInfo.prizeAmount) ? "0.0" : (winnerInfo.prizeAmount / 1e18).toFixed(5);
+        const arbAmount = isNaN(winnerInfo.arbAmount) ? "0.0" : (winnerInfo.arbAmount / 1e18).toFixed(5);
+        const winnerMessage = winnerInfo.winnerMessage ? `Hey everyone, ${winnerInfo.winnerMessage}` : "";
+        const walletLink = `https://arbiscan.io/address/${winnerInfo.wallet}`;
+        const message = `🎉 Round ${previousRound} of the $LEPE Lottery has ended! 🎉\n\n${winnerMessage}\n\nHere are the details of my win:\nWin By Random Number: ${winnerInfo.randomNumber.toString()}\nWallet Address: <a href="${walletLink}">${winnerInfo.wallet}</a>\nPrize Amount: ${arbAmount} ARB = ${prizeAmount} ETH\n\nGood luck to all participants in the next round! 🍀`;
 
-    // Pin the message to the chat
-    bot.pinChatMessage(chatId, sentMessage.message_id);
-    console.log('Message pinned to the chat.');
-  } 
-  else if (previousRound === 0) {
-    console.log('Lottery has started. Notifying the group chat...');
-    // Notify users that the lottery has started
-    const chatId = -1001866015003; //main group code -1001860835394;
-    const message = "The $LEPE Lottery has started! 🎉";
-    const sentMessage = await bot.sendMessage(chatId, message, { parse_mode: "HTML", disable_web_page_preview: true });
-    console.log('Notification sent:', message);
+        // Send the notification to the group chat
+        const sentMessage = await bot.sendMessage(chatId, message, { parse_mode: "HTML", disable_web_page_preview: true });
+        console.log('Notification sent:', message);
 
-    // Pin the message to the chat
-    bot.pinChatMessage(chatId, sentMessage.message_id);
-    console.log('Message pinned to the chat.');
-  }
-}, 60000); // Checkheck every minute
+        // Check if the next round has started
+        if (currentRound < nextRound) {
+          const nextRoundMessage = `Round ${nextRound} has begun. Good luck to all participants! 🍀`;
+          bot.sendMessage(chatId, nextRoundMessage);
+          console.log(`Notifying the group chat: ${nextRoundMessage}`);
+        }
+
+        // Pin the message to the chat
+        bot.pinChatMessage(chatId, sentMessage.message_id);
+        console.log('Message pinned to the chat.');
+      } 
+      else if (previousRound === 0) {
+        console.log('Lottery has started. Notifying the group chat...');
+        // Notify users that the lottery has started
+        const message = "The $LEPE Lottery has started! 🎉";
+        const sentMessage = await bot.sendMessage(chatId, message, { parse_mode: "HTML", disable_web_page_preview: true });
+        console.log('Notification sent:', message);
+
+        // Pin the message to the chat
+        bot.pinChatMessage(chatId, sentMessage.message_id);
+        console.log('Message pinned to the chat.');
+      }
+    },
 
 // Handle the /winner command
 bot.onText(/\/winner (.+)/, async (msg, match) => {
