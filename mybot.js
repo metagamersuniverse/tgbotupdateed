@@ -22,7 +22,7 @@ const timeRemaining = startTime.getTime() - Date.now();
 if (timeRemaining > 0) 
   console.log(`Waiting for ${timeRemaining / 1000} seconds until the lottery checker starts...`);
   setTimeout(() => {
-    const chatId = YOUR_CHAT_ID; // replace with the group chat ID
+    const chatId = -1001921605828; // replace with the group chat ID
     console.log(`Sending starting message to group ${chatId}...`);
 
     // Send a starting message to the group
