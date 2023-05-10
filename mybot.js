@@ -13,6 +13,7 @@ const contract = new ethers.Contract(contractAddress, contractABI, provider);
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true, debug: true });
 
 // Set up a timer to check the current round at regular intervals
+console.log("Starting lottery checker...");
 setInterval(async () => {
   console.log("Checking current round...");
   const currentRound = await contract._lotteryRound();
