@@ -20,26 +20,10 @@ bot.onText(/\/winner (.+)/, async (msg, match) => {
   const winnerInfo = await contract.lotteryWinnerInfo(round);
   const prizeAmount = isNaN(winnerInfo.prizeAmount) ? "0.0" : (winnerInfo.prizeAmount / 1e18).toFixed(5);
   const arbAmount = isNaN(winnerInfo.arbAmount) ? "0.0" : (winnerInfo.arbAmount / 1e18).toFixed(5);
-  const message = `Win By Random Number: ${winnerInfo.randomNumber.toString()}\nWallet Address: ${winnerInfo.wallet}\nPrize Amount: ${arbAmount} ARB = ${prizeAmount} ETH`;
-  bot.sendMessage(msg.chat.id, message);
+  const walletLink = `https://etherscan.io/address/${winnerInfo.wallet}`; // create link to wallet address
+  const message = `Win By Random Number: ${winnerInfo.randomNumber.toString()}\nWallet Address: <a href="${walletLink}">${winnerInfo.wallet}</a>\nPrize Amount: ${arbAmount} ARB = ${prizeAmount} ETH`;
+  bot.sendMessage(msg.chat.id, message, { parse_mode: "HTML" }); // set parse_mode to HTML to display the link as clickable
 });
-
-// Handle the /winner command
-bot.onText(/\/win (.+)/, async (msg, match) => {
-  console.log('win command received');
-  const round = match[1];
-  const winnerInfo = await contract.lotteryWinnerInfo(round);
-  const prizeAmount = isNaN(winnerInfo.prizeAmount) ? "0.0" : (winnerInfo.prizeAmount / 1e18).toFixed(5);
-  const arbAmount = isNaN(winnerInfo.arbAmount) ? "0.0" : (winnerInfo.arbAmount / 1e18).toFixed(5);
-  
-  // Get the transaction hash for the round
-  const txHash = await contract.getRoundTransactionHash(round);
-  const explorerLink = `https://arbiscan.io/tx/${txHash}`;
-  
-  const message = `Win By Random Number: ${winnerInfo.randomNumber.toString()}\nWallet Address: ${winnerInfo.wallet}\nPrize Amount: ${arbAmount} ARB = ${prizeAmount} ETH\nTransaction Link: ${explorerLink}`;
-  bot.sendMessage(msg.chat.id, message);
-});
-
 
 
 
