@@ -12,12 +12,11 @@ const contract = new ethers.Contract(contractAddress, contractABI, provider);
 // Create the Telegram bot
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true, debug: true });
 
-
 // Handle the /winner command
 bot.onText(/\/winner (.+)/, async (msg, match) => {
   const round = match[1];
   const winnerInfo = await contract.lotteryWinnerInfo(round);
-  if (winnerInfo.randomNumber === 0) {
+  if (winnerInfo.wallet === "0x0000000000000000000000000000000000000000") {
     const message = `🎉 Round ${round} of the $LEPE Lottery hasn't completed yet. Please be patient! 🎉`;
     bot.sendMessage(msg.chat.id, message, { reply_to_message_id: msg.message_id });
   } else {
@@ -29,9 +28,6 @@ bot.onText(/\/winner (.+)/, async (msg, match) => {
     bot.sendMessage(msg.chat.id, message, { parse_mode: "HTML", disable_web_page_preview: true, reply_to_message_id: msg.message_id }); // set parse_mode to HTML and disable preview
   }
 });
-
-
-
 
 
 
