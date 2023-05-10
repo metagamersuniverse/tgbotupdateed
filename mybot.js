@@ -72,6 +72,32 @@ bot.onText(/\/minimum/, async (msg) => {
   bot.sendMessage(msg.chat.id, message);
 });
 
+// Handle the /minAmount command
+bot.onText(/\/minimumeth/, async (msg) => {
+  console.log('minimum command received'); // Add console.log() statement here
+  const contractAddress = '0x6CB0e4dA8F621A3901573bD8c8d2C8A0987d78d6'; // Replace with actual contract address
+  const contractABI = [
+    {
+      "inputs": [],
+      "name": "_lotteryExecuteAmount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ];
+  const contract = new ethers.Contract(contractAddress, contractABI, provider);
+  const minAmount = await contract._lotteryExecuteAmount(); // Call _minAmountToParticipate function
+  const minAmountInEther = ethers.utils.formatEther(minAmount);
+  const message = `Winning amount is : ${minAmountInEther} ETH`;
+  bot.sendMessage(msg.chat.id, message);
+});
+
 // Handle the /balance command
 bot.onText(/\/balance/, async (msg) => {
   console.log('Balance command received'); // Add console.log() statement here
