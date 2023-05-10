@@ -16,13 +16,13 @@ const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true, deb
 // Set up a timer to check the current round at regular intervals
 setInterval(async () => {
   const currentRound = await contract._lotteryRound();
-  const previousRound = currentRound - 1;
+  const previousRound = currentRound > 0 ? currentRound - 1 : 0;
+  const nextRound = currentRound + 1;
 
   // Check if the previous round has ended
-  const hasRoundEnded = await contract.hasRoundEnded(previousRound);
-  if (hasRoundEnded) {
+  const winnerInfo = await contract.lotteryWinnerInfo(previousRound);
+  if (winnerInfo.randomNumber > 0) {
     // Get the winner information for the previous round
-    const winnerInfo = await contract.lotteryWinnerInfo(previousRound);
     const prizeAmount = isNaN(winnerInfo.prizeAmount) ? "0.0" : (winnerInfo.prizeAmount / 1e18).toFixed(5);
     const arbAmount = isNaN(winnerInfo.arbAmount) ? "0.0" : (winnerInfo.arbAmount / 1e18).toFixed(5);
 
@@ -40,8 +40,7 @@ setInterval(async () => {
     const sentMessage = await bot.sendMessage(chatId, message, { parse_mode: "HTML", disable_web_page_preview: true });
 
     // Check if the next round has started
-    if (currentRound > previousRound) {
-      const nextRound = currentRound;
+    if (currentRound < nextRound) {
       const nextRoundMessage = `Round ${nextRound} has begun. Good luck to all participants! 🍀`;
       bot.sendMessage(chatId, nextRoundMessage);
     }
@@ -57,7 +56,7 @@ setInterval(async () => {
     // Pin the message to the chat
     bot.pinChatMessage(chatId, sentMessage.message_id);
   }
-}, 6); // Check every minute
+}, 60000); // Check every minute
 
 
 // Handle the /winner command
