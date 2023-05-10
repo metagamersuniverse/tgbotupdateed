@@ -24,6 +24,23 @@ bot.onText(/\/winner (.+)/, async (msg, match) => {
   bot.sendMessage(msg.chat.id, message);
 });
 
+// Handle the /winner command
+bot.onText(/\/winnerr (.+)/, async (msg, match) => {
+  console.log('winner command received');
+  const round = match[1];
+  const winnerInfo = await contract.lotteryWinnerInfo(round);
+  const prizeAmount = isNaN(winnerInfo.prizeAmount) ? "0.0" : (winnerInfo.prizeAmount / 1e18).toFixed(5);
+  const arbAmount = isNaN(winnerInfo.arbAmount) ? "0.0" : (winnerInfo.arbAmount / 1e18).toFixed(5);
+  
+  // Get the transaction hash for the round
+  const txHash = await contract.getRoundTransactionHash(round);
+  const explorerLink = `https://arbiscan.io/tx/${txHash}`;
+  
+  const message = `Win By Random Number: ${winnerInfo.randomNumber.toString()}\nWallet Address: ${winnerInfo.wallet}\nPrize Amount: ${arbAmount} ARB = ${prizeAmount} ETH\nTransaction Link: ${explorerLink}`;
+  bot.sendMessage(msg.chat.id, message);
+});
+
+
 // Handle the /round command
 bot.onText(/\/(round|lottery)/, async (msg) => {
   console.log('round/lottery command received'); // Add console.log() statement here
