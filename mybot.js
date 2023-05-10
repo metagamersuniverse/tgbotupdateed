@@ -67,15 +67,9 @@ bot.onText(/\/minimum/, async (msg) => {
   ];
   const contract = new ethers.Contract(contractAddress, contractABI, provider);
   const minAmount = await contract._minAmountToParticipate(); // Call _minAmountToParticipate function
-    const minAmountInEther = ethers.utils.formatEther(minAmount);
-    //const message = `Minimum amount to participate in the lottery: ${minAmountInEther} ETH`;
-    const message = `
-<b>Get ready to win big!</b> 
-The lottery is coming soon, but it hasn't started yet. 
-Keep an eye out for updates and be prepared to participate when it opens.`
-  ;
-   bot.sendMessage(msg.chat.id, message, {parse_mode: "HTML"});
-    //bot.sendMessage(msg.chat.id, message);
+  const minAmountInEther = ethers.utils.formatEther(minAmount);
+  const message = `Minimum amount to participate in the lottery: ${minAmountInEther} ETH`;
+  bot.sendMessage(msg.chat.id, message);
 });
 
 // Handle the /balance command
