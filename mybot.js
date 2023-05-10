@@ -20,11 +20,9 @@ bot.onText(/\/winner (.+)/, async (msg, match) => {
   const winnerInfo = await contract.lotteryWinnerInfo(round);
   const prizeAmount = isNaN(winnerInfo.prizeAmount) ? "0.0" : (winnerInfo.prizeAmount / 1e18).toFixed(5);
   const arbAmount = isNaN(winnerInfo.arbAmount) ? "0.0" : (winnerInfo.arbAmount / 1e18).toFixed(5);
-  // Construct the winner's message
-  const winnerMessage = winnerInfo.winnerMessage ? `\n\n${winnerInfo.winnerMessage}` : "";
-  
+  /
   const walletLink = `https://arbiscan.io//address/${winnerInfo.wallet}`; // create link to wallet address
-  const message = `🎉 Round 1 of the $LEPE Lottery has ended! 🎉\n\nHey everyone,${winnerMessage}\n\nHere are the details of the win:\nWin By Random Number: ${winnerInfo.randomNumber.toString()}\nWallet Address: <a href="${walletLink}">${winnerInfo.wallet}</a>\nPrize Amount: ${arbAmount} ARB = ${prizeAmount} ETH`;
+  const message = `🎉 Round 1 of the $LEPE Lottery has ended! 🎉\n\nHey everyone,I won the lottery with the number 31415! 🥳\nHere are the details of the By Random Number: ${winnerInfo.randomNumber.toString()}\nWallet Address: <a href="${walletLink}">${winnerInfo.wallet}</a>\nPrize Amount: ${arbAmount} ARB = ${prizeAmount} ETH`;
   bot.sendMessage(msg.chat.id, message, { parse_mode: "HTML", disable_web_page_preview: true }); // set parse_mode to HTML and disable preview
 });
 
