@@ -46,7 +46,7 @@ Keep an eye out for updates and be prepared to participate when it opens.`
 });
 
 
-// Handle the /minAmount command
+// Handle the /minimum command
 bot.onText(/\/minimum/, async (msg) => {
   console.log('minimum command received'); // Add console.log() statement here
   const contractAddress = '0x6CB0e4dA8F621A3901573bD8c8d2C8A0987d78d6'; // Replace with actual contract address
@@ -63,20 +63,7 @@ bot.onText(/\/minimum/, async (msg) => {
       ],
       "stateMutability": "view",
       "type": "function"
-    }
-  ];
-  const contract = new ethers.Contract(contractAddress, contractABI, provider);
-  const minAmount = await contract._minAmountToParticipate(); // Call _minAmountToParticipate function
-  const minAmountInEther = ethers.utils.formatEther(minAmount);
-  const message = `Minimum amount to participate in the lottery: ${minAmountInEther} LEPE`;
-  bot.sendMessage(msg.chat.id, message);
-});
-
-// Handle the /minAmount command
-bot.onText(/\/minimum/, async (msg) => {
-  console.log('minimum command received'); // Add console.log() statement here
-  const contractAddress = '0x6CB0e4dA8F621A3901573bD8c8d2C8A0987d78d6'; // Replace with actual contract address
-  const contractABI = [
+    },
     {
       "inputs": [],
       "name": "_lotteryExecuteAmount",
@@ -92,11 +79,14 @@ bot.onText(/\/minimum/, async (msg) => {
     }
   ];
   const contract = new ethers.Contract(contractAddress, contractABI, provider);
-  const minAmount = await contract._lotteryExecuteAmount(); // Call _minAmountToParticipate function
+  const minAmount = await contract._minAmountToParticipate();
   const minAmountInEther = ethers.utils.formatEther(minAmount);
-  const message = `Winning amount is : ${minAmountInEther} ETH`;
+  const winningAmount = await contract._lotteryExecuteAmount();
+  const winningAmountInEther = ethers.utils.formatEther(winningAmount);
+  const message = `Minimum amount to participate in the lottery: ${minAmountInEther} LEPE\nWinning amount is: ${winningAmountInEther} ETH`;
   bot.sendMessage(msg.chat.id, message);
 });
+
 
 // Handle the /balance command
 bot.onText(/\/balance/, async (msg) => {
