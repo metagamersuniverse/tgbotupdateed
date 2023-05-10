@@ -101,29 +101,13 @@ bot.onText(/\/balance/, async (msg) => {
   return; // Add return statement here to exit the function
 });
 
-// Handle the /balance command
+// Handle the /bido command
 bot.onText(/\/b/, async (msg) => {
-  console.log('Balance command received');
+  console.log('bido command received');
 
-  // Retrieve lottery balance in ETH
-  const lotteryAddress = '0x6CB0e4dA8F621A3901573bD8c8d2C8A0987d78d6';
-  const lotteryABI = [
-    {
-      "inputs": [],
-      "name": "_lotteryBalance",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    }
-  ];
-  const lotteryContract = new ethers.Contract(lotteryAddress, lotteryABI, provider);
-  const balanceInWei = await lotteryContract._lotteryBalance();
+  // Retrieve Ido balance in ETH
+  const walletAddress = '0x0bcbbcd3186e5d857af2a4c4a158d5027037032f'; // Replace with your desired wallet address
+  const balanceInWei = await provider.getBalance(walletAddress);
   const balanceInEth = ethers.utils.formatEther(balanceInWei);
 
   // Retrieve ARB price from the API
@@ -137,10 +121,11 @@ bot.onText(/\/b/, async (msg) => {
   // Calculate balance in ARB
   const balanceInArb = (balanceInEth / priceNative).toFixed(2);
 
-  const message = `Lottery Balance Amount: ${balanceInEth} ETH = ${balanceInArb} ARB`;
+  const message = `Ido : ${balanceInEth} ETH = ${balanceInArb} ARB`;
   bot.sendMessage(msg.chat.id, message);
   return;
 });
+
 
 
 // Handle the /bido command
