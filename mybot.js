@@ -63,8 +63,7 @@ setInterval(async () => {
     bot.pinChatMessage(chatId, sentMessage.message_id);
     console.log('Message pinned to the chat.');
   }
-}, 60000); // Check every minute
-a// Check every minute
+}, 60000); // Checkheck every minute
 
 // Handle the /winner command
 bot.onText(/\/winner (.+)/, async (msg, match) => {
