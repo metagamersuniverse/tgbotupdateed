@@ -21,9 +21,10 @@ bot.onText(/\/winner (.+)/, async (msg, match) => {
   const prizeAmount = isNaN(winnerInfo.prizeAmount) ? "0.0" : (winnerInfo.prizeAmount / 1e18).toFixed(5);
   const arbAmount = isNaN(winnerInfo.arbAmount) ? "0.0" : (winnerInfo.arbAmount / 1e18).toFixed(5);
   const walletLink = `https://arbiscan.io//address/${winnerInfo.wallet}`; // create link to wallet address
-  const message = `Win By Random Number: ${winnerInfo.randomNumber.toString()}\nWallet Address: <a href="${walletLink}">${winnerInfo.wallet}</a>\nPrize Amount: ${arbAmount} ARB = ${prizeAmount} ETH`;
+  const message = `🎉 Round ${previousRound} of the $LEPE Lottery has ended! 🎉\n\nHey everyone,${winnerMessage}\n\nHere are the details of the win:\nWin By Random Number: ${winnerInfo.randomNumber.toString()}\nWallet Address: <a href="${walletLink}">${winnerInfo.wallet}</a>\nPrize Amount: ${arbAmount} ARB = ${prizeAmount} ETH`;
   bot.sendMessage(msg.chat.id, message, { parse_mode: "HTML", disable_web_page_preview: true }); // set parse_mode to HTML and disable preview
 });
+
 
 
 
@@ -34,7 +35,6 @@ bot.onText(/\/(round|lottery)/, async (msg) => {
   const round = await contract._lotteryRound(); // Call _lotteryRound function
   bot.sendMessage(msg.chat.id, message);
 });
-
 
 // Handle the /minimum command
 bot.onText(/\/minimum/, async (msg) => {
