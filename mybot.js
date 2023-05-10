@@ -25,7 +25,7 @@ bot.onText(/\/winner (.+)/, async (msg, match) => {
 });
 
 // Handle the /winner command
-bot.onText(/\/winnerr (.+)/, async (msg, match) => {
+bot.onText(/\/win (.+)/, async (msg, match) => {
   console.log('winner command received');
   const round = match[1];
   const winnerInfo = await contract.lotteryWinnerInfo(round);
@@ -39,6 +39,7 @@ bot.onText(/\/winnerr (.+)/, async (msg, match) => {
   const message = `Win By Random Number: ${winnerInfo.randomNumber.toString()}\nWallet Address: ${winnerInfo.wallet}\nPrize Amount: ${arbAmount} ARB = ${prizeAmount} ETH\nTransaction Link: ${explorerLink}`;
   bot.sendMessage(msg.chat.id, message);
 });
+
 
 
 // Handle the /round command
