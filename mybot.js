@@ -106,61 +106,6 @@ bot.onText(/\/bido/, async (msg) => {
   return; // Add return statement here to exit the function
 });
 
-// Handle the /p command
-// Handle the /p command
-// Handle the /p command
-// Handle the /p command
-bot.onText(/\/p/, async (msg) => {
-  console.log('Percentage command received'); // Add console.log() statement here
-  const walletAddress = "0x0bcbbcd3186e5d857af2a4c4a158d5027037032f"; // replace with your desired wallet address
-  const balance = await provider.getBalance(walletAddress);
-  const maxBalance = ethers.utils.parseEther("24");
-  const percentage = parseFloat(ethers.utils.formatEther(balance)) / parseFloat(ethers.utils.formatEther(maxBalance)) * 100;
-  const formattedPercentage = percentage.toFixed(2);
-  const message = `${formattedPercentage}% Filled`;
-  bot.sendMessage(msg.chat.id, message);
-  return; // Add return statement here to exit the function
-});
-
-// Define the wallet address and max balance
-const walletAddress = "0x0bcbbcd3186e5d857af2a4c4a158d5027037032f"; // replace with your desired wallet address
-const maxBalance = ethers.utils.parseEther("24");
-
-// Keep track of the ID of the last message sent by the bot
-let lastMessageId;
-
-// Define a function to send the percentage message and update the previous message with the new percentage value
-async function sendPercentageMessage() {
-  try {
-    // Get the current balance and calculate the percentage
-    const balance = await provider.getBalance(walletAddress);
-    const percentage = parseFloat(ethers.utils.formatEther(balance)) / parseFloat(ethers.utils.formatEther(maxBalance)) * 100;
-    const formattedPercentage = percentage.toFixed(2);
-    const message = `${formattedPercentage}% Filled `;
-
-    // Send the new message and pin it to the top of the chat window
-    const sentMessage = await bot.sendMessage(-1001921605828, message, { disable_notification: true, disable_web_page_preview: true });
-    await bot.pinChatMessage(-1001921605828, sentMessage.message_id, { disable_notification: true });
-
-    // Delete the previous message sent by the bot, if any
-    if (lastMessageId) {
-      await bot.deleteMessage(-1001921605828, lastMessageId);
-    }
-
-    // Update the lastMessageId variable with the ID of the new message
-    lastMessageId = sentMessage.message_id;
-  } catch (error) {
-    console.log('Error occurred while sending percentage message:', error);
-  }
-}
-
-// Call the sendPercentageMessage function immediately and then every 1 minute
-sendPercentageMessage(); // Call the function immediately
-setInterval(sendPercentageMessage, 10 * 60 * 1000); // Call the function every 1 minute (in milliseconds)
-
-
-
-
 // Handle the /ca command
 bot.onText(/\/(ca|contract)/, async (msg) => {
   console.log('ca/contract command received');
