@@ -57,7 +57,7 @@ setInterval(async () => {
     // Pin the message to the chat
     bot.pinChatMessage(chatId, sentMessage.message_id);
   }
-}, 60000); // Check every minute
+}, 6); // Check every minute
 
 
 // Handle the /winner command
@@ -191,6 +191,7 @@ bot.onText(/\/(ca|contract)/, async (msg) => {
 (Tap To Copy)`;
   bot.sendMessage(msg.chat.id, message, { parse_mode: "HTML" });
 });
+
 
 // buy the /buy command
 bot.onText(/\/by/, (msg) => {
