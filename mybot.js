@@ -69,29 +69,7 @@ bot.sendMessage(chatId, "Starting lottery checker...", { parse_mode: "HTML", dis
       }
     });
     
-bot.onText(/\/winner (.+)/, async (msg, match) => {
-      const round = match[1];
-    
-      try {
-        const winnerInfo = await contract.lotteryWinnerInfo(round);
-    
-        if (winnerInfo.wallet === "0x0000000000000000000000000000000000000000") {
-          const message = `🎉 Round ${round} of the $LEPE Lottery hasn't completed yet. Please be patient! 🎉`;
-          await bot.sendMessage(msg.chat.id, message, { reply_to_message_id: msg.message_id });
-        } else {
-          console.log(`Fetching winner info for round ${round}...`);
-          const prizeAmount = isNaN(winnerInfo.prizeAmount) ? "0.0" : (winnerInfo.prizeAmount / 1e18).toFixed(5);
-          const arbAmount = isNaN(winnerInfo.arbAmount) ? "0.0" : (winnerInfo.arbAmount / 1e18).toFixed(5);
-          const walletLink = `https://arbiscan.io/address/${winnerInfo.wallet}`;
-          const message = `🎉 Round ${round} of the $LEPE Lottery has ended! 🎉\n\nHere are the details of the win:\nWin By Random Number: ${winnerInfo.randomNumber.toString()}\nWallet Address: <a href="${walletLink}">${winnerInfo.wallet}</a>\nPrize Amount: ${arbAmount} ARB = ${prizeAmount} ETH`;
-          await bot.sendMessage(msg.chat.id, message, { parse_mode: "HTML", disable_web_page_preview: true, reply_to_message_id: msg.message_id });
-        }
-      } catch (err) {
-        console.error(`Error occurred while fetching winner info for round ${round}: ${err.message}`);
-        const message = `❌ An error occurred while fetching winner info for round ${round}. Please try again later.`;
-        await bot.sendMessage(msg.chat.id, message, { reply_to_message_id: msg.message_id });
-      }
-    });
+
     
 // Handle the /round command
 bot.onText(/\/(round|lottery)/, async (msg) => {
