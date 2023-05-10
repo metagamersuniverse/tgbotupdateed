@@ -54,7 +54,7 @@ bot.sendMessage(chatId, "Starting $LEPE lottery checker...", { parse_mode: "HTML
         }
 
         // Pin the message to the chat
-      } 
+      }
       else if (previousRound === 0) {
         console.log('Lottery hasnt started. Notifying the group chat...');
         // Notify users that the lottery has started
