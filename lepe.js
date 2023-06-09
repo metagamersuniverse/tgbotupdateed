@@ -274,17 +274,18 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
         // Calculate the equivalent value in USD
         const spendUsdAmount = (parseFloat(ethAmount) * parseFloat(ethPrice)).toFixed(2);
 
+        // Calculate the number of stickers to send based on the spent amount
+        const stickerCount = Math.floor(spendUsdAmount / 2);
+
         const message = `
 ZooZoo presale Buy
 🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢
 Spent: ${spendEthAmount} (${spendUsdAmount} USD)
 Filled: ${filledEthBalance} WETH
+Sticker Count: ${stickerCount}
 `;
 
         bot.sendMessage(chatId, message);
-
-        // Calculate the number of stickers to send
-        const stickerCount = Math.floor(spendUsdAmount / 2);
 
         // Send the stickers
         for (let i = 0; i < stickerCount; i++) {
