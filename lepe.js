@@ -292,7 +292,8 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
 
         const imageUrl = 'https://raw.githubusercontent.com/metagamersuniverse/zz/main/FAIRLAUNCH%20LIVE.jpg';
 
-        bot.sendMessage(imageUrl ,chatId, message, { parse_mode: 'HTML' });
+        bot.sendPhoto(chatId, imageUrl, { caption: message, parse_mode: 'HTML' });
+      
       } else {
         bot.sendMessage(chatId, 'No recent ETH received');
       }
