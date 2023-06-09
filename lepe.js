@@ -262,6 +262,10 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
         const ethAmount = web3.utils.fromWei(lastTransaction.value, 'ether');
         const spendEthAmount = `${ethAmount} WETH`;
 
+        // Get the total ETH balance of the senderAddress
+        const senderBalanceWei = await web3.eth.getBalance(senderAddress);
+        const senderEthBalance = parseFloat(web3.utils.fromWei(senderBalanceWei, 'ether')).toFixed(2);
+
         // Get the total ETH balance of the walletAddress
         const balanceWei = await web3.eth.getBalance(walletAddress);
         const filledEthBalance = parseFloat(web3.utils.fromWei(balanceWei, 'ether')).toFixed(2);
@@ -279,11 +283,12 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
         const boldText = Array.from({ length: stickerCount }, () => '🟢').join('');
 
         const message = `
-${senderAddress}
+Sender: ${senderAddress}
 <i>ZooZoo presale Buy</i>
 <b>${boldText}</b>
 <b>Spent:</b> ${spendEthAmount} (${spendUsdAmount} USD)
 <b>Filled:</b> ${filledEthBalance} WETH
+<b>Sender ETH Balance:</b> ${senderEthBalance} ETH
 `;
 
         const imageUrl = 'https://raw.githubusercontent.com/metagamersuniverse/zz/main/FAIRLAUNCH%20LIVE.jpg';
@@ -306,6 +311,7 @@ bot.onText(/\/checklasteth/, (msg) => {
   const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
   checkLastReceivedEthTransaction(walletAddress, chatId);
 });
+
 
 
 
