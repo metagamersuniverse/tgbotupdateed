@@ -165,7 +165,7 @@ bot.onText(/\/bido/, async (msg) => {
 });
 
 // Handle the /bido command
-bot.onText(/\/ido/, async (msg) => {
+bot.onText(/\/bido/, async (msg) => {
   console.log('balance command received');
 
   // Retrieve Ido balance in ETH
@@ -174,18 +174,17 @@ bot.onText(/\/ido/, async (msg) => {
   const balanceInEth = ethers.utils.formatEther(balanceInWei);
 
   // Calculate the percentage based on the balance
-  let percentage;
-  if (balanceInEth <= 1) {
-    percentage = 100;
-  } else {
-    percentage = 100 + (balanceInEth - 1) * 10;
-    // You can adjust the percentage increment as needed
-  }
+  const baseValue = 1; // Base value in ETH
+  const incrementValue = 0.1; // Increment value in ETH
+  const percentageIncrement = 10; // Percentage increment per incrementValue
+
+  let percentage = 100 + Math.floor((balanceInEth - baseValue) / incrementValue) * percentageIncrement;
 
   // Create the message with the balance and percentage
   const message = `Presale Balance: ${balanceInEth} ETH\nPercentage: ${percentage}%`;
   bot.sendMessage(msg.chat.id, message);
 });
+
 
 
 bot.on('message', (msg) => {
