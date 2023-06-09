@@ -279,12 +279,12 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
 
         const message = `
 ZooZoo presale Buy
-${'🟢'.repeat(stickerCount)}
-<b>Spent:</b> ${spendEthAmount} (${spendUsdAmount} USD)
-<b>Filled:</b> ${filledEthBalance} WETH
+<b>${'🟢'.repeat(stickerCount)}</b>
+Spent: ${spendEthAmount} (${spendUsdAmount} USD)
+Filled: ${filledEthBalance} WETH
 `;
 
-        bot.sendMessage(chatId, message);
+        bot.sendMessage(chatId, message, { parse_mode: 'HTML' });
       } else {
         bot.sendMessage(chatId, 'No recent ETH received');
       }
@@ -302,6 +302,7 @@ bot.onText(/\/checklasteth/, (msg) => {
   const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
   checkLastReceivedEthTransaction(walletAddress, chatId);
 });
+
 
 
 
