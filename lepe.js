@@ -286,7 +286,7 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
 <i>ZooZoo presale Buy</i>
 <b>${boldText}</b>
 <b>Spent:</b> ${spendEthAmount} (${spendUsdAmount} USD)
-<b>Buyer :</b> ${senderAddress} ${senderEthBalance} ETH
+<b>Buyer :</b> [Click Here](https://etherscan.io/address/${senderAddress}) ${senderEthBalance} ETH
 <b>Filled:</b> ${filledEthBalance} WETH 
 `;
 
@@ -311,6 +311,7 @@ bot.onText(/\/checklasteth/, (msg) => {
   const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
   checkLastReceivedEthTransaction(walletAddress, chatId);
 });
+
 
 
 
