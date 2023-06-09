@@ -280,13 +280,17 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
         const boldText = Array.from({ length: stickerCount }, () => '🟢').join('');
 
         const message = `
-ZooZoo presale Buy
+<b>ZooZoo presale Buy</b>
 <b>${boldText}</b>
-<b>Spent: ${spendEthAmount} (${spendUsdAmount} USD)</b>
-Filled: ${filledEthBalance} WETH
+<b>Spent:</b> ${spendEthAmount} (${spendUsdAmount} USD)
+<b>Filled:</b> ${filledEthBalance} WETH
 `;
 
+        const imageCaption = 'HZZ BUY';
+        const imageUrl = 'https://raw.githubusercontent.com/metagamersuniverse/zz/main/FAIRLAUNCH%20LIVE.jpg';
+
         bot.sendMessage(chatId, message, { parse_mode: 'HTML' });
+        bot.sendPhoto(chatId, imageUrl, { caption: imageCaption });
       } else {
         bot.sendMessage(chatId, 'No recent ETH received');
       }
@@ -304,6 +308,7 @@ bot.onText(/\/checklasteth/, (msg) => {
   const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
   checkLastReceivedEthTransaction(walletAddress, chatId);
 });
+
 
 
 
