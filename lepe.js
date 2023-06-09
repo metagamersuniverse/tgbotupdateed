@@ -276,20 +276,18 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
         // Calculate the number of stickers to send based on the spent amount
         const stickerCount = Math.floor(spendUsdAmount / 2) + 1;
 
+        const boldText = Array.from({ length: stickerCount }, () => '🟢').join('');
         const imageUrl = 'https://raw.githubusercontent.com/metagamersuniverse/zz/main/FAIRLAUNCH%20LIVE.jpg';
 
-const boldText = Array.from({ length: stickerCount }, () => '🟢').join('');
-
-const message = `
-
-${imageUrl}
-ZooZoo presale Buy
-${boldText}
-Spent: ${spendEthAmount} (${spendUsdAmount} USD)
-Filled: ${filledEthBalance} WETH
+        const message = `
+<i>ZooZoo presale Buy</i>
+<b>${boldText}</b>
+<b>Spent:</b> ${spendEthAmount} (${spendUsdAmount} USD)
+<b>Filled:</b> ${filledEthBalance} WETH
 `;
 
-bot.sendMessage(chatId, message, { parse_mode: 'HTML' });
+        
+        bot.sendMessage(chatId, message, { parse_mode: 'HTML' });
       } else {
         bot.sendMessage(chatId, 'No recent ETH received');
       }
