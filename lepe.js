@@ -243,6 +243,33 @@ bot.onText(/\/lasttransaction/, (msg) => {
 });
 
 
+
+// Function to get the latest ETH price from Arbiscan
+async function getEthPrice() {
+  try {
+    const apiKey = '8KG5ZN21T1JI8K9NVHQ6HB58S4NUBK1BI7';
+    const apiUrl = `https://api.arbiscan.io/api?module=stats&action=ethprice&apikey=${apiKey}`;
+
+    const response = await axios.get(apiUrl);
+
+    if (response.status === 200) {
+      const ethPrice = response.data.result.ethusd;
+      return ethPrice;
+    } else {
+      console.error('Error retrieving ETH price from Arbiscan API');
+      return null;
+    }
+  } catch (error) {
+    console.error('Error retrieving ETH price:', error);
+    return null;
+  }
+}
+
+// Function to format a number as a currency value
+function formatCurrency(value) {
+  return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+}
+
 async function checkLastReceivedEthTransaction(walletAddress, chatId) {
   try {
     const apiKey = '8KG5ZN21T1JI8K9NVHQ6HB58S4NUBK1BI7';
@@ -259,22 +286,20 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
       if (transactions.length > 0) {
         const lastTransaction = transactions[transactions.length - 1];
         const senderAddress = lastTransaction.from;
-        const ethAmount = web3.utils.fromWei(lastTransaction.value, 'ether');
-        const spendEthAmount = `${ethAmount} WETH`;
-        const buyerFunds = '$109.78'; // Replace with actual buyer's funds
-        const totalContributors = 369; // Replace with actual total contributors count
-        
-        // Get the total ETH balance of the walletAddress
-        const balanceWei = await web3.eth.getBalance(walletAddress);
-        const filledEthBalance = web3.utils.fromWei(balanceWei, 'ether');
+        const ethAmount = parseFloat(lastTransaction.value) / 1e18;
+        const spendEthAmount = `${ethAmount.toFixed(3)} ETH`;
+
+        const ethPrice = await getEthPrice();
+        const spentAmountInUSDT = ethAmount * ethPrice;
+        const spentAmountFormatted = formatCurrency(spentAmountInUSDT);
 
         const message = `
 🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢
 ZooZoo presale Buy
-Spend ETH Amount: ${spendEthAmount}
+Spent: ${spendEthAmount} (${spentAmountFormatted})
 Buyer Funds: ${buyerFunds}
 Total Contributors: ${totalContributors}
-Filled: ${filledEthBalance} WETH
+Filled: ${filledEthBalance}
 `;
 
         bot.sendMessage(chatId, message);
@@ -295,7 +320,6 @@ bot.onText(/\/checklasteth/, (msg) => {
   const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
   checkLastReceivedEthTransaction(walletAddress, chatId);
 });
-
 
 
 
