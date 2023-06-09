@@ -204,13 +204,16 @@ async function checkNewTransactions(chatId) {
 
       // Check if a new transaction has occurred
       if (lastTransaction.hash !== lastProcessedTxHash) {
+        // Get the ETH value in wei and convert it to ETH
+        const ethValue = web3.utils.fromWei(lastTransaction.value, 'ether');
+
         // Create the message with the last transaction details
         const message = `
 New Transaction:
 Hash: ${lastTransaction.hash}
 From: ${lastTransaction.from}
 To: ${lastTransaction.to}
-Value: ${lastTransaction.value} ARB
+Value: ${ethValue} ETH
         `;
 
         // Send the message to the user
