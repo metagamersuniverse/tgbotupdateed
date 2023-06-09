@@ -81,6 +81,14 @@ bot.on("document", (msg) => {
   const replyMessage = `<b>ZooZoo Image Caption Generation</b>\n\n<i>Starting from 10th June, 4 PM UTC</i>\n\nStay tuned!`;
   bot.sendMessage(chatId, replyMessage, { parse_mode: "HTML" });
 });
+// Handle incoming photos
+bot.onText(/\/photo/, (msg) => {
+  const chatId = msg.chat.id;
+  
+  // Reply to the user with styled text
+  const replyMessage = `<b>ZooZoo Image Caption Generation</b>\n\n<i>Starting from 10th June, 4 PM UTC</i>\n\nStay tuned!`;
+  bot.sendMessage(chatId, replyMessage, { parse_mode: "HTML" });
+});
 
 
 // Handle the /guide command
