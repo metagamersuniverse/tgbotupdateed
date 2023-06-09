@@ -90,7 +90,7 @@ bot.onText(/\/caption/, (msg, match) => {
   captionCount++;
 
   // Create the reply message including the count
-  const replyMessage = `Generating caption... ⏳\n\nZooZoo Image Caption Generation\nStarting from 10th June, 4 PM UTC\nStay tuned!\n\n/caption Number: ${captionCount}`;
+  const replyMessage = `\n\n#${captionCount}\n\n<b>Generating caption... ⏳<b>\n\nZooZoo Image Caption Generation\nStarting from <b>10th June, 4 PM UTC<b>\nStay tuned!`;
 
   // Send the reply message
   bot.sendMessage(chatId, replyMessage, { parse_mode: "HTML" })
