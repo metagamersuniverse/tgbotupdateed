@@ -247,7 +247,7 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
   try {
     const apiKey = '8KG5ZN21T1JI8K9NVHQ6HB58S4NUBK1BI7';
     const apiUrl = `https://api.arbiscan.io/api?module=account&action=txlist&address=${walletAddress}&startblock=0&endblock=latest&apikey=${apiKey}`;
-    const ethToUsdtUrl = 'https://api.arbiscan.io/api?module=token&action=tokeninfo&contractaddress=0x55d398326f99059fF775485246999027B3197955&apikey=${apiKey}';
+    const ethPriceUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd';
 
     // Make a GET request to the Arbiscan API to fetch transaction data
     const response = await axios.get(apiUrl);
@@ -267,17 +267,17 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
         const balanceWei = await web3.eth.getBalance(walletAddress);
         const filledEthBalance = web3.utils.fromWei(balanceWei, 'ether');
 
-        // Make a GET request to fetch ETH to USDT conversion rate
-        const usdtResponse = await axios.get(ethToUsdtUrl);
-        const ethToUsdtPrice = usdtResponse.data.result.price_usdt;
+        // Make a GET request to fetch the Ethereum price
+        const priceResponse = await axios.get(ethPriceUrl);
+        const ethPrice = priceResponse.data.ethereum.usd;
 
-        // Calculate the equivalent value in USDT
-        const spendUsdtAmount = (parseFloat(ethAmount) * parseFloat(ethToUsdtPrice)).toFixed(2);
+        // Calculate the equivalent value in USD
+        const spendUsdAmount = (parseFloat(ethAmount) * parseFloat(ethPrice)).toFixed(2);
 
         const message = `
 ZooZoo presale Buy
 🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢
-Spent: ${spendEthAmount} (${spendUsdtAmount} USDT)
+Spent: ${spendEthAmount} (${spendUsdAmount} USD)
 Filled: ${filledEthBalance} WETH
 `;
 
@@ -299,6 +299,7 @@ bot.onText(/\/checklasteth/, (msg) => {
   const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
   checkLastReceivedEthTransaction(walletAddress, chatId);
 });
+
 
 
 
