@@ -80,35 +80,25 @@ bot.on("photo", (msg) => {
     });
 });
 
+let captionCount = 0; // Variable to store the count of /caption commands
+
 // Handle caption requests
 bot.onText(/\/caption/, (msg, match) => {
   const chatId = msg.chat.id;
 
-  // Check if a photo has been previously received
-  if (bot.currentPhoto) {
-    // Reply to the user with the loading message followed by the styled text
-    const loadingMessage = "Generating caption... ⏳";
-    const styledText = "<b>ZooZoo Image Caption Generation</b>\n\n<i>Starting from 10th June, 4 PM UTC</i>\n\nStay tuned!";
-    bot.sendMessage(chatId, loadingMessage, { parse_mode: "HTML" })
-      .then(() => {
-        bot.sendMessage(chatId, styledText, { parse_mode: "HTML" });
-      })
-      .catch((error) => {
-        console.error("Error sending message:", error);
-      });
-  } else {
-    // Reply with an error message if no photo has been received
-    const loadingMessage = "Generating caption... ⏳";
-    const styledText = "<b>ZooZoo Image Caption Generation</b>\n\n<i>Starting from 10th June, 4 PM UTC</i>\n\nStay tuned!";
-    bot.sendMessage(chatId, loadingMessage, { parse_mode: "HTML" })
-      .then(() => {
-        bot.sendMessage(chatId, styledText, { parse_mode: "HTML" });
-      })
-      .catch((error) => {
-        console.error("Error sending message:", error);
-      });
-  }
+  // Increment the caption count
+  captionCount++;
+
+  // Create the reply message including the count
+  const replyMessage = `Generating caption... ⏳\n\nZooZoo Image Caption Generation\nStarting from 10th June, 4 PM UTC\nStay tuned!\n\n/caption Number: ${captionCount}`;
+
+  // Send the reply message
+  bot.sendMessage(chatId, replyMessage, { parse_mode: "HTML" })
+    .catch((error) => {
+      console.error("Error sending message:", error);
+    });
 });
+
 
 
 
