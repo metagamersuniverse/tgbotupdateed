@@ -67,32 +67,24 @@ Let's get started!
 // Handle incoming photos
 bot.on("photo", (msg) => {
   const chatId = msg.chat.id;
-  const photo = msg.photo;
+  const photo = msg.photo[msg.photo.length - 1]; // Get the last photo from the array
 
-  // Check if the message contains a photo in JPG format
-  const jpgPhoto = photo.find((p) => p.file_id.endsWith("jpg"));
+  // Log the received photo information
+  console.log("Received photo:", photo);
 
-  if (jpgPhoto) {
-    // Log the received photo information
-    console.log("Received photo:", util.inspect(jpgPhoto, { depth: null }));
-
-    // Reply to the user with the loading message
-    const loadingMessage = "Generating caption... ⏳";
-    bot.sendMessage(chatId, loadingMessage, { parse_mode: "HTML" })
-      .then(() => {
-        // Reply to the user with the styled text
-        const styledText = "<b>ZooZoo Image Caption Generation</b>\n\n<i>Starting from 10th June, 4 PM UTC</i>\n\nStay tuned!";
-        bot.sendMessage(chatId, styledText, { parse_mode: "HTML" });
-      })
-      .catch((error) => {
-        console.error("Error sending message:", error);
-      });
-  } else {
-    // Reply with an error message if no photo in JPG format is found
-    const errorMessage = "Please send a photo in JPG format.";
-    bot.sendMessage(chatId, errorMessage, { parse_mode: "HTML" });
-  }
+  // Reply to the user with the loading message
+  const loadingMessage = "Generating caption... ⏳";
+  bot.sendMessage(chatId, loadingMessage, { parse_mode: "HTML" })
+    .then(() => {
+      // Reply to the user with the styled text
+      const styledText = "<b>ZooZoo Image Caption Generation</b>\n\n<i>Starting from 10th June, 4 PM UTC</i>\n\nStay tuned!";
+      bot.sendMessage(chatId, styledText, { parse_mode: "HTML" });
+    })
+    .catch((error) => {
+      console.error("Error sending message:", error);
+    });
 });
+
 
 
 // Handle the /guide command
