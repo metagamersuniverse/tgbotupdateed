@@ -69,21 +69,40 @@ bot.on("photo", (msg) => {
   const chatId = msg.chat.id;
   const photo = msg.photo[msg.photo.length - 1]; // Get the last photo from the array
 
-  // Log the received photo information
-  console.log("Received photo:", photo);
+  // Store the received photo in a variable accessible for caption requests
+  bot.currentPhoto = photo;
 
   // Reply to the user with the loading message
   const loadingMessage = "Generating caption... ⏳";
   bot.sendMessage(chatId, loadingMessage, { parse_mode: "HTML" })
-    .then(() => {
-      // Reply to the user with the styled text
-      const styledText = "<b>ZooZoo Image Caption Generation</b>\n\n<i>Starting from 10th June, 4 PM UTC</i>\n\nStay tuned!";
-      bot.sendMessage(chatId, styledText, { parse_mode: "HTML" });
-    })
     .catch((error) => {
       console.error("Error sending message:", error);
     });
 });
+
+// Handle caption requests
+bot.onText(/\/caption/, (msg, match) => {
+  const chatId = msg.chat.id;
+
+  // Check if a photo has been previously received
+  if (bot.currentPhoto) {
+    // Reply to the user with the loading message followed by the styled text
+    const loadingMessage = "Generating caption... ⏳";
+    const styledText = "<b>ZooZoo Image Caption Generation</b>\n\n<i>Starting from 10th June, 4 PM UTC</i>\n\nStay tuned!";
+    bot.sendMessage(chatId, loadingMessage, { parse_mode: "HTML" })
+      .then(() => {
+        bot.sendMessage(chatId, styledText, { parse_mode: "HTML" });
+      })
+      .catch((error) => {
+        console.error("Error sending message:", error);
+      });
+  } else {
+    // Reply with an error message if no photo has been received
+    const errorMessage = "Please send a photo first before requesting a caption.";
+    bot.sendMessage(chatId, errorMessage, { parse_mode: "HTML" });
+  }
+});
+
 
 
 
