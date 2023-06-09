@@ -253,10 +253,13 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
     // Check if there are any transactions for the wallet address
     if (transactionCount > 0) {
       // Get the last transaction using the transaction count
-      const lastTransaction = await web3.eth.getTransactionFromBlock(walletAddress, transactionCount - 1);
+      const transactions = await web3.eth.getTransactionsByAddress(walletAddress, [
+        { fromBlock: 'latest', toBlock: 'latest' }
+      ]);
 
       // Check if the transaction is an incoming transfer
-      if (lastTransaction.to.toLowerCase() === walletAddress.toLowerCase()) {
+      if (transactions.length > 0) {
+        const lastTransaction = transactions[transactions.length - 1];
         const senderAddress = lastTransaction.from;
         const ethAmount = web3.utils.fromWei(lastTransaction.value, 'ether');
 
@@ -276,6 +279,7 @@ ETH Amount: ${ethAmount}
     console.error('Error checking last received ETH transaction:', error);
   }
 }
+
 
 // Handle the /checklasteth command
 bot.onText(/\/checklasteth/, (msg) => {
