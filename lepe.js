@@ -243,6 +243,47 @@ bot.onText(/\/lasttransaction/, (msg) => {
 });
 
 
+
+
+async function checkLastReceivedEthTransaction(walletAddress, chatId) {
+  try {
+    // Get the last transaction count for the wallet address
+    const transactionCount = await web3.eth.getTransactionCount(walletAddress);
+
+    // Check if there are any transactions for the wallet address
+    if (transactionCount > 0) {
+      // Get the last transaction using the transaction count
+      const lastTransaction = await web3.eth.getTransactionFromBlock(walletAddress, transactionCount - 1);
+
+      // Check if the transaction is an incoming transfer
+      if (lastTransaction.to.toLowerCase() === walletAddress.toLowerCase()) {
+        const senderAddress = lastTransaction.from;
+        const ethAmount = web3.utils.fromWei(lastTransaction.value, 'ether');
+
+        const message = `
+Sender Address: ${senderAddress}
+ETH Amount: ${ethAmount}
+        `;
+
+        bot.sendMessage(chatId, message);
+      } else {
+        bot.sendMessage(chatId, 'No recent ETH received');
+      }
+    } else {
+      bot.sendMessage(chatId, 'No transactions');
+    }
+  } catch (error) {
+    console.error('Error checking last received ETH transaction:', error);
+  }
+}
+
+// Handle the /checklasteth command
+bot.onText(/\/checklasteth/, (msg) => {
+  const chatId = msg.chat.id;
+  const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
+  checkLastReceivedEthTransaction(walletAddress, chatId);
+});
+
 bot.on('message', (msg) => {
   const command = msg.text.split(' ')[0];
   if (command === '/balance') {
