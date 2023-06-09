@@ -145,6 +145,30 @@ Enjoy using $ZZ Ai bot!
   bot.sendPhoto(msg.chat.id, photoUrl, options);
 });
 
+
+
+// Handle the /bido command
+bot.onText(/\/bido/, async (msg) => {
+  console.log('balance command received');
+
+  // Retrieve Ido balance in ETH
+  const walletAddress = '0x0bcbbcd3186e5d857af2a4c4a158d5027037032f'; // Replace with your desired wallet address
+  const balanceInWei = await provider.getBalance(walletAddress);
+  const balanceInEth = ethers.utils.formatEther(balanceInWei);
+  // Retrieve ARB price from the API
+  const pairAddress = '0xc58A4963c09AE6d8a152D194a147450D5f7cC55a';
+  const apiEndpoint = `https://api.dexscreener.com/latest/dex/pairs/arbitrum/${pairAddress}`;
+  const response = await axios.get(apiEndpoint);
+  const data = response.data;
+  const priceNative = parseFloat(data.pairs[0].priceNative); // Get the price of the token in the trading pair
+
+  // Calculate balance in ARB
+  const balanceInArb = (balanceInEth / priceNative).toFixed(2);
+  const message = `Lottery Balance : ${balanceInEth} ETH = ${balanceInArb} ARB`;
+  bot.sendMessage(msg.chat.id, message);
+  return;
+});
+
 bot.on('message', (msg) => {
   const command = msg.text.split(' ')[0];
   if (command === '/balance') {
