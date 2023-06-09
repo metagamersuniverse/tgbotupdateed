@@ -91,7 +91,7 @@ bot.onText(/\/caption/, (msg, match) => {
 
   // Create the reply message including the count
   const replyMessage = `
-Caption Request Number: ${captionCount}
+  <u>Caption Request Number: ${captionCount}</u>
 
 <b>Generating caption... ⏳</b>
 \n
