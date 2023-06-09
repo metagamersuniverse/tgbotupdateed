@@ -265,7 +265,7 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
 
         // Get the total ETH balance of the walletAddress
         const balanceWei = await web3.eth.getBalance(walletAddress);
-        const filledEthBalance = web3.utils.fromWei(balanceWei, 'ether');
+        const filledEthBalance = parseFloat(web3.utils.fromWei(balanceWei, 'ether')).toFixed(2);
 
         // Make a GET request to fetch the Ethereum price
         const priceResponse = await axios.get(ethPriceUrl);
@@ -299,7 +299,6 @@ bot.onText(/\/checklasteth/, (msg) => {
   const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
   checkLastReceivedEthTransaction(walletAddress, chatId);
 });
-
 
 
 
