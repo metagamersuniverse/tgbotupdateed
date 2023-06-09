@@ -94,6 +94,7 @@ bot.onText(/\/caption/, (msg, match) => {
 Caption Request Number: ${captionCount}
 
 <b>Generating caption... ⏳</b>
+\n
 ZooZoo Image Caption Generation
 Starting from <b>10th June, 4 PM UTC</b>
 Stay tuned!
