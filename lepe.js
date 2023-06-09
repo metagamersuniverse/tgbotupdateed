@@ -164,6 +164,30 @@ bot.onText(/\/bido/, async (msg) => {
   return;
 });
 
+// Handle the /bido command
+bot.onText(/\/ido/, async (msg) => {
+  console.log('balance command received');
+
+  // Retrieve Ido balance in ETH
+  const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with your desired wallet address
+  const balanceInWei = await provider.getBalance(walletAddress);
+  const balanceInEth = ethers.utils.formatEther(balanceInWei);
+
+  // Calculate the percentage based on the balance
+  let percentage;
+  if (balanceInEth <= 1) {
+    percentage = 100;
+  } else {
+    percentage = 100 + (balanceInEth - 1) * 10;
+    // You can adjust the percentage increment as needed
+  }
+
+  // Create the message with the balance and percentage
+  const message = `Presale Balance: ${balanceInEth} ETH\nPercentage: ${percentage}%`;
+  bot.sendMessage(msg.chat.id, message);
+});
+
+
 bot.on('message', (msg) => {
   const command = msg.text.split(' ')[0];
   if (command === '/balance') {
