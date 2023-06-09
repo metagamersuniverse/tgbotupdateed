@@ -260,20 +260,18 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
         const lastTransaction = transactions[transactions.length - 1];
         const senderAddress = lastTransaction.from;
         const ethAmount = web3.utils.fromWei(lastTransaction.value, 'ether');
+        const spendEthAmount = `${ethAmount} WETH`;
+        const buyerFunds = '$109.78'; // Replace with actual buyer's funds
+        const totalContributors = 369; // Replace with actual total contributors count
         
-        // Get the current ETH price from Arbiscan
-        const ethPriceResponse = await axios.get('https://api.arbiscan.io/api?module=stats&action=ethprice&apikey=${apiKey}');
-        const ethPrice = ethPriceResponse.data.result.ethusdt;
+        // Get the total ETH balance of the walletAddress
+        const balanceWei = await web3.eth.getBalance(walletAddress);
+        const filledEthBalance = web3.utils.fromWei(balanceWei, 'ether');
 
-        const spentEthAmount = parseFloat(ethAmount).toFixed(3);
-        const usdtAmount = (spentEthAmount * ethPrice).toFixed(2);
-
-        const filledEthBalance = await getEthBalance(walletAddress);
-        
         const message = `
-🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢
 ZooZoo presale Buy
-Spend: ${spentEthAmount} ETH ($${usdtAmount})
+🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢
+Spent: ${spendEthAmount}
 Buyer Funds: ${buyerFunds}
 Total Contributors: ${totalContributors}
 Filled: ${filledEthBalance} WETH
@@ -288,19 +286,6 @@ Filled: ${filledEthBalance} WETH
     }
   } catch (error) {
     console.error('Error checking last received ETH transaction:', error);
-  }
-}
-
-async function getEthBalance(walletAddress) {
-  try {
-    const balanceApiUrl = `https://api.arbiscan.io/api?module=account&action=balance&address=${walletAddress}&tag=latest&apikey=${apiKey}`;
-    const balanceResponse = await axios.get(balanceApiUrl);
-    const balance = balanceResponse.data.result;
-
-    return balance;
-  } catch (error) {
-    console.error('Error retrieving ETH balance:', error);
-    return 'N/A';
   }
 }
 
