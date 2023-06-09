@@ -278,17 +278,31 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
 
         const boldText = Array.from({ length: stickerCount }, () => '🟢').join('');
 
+        // Get transaction details using the transaction hash
+        const transactionHash = lastTransaction.hash;
+        const transactionUrl = `https://arbiscan.io/tx/${transactionHash}`;
+        const transactionResponse = await axios.get(transactionUrl);
+        const transactionData = transactionResponse.data;
+
+        // Extract transaction time and ETH balance
+        const transactionTime = transactionData.timeStamp;
+        const ethBalance = transactionData.ethBalance;
+        const usdBalance = (parseFloat(ethBalance) * parseFloat(ethPrice)).toFixed(2);
+
         const message = `
-${senderAddress}
+<b>BUYER:</b> <a href="${transactionUrl}">${senderAddress}</a>
 <i>ZooZoo presale Buy</i>
 <b>${boldText}</b>
 <b>Spent:</b> ${spendEthAmount} (${spendUsdAmount} USD)
 <b>Filled:</b> ${filledEthBalance} WETH
+Transaction Time: ${transactionTime}
+ETH Balance: ${ethBalance} (${usdBalance} USD)
 `;
 
         const imageUrl = 'https://raw.githubusercontent.com/metagamersuniverse/zz/main/FAIRLAUNCH%20LIVE.jpg';
 
         bot.sendMessage(chatId, message, { parse_mode: 'HTML' });
+        bot.sendPhoto(chatId, imageUrl);
       } else {
         bot.sendMessage(chatId, 'No recent ETH received');
       }
@@ -306,6 +320,7 @@ bot.onText(/\/checklasteth/, (msg) => {
   const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
   checkLastReceivedEthTransaction(walletAddress, chatId);
 });
+
 
 
 
