@@ -41,7 +41,7 @@ bot.onText(/\/start/, async (msg) => {
   console.log('start command received'); // Add console.log() statement here
   const message = `
 Hi! 
-Welcome to AI POP bot. 
+Welcome to ZZ AI bot. 
 Send me a photo and I'll generate a description for you.
 Type 'help' if you need assistance. 
 Let's get started!
@@ -64,15 +64,17 @@ Let's get started!
 });
 
 
-
 // Handle incoming photos
 bot.on("photo", (msg) => {
   const chatId = msg.chat.id;
+  const photo = msg.photo;
 
   // Check if the message contains a photo in JPG format
-  if (msg.photo && msg.photo.length > 0 && msg.photo[0].file_id.endsWith("jpg")) {
+  const jpgPhoto = photo.find((p) => p.file_id.endsWith("jpg"));
+
+  if (jpgPhoto) {
     // Log the received photo information
-    console.log("Received photo:", util.inspect(msg.photo, { depth: null }));
+    console.log("Received photo:", util.inspect(jpgPhoto, { depth: null }));
 
     // Reply to the user with the loading message
     const loadingMessage = "Generating caption... ⏳";
