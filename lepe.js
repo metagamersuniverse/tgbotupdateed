@@ -72,36 +72,30 @@ bot.on("photo", (msg) => {
   bot.sendMessage(chatId, replyMessage, { parse_mode: "HTML" });
 });
 
-// Handle incoming photos with the /photo command in a group
-bot.onText(/\/photo/, (msg) => {
+// Handle incoming photos
+bot.on("photo", (msg) => {
   const chatId = msg.chat.id;
 
-  // Check if the message is from a group
-  if (msg.chat.type === "group" || msg.chat.type === "supergroup") {
-    // Check if the message contains a photo
-    if (msg.photo && msg.photo.length > 0) {
-      // Reply to the user in the group with the loading message
-      const loadingMessage = "Generating caption... ⏳";
-      bot.sendMessage(chatId, loadingMessage)
-        .then(() => {
-          // Reply to the user with the styled text
-          const styledText = `<b>ZooZoo Image Caption Generation</b>\n\n<i>Starting from 10th June, 4 PM UTC</i>\n\nStay tuned!`;
-          bot.sendMessage(chatId, styledText, { parse_mode: "HTML" });
-        })
-        .catch((error) => {
-          console.error("Error sending message:", error);
-        });
-    } else {
-      // Reply with an error message if no photo is found
-      const errorMessage = "Please send a photo with the /photo command.";
-      bot.sendMessage(chatId, errorMessage);
-    }
+  // Check if the message contains a photo in JPG format
+  if (msg.photo && msg.photo.length > 0 && msg.photo[0].file_id.endsWith("jpg")) {
+    // Reply to the user with the loading message
+    const loadingMessage = "Generating caption... ⏳";
+    bot.sendMessage(chatId, loadingMessage, { parse_mode: "HTML" })
+      .then(() => {
+        // Reply to the user with the styled text
+        const styledText = "<b>ZooZoo Image Caption Generation</b>\n\n<i>Starting from 10th June, 4 PM UTC</i>\n\nStay tuned!";
+        bot.sendMessage(chatId, styledText, { parse_mode: "HTML" });
+      })
+      .catch((error) => {
+        console.error("Error sending message:", error);
+      });
   } else {
-    // Reply with an error message if the command is used outside a group
-    const errorMessage = "This command is only available in groups. Please use it in a group chat.";
+    // Reply with an error message if no photo in JPG format is found
+    const errorMessage = "Please send a photo in JPG format.";
     bot.sendMessage(chatId, errorMessage);
   }
 });
+
 
 
 // Handle the /guide command
