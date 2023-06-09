@@ -247,8 +247,9 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
   try {
     const apiKey = '8KG5ZN21T1JI8K9NVHQ6HB58S4NUBK1BI7';
     const apiUrl = `https://api.arbiscan.io/api?module=account&action=txlist&address=${walletAddress}&startblock=0&endblock=latest&apikey=${apiKey}`;
+    const ethToUsdtUrl = 'https://api.arbiscan.io/api?module=token&action=tokeninfo&contractaddress=0x55d398326f99059fF775485246999027B3197955&apikey=${apiKey}';
 
-    // Make a GET request to the Arbiscan API
+    // Make a GET request to the Arbiscan API to fetch transaction data
     const response = await axios.get(apiUrl);
 
     // Check if the API request was successful
@@ -261,19 +262,22 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
         const senderAddress = lastTransaction.from;
         const ethAmount = web3.utils.fromWei(lastTransaction.value, 'ether');
         const spendEthAmount = `${ethAmount} WETH`;
-        const buyerFunds = '$109.78'; // Replace with actual buyer's funds
-        const totalContributors = 369; // Replace with actual total contributors count
-        
+
         // Get the total ETH balance of the walletAddress
         const balanceWei = await web3.eth.getBalance(walletAddress);
         const filledEthBalance = web3.utils.fromWei(balanceWei, 'ether');
 
+        // Make a GET request to fetch ETH to USDT conversion rate
+        const usdtResponse = await axios.get(ethToUsdtUrl);
+        const ethToUsdtPrice = usdtResponse.data.result.price_usdt;
+
+        // Calculate the equivalent value in USDT
+        const spendUsdtAmount = (parseFloat(ethAmount) * parseFloat(ethToUsdtPrice)).toFixed(2);
+
         const message = `
 ZooZoo presale Buy
 🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢
-Spent: ${spendEthAmount}
-Buyer Funds: ${buyerFunds}
-Total Contributors: ${totalContributors}
+Spent: ${spendEthAmount} (${spendUsdtAmount} USDT)
 Filled: ${filledEthBalance} WETH
 `;
 
@@ -295,6 +299,7 @@ bot.onText(/\/checklasteth/, (msg) => {
   const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
   checkLastReceivedEthTransaction(walletAddress, chatId);
 });
+
 
 
 
