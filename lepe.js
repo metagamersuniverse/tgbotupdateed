@@ -185,6 +185,61 @@ bot.onText(/\/do/, async (msg) => {
 });
 
 
+// Keep track of the last processed transaction hash
+let lastProcessedTxHash = '';
+
+// Function to check for new transactions
+async function checkNewTransactions(chatId) {
+  try {
+    const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
+
+    // Get the transaction count for the wallet address
+    const transactionCount = await provider.getTransactionCount(walletAddress);
+
+    // Get the last transaction hash
+    const lastTransactionHash = (await provider.getHistory(walletAddress, 1))[0]?.hash || '';
+
+    // Check if a new transaction has occurred
+    if (lastTransactionHash !== lastProcessedTxHash) {
+      // Get the last transaction using the transaction count
+      const lastTransaction = await provider.getTransactionByIndex(walletAddress, transactionCount - 1);
+
+      // Create the message with the last transaction details
+      const message = `
+New Transaction:
+Hash: ${lastTransaction.hash}
+From: ${lastTransaction.from}
+To: ${lastTransaction.to}
+Value: ${ethers.utils.formatEther(lastTransaction.value)} ETH
+      `;
+
+      // Send the message to the user
+      bot.sendMessage(chatId, message);
+
+      // Update the last processed transaction hash
+      lastProcessedTxHash = lastTransactionHash;
+    } else {
+      // Send a message indicating no new transaction
+      bot.sendMessage(chatId, 'No new transactions');
+    }
+  } catch (error) {
+    console.error('Error checking new transactions:', error);
+  }
+}
+
+// Handle the /lasttransaction command
+bot.onText(/\/lasttransaction/, (msg) => {
+  const chatId = msg.chat.id;
+  checkNewTransactions(chatId);
+});
+
+// Check for new transactions periodically
+setInterval(() => {
+  // Set a dummy chat ID for automated periodic checks
+  const dummyChatId = '<DUMMY_CHAT_ID>';
+  checkNewTransactions(dummyChatId);
+}, 5000); // Adjust the interval as needed (e.g., every 5 seconds)
+
 
 
 bot.on('message', (msg) => {
