@@ -78,6 +78,9 @@ bot.on("photo", (msg) => {
 
   // Check if the message contains a photo in JPG format
   if (msg.photo && msg.photo.length > 0 && msg.photo[0].file_id.endsWith("jpg")) {
+   // Log the received photo information
+   console.log("Received photo:", msg.photo);
+
     // Reply to the user with the loading message
     const loadingMessage = "Generating caption... ⏳";
     bot.sendMessage(chatId, loadingMessage, { parse_mode: "HTML" })
@@ -92,10 +95,9 @@ bot.on("photo", (msg) => {
   } else {
     // Reply with an error message if no photo in JPG format is found
     const errorMessage = "Please send a photo in JPG format.";
-    bot.sendMessage(chatId, errorMessage);
+    bot.sendMessage(chatId, errorMessage, { parse_mode: "HTML" });
   }
 });
-
 
 
 // Handle the /guide command
