@@ -42,7 +42,7 @@ Set environment variables: Set the environment variables required by your bot us
 arduino
 Copy code
 
-export TELEGRAM_BOT_TOKEN="6197218385:AAGJs_GGYcE0JhmP4BEKKyZnm6NUeZwgEZU"
+export TELEGRAM_BOT_TOKEN="6247926693:AAEetWXmHmkPIFxTQ64u7redXzz8IZO7TeA"
 export RPC_URL="https://arb-mainnet.g.alchemy.com/v2/-4-rxeMBTi-yavAgPLLK5TkFBvri4Pvr"
 export CONTRACT_ADDRESS="0x7F6228DdA3F9ea6B4beAa24181bf95B2F4a29dB8"
 
