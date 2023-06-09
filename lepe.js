@@ -35,29 +35,29 @@ bot.onText(/\/(buy|ido|presale|pinksale)/, (msg) => {
   };
   bot.sendMessage(msg.chat.id, message, options);
 });
-// Handle the /guide command
+// Handle the /start command
 bot.onText(/\/start/, async (msg) => {
   console.log('start command received'); // Add console.log() statement here
   const message = `
-<b>Hello! Welcome to the $LEPE Lottery bot.</b>
-
-To get help with using the bot, use the /guide command.
+Hi! Welcome to AI POP bot. Send me a photo and I'll generate a description for you. Type 'help' if you need assistance. Let's get started!
 `;
 
-  const photoUrl = "https://zoozoo.lol/wp-content/uploads/2023/06/top-banner-1.png"; // replace with your photo URL
+  const photoUrl = "https://raw.githubusercontent.com/metagamersuniverse/zz/main/FAIRLAUNCH%20LIVE.jpg"; // replace with your photo URL
   const options = {
     parse_mode: "HTML",
     caption: message,
     reply_markup: {
       inline_keyboard: [
         [
-          { text: "Visit our website", url: "https://www.luckypepe.io/" }
+          { text: "BUY NOW", url: "https://zoozoo.lol/" },
+          { text: "Visit our website", url: "https://zoozoo.lol/" }
         ]
       ]
     }
   };
   bot.sendPhoto(msg.chat.id, photoUrl, options);
 });
+
 
 // Handle the /guide command
 bot.onText(/\/(help|guide)/, async (msg) => {
