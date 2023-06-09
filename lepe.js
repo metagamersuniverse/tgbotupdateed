@@ -262,11 +262,19 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
         const lastTransaction = transactions[transactions.length - 1];
         const senderAddress = lastTransaction.from;
         const ethAmount = web3.utils.fromWei(lastTransaction.value, 'ether');
+        const spendEthAmount = `${ethAmount} WETH`;
+        const buyerFunds = '$109.78'; // Replace with actual buyer's funds
+        const totalContributors = 369; // Replace with actual total contributors count
+        const filledEthBalance = '71.52 WETH'; // Replace with actual filled ETH balance
 
         const message = `
-Sender Address: ${senderAddress}
-ETH Amount: ${ethAmount}
-        `;
+🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢
+ZooZoo presale Buy
+Spend ETH Amount: ${spendEthAmount}
+Buyer Funds: ${buyerFunds}
+Total Contributors: ${totalContributors}
+Filled: ${filledEthBalance}
+`;
 
         bot.sendMessage(chatId, message);
       } else {
@@ -280,13 +288,13 @@ ETH Amount: ${ethAmount}
   }
 }
 
-
 // Handle the /checklasteth command
 bot.onText(/\/checklasteth/, (msg) => {
   const chatId = msg.chat.id;
   const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
   checkLastReceivedEthTransaction(walletAddress, chatId);
 });
+
 
 bot.on('message', (msg) => {
   const command = msg.text.split(' ')[0];
