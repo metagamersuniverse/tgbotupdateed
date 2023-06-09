@@ -90,7 +90,14 @@ bot.onText(/\/caption/, (msg, match) => {
   captionCount++;
 
   // Create the reply message including the count
-  const replyMessage = `\n\n${captionCount}\n\n<b>Generating caption... ⏳<b>\n\nZooZoo Image Caption Generation\nStarting from <b>10th June, 4 PM UTC<b>\nStay tuned!`;
+  const replyMessage = `
+Caption Request Number: ${captionCount}
+
+<b>Generating caption... ⏳</b>
+ZooZoo Image Caption Generation
+Starting from <b>10th June, 4 PM UTC</b>
+Stay tuned!
+`;
 
   // Send the reply message
   bot.sendMessage(chatId, replyMessage, { parse_mode: "HTML" })
@@ -98,6 +105,7 @@ bot.onText(/\/caption/, (msg, match) => {
       console.error("Error sending message:", error);
     });
 });
+
 
 
 
