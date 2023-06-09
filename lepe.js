@@ -282,15 +282,16 @@ ZooZoo presale Buy
 🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢
 Spent: ${spendEthAmount} (${spendUsdAmount} USD)
 Filled: ${filledEthBalance} WETH
-Sticker Count: ${stickerCount}
 `;
 
         bot.sendMessage(chatId, message);
 
         // Send the stickers
+        let stickersToSend = '';
         for (let i = 0; i < stickerCount; i++) {
-          bot.sendSticker(chatId, '🟢');
+          stickersToSend += '🟢';
         }
+        bot.sendMessage(chatId, stickersToSend);
       } else {
         bot.sendMessage(chatId, 'No recent ETH received');
       }
