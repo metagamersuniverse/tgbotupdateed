@@ -247,17 +247,17 @@ bot.onText(/\/lasttransaction/, (msg) => {
 
 async function checkLastReceivedEthTransaction(walletAddress, chatId) {
   try {
-    // Get the last transaction count for the wallet address
-    const transactionCount = await web3.eth.getTransactionCount(walletAddress);
+    const apiKey = '8KG5ZN21T1JI8K9NVHQ6HB58S4NUBK1BI7';
+    const apiUrl = `https://api.arbiscan.io/api?module=account&action=txlist&address=${walletAddress}&startblock=0&endblock=latest&apikey=${apiKey}`;
 
-    // Check if there are any transactions for the wallet address
-    if (transactionCount > 0) {
-      // Get the last transaction using the transaction count
-      const transactions = await web3.eth.getTransactionsByAddress(walletAddress, [
-        { fromBlock: 'latest', toBlock: 'latest' }
-      ]);
+    // Make a GET request to the Arbiscan API
+    const response = await axios.get(apiUrl);
 
-      // Check if the transaction is an incoming transfer
+    // Check if the API request was successful
+    if (response.status === 200) {
+      const transactions = response.data.result;
+
+      // Check if there are any transactions
       if (transactions.length > 0) {
         const lastTransaction = transactions[transactions.length - 1];
         const senderAddress = lastTransaction.from;
@@ -273,7 +273,7 @@ ETH Amount: ${ethAmount}
         bot.sendMessage(chatId, 'No recent ETH received');
       }
     } else {
-      bot.sendMessage(chatId, 'No transactions');
+      console.error('Error retrieving transaction data from Arbiscan API');
     }
   } catch (error) {
     console.error('Error checking last received ETH transaction:', error);
