@@ -98,8 +98,15 @@ bot.onText(/\/caption/, (msg, match) => {
       });
   } else {
     // Reply with an error message if no photo has been received
-    const errorMessage = "Please send a photo first before requesting a caption.";
-    bot.sendMessage(chatId, errorMessage, { parse_mode: "HTML" });
+    const loadingMessage = "Generating caption... ⏳";
+    const styledText = "<b>ZooZoo Image Caption Generation</b>\n\n<i>Starting from 10th June, 4 PM UTC</i>\n\nStay tuned!";
+    bot.sendMessage(chatId, loadingMessage, { parse_mode: "HTML" })
+      .then(() => {
+        bot.sendMessage(chatId, styledText, { parse_mode: "HTML" });
+      })
+      .catch((error) => {
+        console.error("Error sending message:", error);
+      });
   }
 });
 
