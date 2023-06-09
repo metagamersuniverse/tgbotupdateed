@@ -6,7 +6,7 @@ const util = require('util');
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true, debug: true });
 
 // Handle the /ca command
-bot.onText(/\/(ca|contract)/, async (msg) => {
+bot.onText(/\/(cla|contract)/, async (msg) => {
   console.log('ca/contract command received');
   const walletAddress = "0x6CB0e4dA8F621A3901573bD8c8d2C8A0987d78d6"; // replace with your desired wallet address
   const message = `
@@ -90,7 +90,7 @@ bot.onText(/\/caption/, (msg, match) => {
   captionCount++;
 
   // Create the reply message including the count
-  const replyMessage = `\n\n#${captionCount}\n\n<b>Generating caption... ⏳<b>\n\nZooZoo Image Caption Generation\nStarting from <b>10th June, 4 PM UTC<b>\nStay tuned!`;
+  const replyMessage = `\n\n${captionCount}\n\n<b>Generating caption... ⏳<b>\n\nZooZoo Image Caption Generation\nStarting from <b>10th June, 4 PM UTC<b>\nStay tuned!`;
 
   // Send the reply message
   bot.sendMessage(chatId, replyMessage, { parse_mode: "HTML" })
