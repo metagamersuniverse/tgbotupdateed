@@ -242,6 +242,9 @@ bot.onText(/\/lasttransaction/, (msg) => {
   checkNewTransactions(chatId);
 });
 
+
+
+
 async function checkLastReceivedEthTransaction(walletAddress, chatId) {
   try {
     const apiKey = '8KG5ZN21T1JI8K9NVHQ6HB58S4NUBK1BI7';
@@ -286,13 +289,12 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
 <i>ZooZoo presale Buy</i>
 <b>${boldText}</b>
 <b>Spent:</b> ${spendEthAmount} (${spendUsdAmount} USD)
-<b>Buyer :</b> [Click Here](https://etherscan.io/address/${senderAddress}) ${senderEthBalance} ETH
-<b>Filled:</b> ${filledEthBalance} WETH 
+<b>Buyer :</b> [Buyer](https://etherscan.io/address/${senderAddress}) ${senderEthBalance} ETH
 `;
 
         const imageUrl = 'https://raw.githubusercontent.com/metagamersuniverse/zz/main/FAIRLAUNCH%20LIVE.jpg';
 
-        bot.sendPhoto(chatId, imageUrl, { caption: message, parse_mode: 'HTML' });
+        bot.sendMessage(chatId, message, { parse_mode: 'HTML' });
       
       } else {
         bot.sendMessage(chatId, 'No recent ETH received');
@@ -311,9 +313,6 @@ bot.onText(/\/checklasteth/, (msg) => {
   const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
   checkLastReceivedEthTransaction(walletAddress, chatId);
 });
-
-
-
 
 
 
