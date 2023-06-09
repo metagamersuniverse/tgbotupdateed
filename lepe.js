@@ -186,9 +186,6 @@ bot.onText(/\/do/, async (msg) => {
 });
 
 
-// Create a Web3 instance connected to the Ethereum network
-const web3 = new Web3('https://arb1.arbitrum.io/rpc');
-
 // Keep track of the last processed transaction hash
 let lastProcessedTxHash = '';
 
@@ -197,36 +194,37 @@ async function checkNewTransactions(chatId) {
   try {
     const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
 
-    // Get the transaction count for the wallet address
-    const transactionCount = await web3.eth.getTransactionCount(walletAddress);
+    // Get the transaction list using the Arbiscan explorer API
+    const response = await axios.get(`https://api.arbiscan.io/api?module=account&action=txlist&address=${walletAddress}&apikey=8KG5ZN21T1JI8K9NVHQ6HB58S4NUBK1BI7`);
+    const transactions = response.data.result;
 
-    // Get the last transaction hash
-    const lastTransactionHash = (await web3.eth.getBlockTransactionCount(walletAddress) > 0)
-      ? await web3.eth.getTransactionFromBlock(walletAddress, transactionCount - 1).hash
-      : '';
+    if (transactions.length > 0) {
+      // Get the last transaction
+      const lastTransaction = transactions[0];
 
-    // Check if a new transaction has occurred
-    if (lastTransactionHash !== lastProcessedTxHash) {
-      // Get the last transaction using the transaction count
-      const lastTransaction = await web3.eth.getTransaction(lastTransactionHash);
-
-      // Create the message with the last transaction details
-      const message = `
+      // Check if a new transaction has occurred
+      if (lastTransaction.hash !== lastProcessedTxHash) {
+        // Create the message with the last transaction details
+        const message = `
 New Transaction:
 Hash: ${lastTransaction.hash}
 From: ${lastTransaction.from}
 To: ${lastTransaction.to}
-Value: ${web3.utils.fromWei(lastTransaction.value, 'ether')} ETH
-      `;
+Value: ${lastTransaction.value} ARB
+        `;
 
-      // Send the message to the user
-      bot.sendMessage(chatId, message);
+        // Send the message to the user
+        bot.sendMessage(chatId, message);
 
-      // Update the last processed transaction hash
-      lastProcessedTxHash = lastTransactionHash;
+        // Update the last processed transaction hash
+        lastProcessedTxHash = lastTransaction.hash;
+      } else {
+        // Send a message indicating no new transaction
+        bot.sendMessage(chatId, 'No new transactions');
+      }
     } else {
-      // Send a message indicating no new transaction
-      bot.sendMessage(chatId, 'No new transactions');
+      // Send a message indicating no transactions found
+      bot.sendMessage(chatId, 'No transactions found for the wallet address');
     }
   } catch (error) {
     console.error('Error checking new transactions:', error);
