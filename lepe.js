@@ -91,10 +91,6 @@ bot.onText(/\/caption/, (msg, match) => {
 
   // Create the reply message including the count
   const replyMessage = `
-  <u>Caption Request Number: ${captionCount}</u>
-
-<b>Generating caption... ⏳</b>
-\n
 ZooZoo Image Caption Generation
 Starting from <b>10th June, 4 PM UTC</b>
 Stay tuned!
