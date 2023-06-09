@@ -280,9 +280,8 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
         const message = `
 ZooZoo presale Buy
 ${'🟢'.repeat(stickerCount)}
-Spent: ${spendEthAmount} (${spendUsdAmount} USD)
-Filled: ${filledEthBalance} WETH
-Sticker Count: ${stickerCount}
+<b>Spent:</b> ${spendEthAmount} (${spendUsdAmount} USD)
+<b>Filled:</b> ${filledEthBalance} WETH
 `;
 
         bot.sendMessage(chatId, message);
