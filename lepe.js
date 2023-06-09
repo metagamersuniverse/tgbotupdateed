@@ -242,7 +242,6 @@ bot.onText(/\/lasttransaction/, (msg) => {
   checkNewTransactions(chatId);
 });
 
-
 async function checkLastReceivedEthTransaction(walletAddress, chatId) {
   try {
     const apiKey = '8KG5ZN21T1JI8K9NVHQ6HB58S4NUBK1BI7';
@@ -280,7 +279,7 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
         const boldText = Array.from({ length: stickerCount }, () => '🟢').join('');
 
         const message = `
-<b>Here is an example image</b>
+${imageUrl}
 <i>ZooZoo presale Buy</i>
 <b>${boldText}</b>
 <b>Spent:</b> ${spendEthAmount} (${spendUsdAmount} USD)
@@ -290,7 +289,6 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
         const imageUrl = 'https://raw.githubusercontent.com/metagamersuniverse/zz/main/FAIRLAUNCH%20LIVE.jpg';
 
         bot.sendMessage(chatId, message, { parse_mode: 'HTML' });
-        bot.sendPhoto(chatId, imageUrl);
       } else {
         bot.sendMessage(chatId, 'No recent ETH received');
       }
@@ -308,6 +306,7 @@ bot.onText(/\/checklasteth/, (msg) => {
   const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
   checkLastReceivedEthTransaction(walletAddress, chatId);
 });
+
 
 
 
