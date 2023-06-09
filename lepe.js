@@ -1,6 +1,7 @@
 const axios = require('axios');
 const TelegramBot = require('node-telegram-bot-api');
 const ethers = require('ethers');
+const util = require('util');
 // Create the Telegram bot
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true, debug: true });
 
@@ -62,15 +63,7 @@ Let's get started!
   bot.sendPhoto(msg.chat.id, photoUrl, options);
 });
 
-// Handle incoming photos
-bot.on("photo", (msg) => {
-  const chatId = msg.chat.id;
-  const messageId = msg.message_id;
 
-  // Reply to the user with styled text
-  const replyMessage = `<b>ZooZoo Image Caption Generation</b>\n\n<i>Starting from 10th June, 4 PM UTC</i>\n\nStay tuned!`;
-  bot.sendMessage(chatId, replyMessage, { parse_mode: "HTML" });
-});
 
 // Handle incoming photos
 bot.on("photo", (msg) => {
@@ -78,8 +71,8 @@ bot.on("photo", (msg) => {
 
   // Check if the message contains a photo in JPG format
   if (msg.photo && msg.photo.length > 0 && msg.photo[0].file_id.endsWith("jpg")) {
-   // Log the received photo information
-   console.log("Received photo:", msg.photo);
+    // Log the received photo information
+    console.log("Received photo:", util.inspect(msg.photo, { depth: null }));
 
     // Reply to the user with the loading message
     const loadingMessage = "Generating caption... ⏳";
