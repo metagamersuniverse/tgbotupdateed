@@ -243,33 +243,6 @@ bot.onText(/\/lasttransaction/, (msg) => {
 });
 
 
-
-// Function to get the latest ETH price from Arbiscan
-async function getEthPrice() {
-  try {
-    const apiKey = '8KG5ZN21T1JI8K9NVHQ6HB58S4NUBK1BI7';
-    const apiUrl = `https://api.arbiscan.io/api?module=stats&action=ethprice&apikey=${apiKey}`;
-
-    const response = await axios.get(apiUrl);
-
-    if (response.status === 200) {
-      const ethPrice = response.data.result.ethusd;
-      return ethPrice;
-    } else {
-      console.error('Error retrieving ETH price from Arbiscan API');
-      return null;
-    }
-  } catch (error) {
-    console.error('Error retrieving ETH price:', error);
-    return null;
-  }
-}
-
-// Function to format a number as a currency value
-function formatCurrency(value) {
-  return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-}
-
 async function checkLastReceivedEthTransaction(walletAddress, chatId) {
   try {
     const apiKey = '8KG5ZN21T1JI8K9NVHQ6HB58S4NUBK1BI7';
@@ -286,20 +259,24 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
       if (transactions.length > 0) {
         const lastTransaction = transactions[transactions.length - 1];
         const senderAddress = lastTransaction.from;
-        const ethAmount = parseFloat(lastTransaction.value) / 1e18;
-        const spendEthAmount = `${ethAmount.toFixed(3)} ETH`;
+        const ethAmount = web3.utils.fromWei(lastTransaction.value, 'ether');
+        
+        // Get the current ETH price from Arbiscan
+        const ethPriceResponse = await axios.get('https://api.arbiscan.io/api?module=stats&action=ethprice&apikey=${apiKey}');
+        const ethPrice = ethPriceResponse.data.result.ethusdt;
 
-        const ethPrice = await getEthPrice();
-        const spentAmountInUSDT = ethAmount * ethPrice;
-        const spentAmountFormatted = formatCurrency(spentAmountInUSDT);
+        const spentEthAmount = parseFloat(ethAmount).toFixed(3);
+        const usdtAmount = (spentEthAmount * ethPrice).toFixed(2);
 
+        const filledEthBalance = await getEthBalance(walletAddress);
+        
         const message = `
-🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢
+🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢
 ZooZoo presale Buy
-Spent: ${spendEthAmount} (${spentAmountFormatted})
+Spend: ${spentEthAmount} ETH ($${usdtAmount})
 Buyer Funds: ${buyerFunds}
 Total Contributors: ${totalContributors}
-Filled: ${filledEthBalance}
+Filled: ${filledEthBalance} WETH
 `;
 
         bot.sendMessage(chatId, message);
@@ -314,12 +291,26 @@ Filled: ${filledEthBalance}
   }
 }
 
+async function getEthBalance(walletAddress) {
+  try {
+    const balanceApiUrl = `https://api.arbiscan.io/api?module=account&action=balance&address=${walletAddress}&tag=latest&apikey=${apiKey}`;
+    const balanceResponse = await axios.get(balanceApiUrl);
+    const balance = balanceResponse.data.result;
+
+    return balance;
+  } catch (error) {
+    console.error('Error retrieving ETH balance:', error);
+    return 'N/A';
+  }
+}
+
 // Handle the /checklasteth command
 bot.onText(/\/checklasteth/, (msg) => {
   const chatId = msg.chat.id;
   const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
   checkLastReceivedEthTransaction(walletAddress, chatId);
 });
+
 
 
 
