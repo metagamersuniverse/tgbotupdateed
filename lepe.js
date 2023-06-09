@@ -41,9 +41,9 @@ bot.onText(/\/start/, async (msg) => {
   const message = `
 Hi! 
 Welcome to AI POP bot. 
-Send me a photo and I'll generate a description for you. ;
+Send me a photo and I'll generate a description for you.
 Type 'help' if you need assistance. 
-Let's get started!;
+Let's get started!
 `;
 
   const photoUrl = "https://raw.githubusercontent.com/metagamersuniverse/zz/main/FAIRLAUNCH%20LIVE.jpg"; // replace with your photo URL
