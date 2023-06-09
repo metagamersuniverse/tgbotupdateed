@@ -116,15 +116,21 @@ Stay tuned!
 bot.onText(/\/(help|guide)/, async (msg) => {
   console.log('help/guide command received'); // Add console.log() statement here
   const message = `
-<b>Welcome To $LEPE Lottery bot.</b>
+  <b>Welcome To $LEPE Lottery bot.</b>
 
-- To get the current lottery amount, use the /balance command.
-- To get the current lottery round, use the /round or /lottery command.
-- To get the minimum amount of $LEPE required to participate in the lottery, use the /minimum command.
-- To get information about a past winner, use the <code>/winner</code> command followed by the round number (e.g. <code>/winner 123</code>).
-- To get information about our contract address, use the /ca or /contract command.
-- To buy $LEPE, use the /buy command.
-- To buy in Presale, use the /ido command.
+  To participate in the lottery and get a description of your photo, follow these steps:
+  
+  1. Join a ZooZoo group where the bot is available.
+  2. Send a photo in JPG or PNG format to the group.
+  3. Once the photo is sent, use the /caption command and mention the photo you want to get a description for.
+  4. The bot will generate a caption for your photo.
+
+  Please note:
+- Photos must be in JPG or PNG format to be processed by the bot.
+- Make sure to mention the photo you want to get a caption for using the /caption command.
+- The bot will reply with the generated caption.
+
+Enjoy using $ZZ Ai bot!
 `;
 
   const photoUrl = "https://zoozoo.lol/wp-content/uploads/2023/06/top-banner-1.png"; // replace with your photo URL
