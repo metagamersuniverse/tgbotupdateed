@@ -155,7 +155,7 @@ bot.onText(/\/bido/, async (msg) => {
   console.log('balance command received');
 
   // Retrieve Ido balance in ETH
-  const walletAddress = '0x0bcbbcd3186e5d857af2a4c4a158d5027037032f'; // Replace with your desired wallet address
+  const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with your desired wallet address
   const balanceInWei = await provider.getBalance(walletAddress);
   const balanceInEth = ethers.utils.formatEther(balanceInWei);
   // Calculate balance in ARB
