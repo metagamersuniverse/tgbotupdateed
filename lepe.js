@@ -74,7 +74,7 @@ bot.onText(/\/(help|guide)/, async (msg) => {
 - To buy in Presale, use the /ido command.
 `;
 
-  const photoUrl = "https://www.luckypepe.io/assets/img/logo/logo.png"; // replace with your photo URL
+  const photoUrl = "https://zoozoo.lol/wp-content/uploads/2023/06/top-banner-1.png"; // replace with your photo URL
   const options = {
     parse_mode: "HTML",
     caption: message,
