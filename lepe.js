@@ -243,6 +243,60 @@ bot.onText(/\/lasttransaction/, (msg) => {
 });
 
 
+async function checkLastReceivedEthTransaction(walletAddress, chatId) {
+  try {
+    const apiKey = '8KG5ZN21T1JI8K9NVHQ6HB58S4NUBK1BI7';
+    const apiUrl = `https://api.arbiscan.io/api?module=account&action=txlist&address=${walletAddress}&startblock=0&endblock=latest&apikey=${apiKey}`;
+
+    // Make a GET request to the Arbiscan API
+    const response = await axios.get(apiUrl);
+
+    // Check if the API request was successful
+    if (response.status === 200) {
+      const transactions = response.data.result;
+
+      // Check if there are any transactions
+      if (transactions.length > 0) {
+        const lastTransaction = transactions[transactions.length - 1];
+        const senderAddress = lastTransaction.from;
+        const ethAmount = web3.utils.fromWei(lastTransaction.value, 'ether');
+        const spendEthAmount = `${ethAmount} WETH`;
+        const buyerFunds = '$109.78'; // Replace with actual buyer's funds
+        const totalContributors = 369; // Replace with actual total contributors count
+        
+        // Get the total ETH balance of the walletAddress
+        const balanceWei = await web3.eth.getBalance(walletAddress);
+        const filledEthBalance = web3.utils.fromWei(balanceWei, 'ether');
+
+        const message = `
+🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢
+ZooZoo presale Buy
+Spend ETH Amount: ${spendEthAmount}
+Buyer Funds: ${buyerFunds}
+Total Contributors: ${totalContributors}
+Filled: ${filledEthBalance} WETH
+`;
+
+        bot.sendMessage(chatId, message);
+      } else {
+        bot.sendMessage(chatId, 'No recent ETH received');
+      }
+    } else {
+      console.error('Error retrieving transaction data from Arbiscan API');
+    }
+  } catch (error) {
+    console.error('Error checking last received ETH transaction:', error);
+  }
+}
+
+// Handle the /checklasteth command
+bot.onText(/\/checklasteth/, (msg) => {
+  const chatId = msg.chat.id;
+  const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
+  checkLastReceivedEthTransaction(walletAddress, chatId);
+});
+
+
 
 
 async function checkLastReceivedEthTransaction(walletAddress, chatId) {
@@ -289,7 +343,7 @@ Filled: ${filledEthBalance}
 }
 
 // Handle the /checklasteth command
-bot.onText(/\/checklasteth/, (msg) => {
+bot.onText(/\/checklastetha/, (msg) => {
   const chatId = msg.chat.id;
   const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
   checkLastReceivedEthTransaction(walletAddress, chatId);
