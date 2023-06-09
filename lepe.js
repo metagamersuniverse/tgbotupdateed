@@ -281,15 +281,15 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
 const boldText = Array.from({ length: stickerCount }, () => '🟢').join('');
 
 const message = `
+
 ${imageUrl}
-<i>ZooZoo presale Buy</i>
-<b>${boldText}</b>
-<b>Spent:</b> ${spendEthAmount} (${spendUsdAmount} USD)
-<b>Filled:</b> ${filledEthBalance} WETH
+ZooZoo presale Buy
+${boldText}
+Spent: ${spendEthAmount} (${spendUsdAmount} USD)
+Filled: ${filledEthBalance} WETH
 `;
 
-
-        bot.sendMessage(chatId, message, { parse_mode: 'HTML' });
+bot.sendMessage(chatId, message, { parse_mode: 'HTML' });
       } else {
         bot.sendMessage(chatId, 'No recent ETH received');
       }
