@@ -81,14 +81,29 @@ bot.on("document", (msg) => {
   const replyMessage = `<b>ZooZoo Image Caption Generation</b>\n\n<i>Starting from 10th June, 4 PM UTC</i>\n\nStay tuned!`;
   bot.sendMessage(chatId, replyMessage, { parse_mode: "HTML" });
 });
-// Handle incoming photos
+// Handle incoming photos with the /photo command in a group
 bot.onText(/\/photo/, (msg) => {
   const chatId = msg.chat.id;
-  
-  // Reply to the user with styled text
-  const replyMessage = `<b>ZooZoo Image Caption Generation</b>\n\n<i>Starting from 10th June, 4 PM UTC</i>\n\nStay tuned!`;
-  bot.sendMessage(chatId, replyMessage, { parse_mode: "HTML" });
+
+  // Check if the message is from a group
+  if (msg.chat.type === "group" || msg.chat.type === "supergroup") {
+    // Check if the message contains a photo
+    if (msg.photo && msg.photo.length > 0) {
+      // Reply to the user in the group with the message
+      const replyMessage = "Thank you for sharing the photo! I will generate a description for you.";
+      bot.sendMessage(chatId, replyMessage);
+    } else {
+      // Reply with an error message if no photo is found
+      const errorMessage = "Please send a photo with the /photo command.";
+      bot.sendMessage(chatId, errorMessage);
+    }
+  } else {
+    // Reply with an error message if the command is used outside a group
+    const errorMessage = "This command is only available in groups. Please use it in a group chat.";
+    bot.sendMessage(chatId, errorMessage);
+  }
 });
+
 
 
 // Handle the /guide command
