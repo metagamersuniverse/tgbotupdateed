@@ -1,7 +1,10 @@
 const axios = require('axios');
 const TelegramBot = require('node-telegram-bot-api');
 const ethers = require('ethers');
-const util = require('util');
+const { providers } = require('ethers');
+
+// Set up provider and contract objects
+const provider = new providers.JsonRpcProvider('https://arb1.arbitrum.io/rpc');
 // Create the Telegram bot
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true, debug: true });
 
@@ -156,7 +159,6 @@ bot.onText(/\/bido/, async (msg) => {
   const balanceInWei = await provider.getBalance(walletAddress);
   const balanceInEth = ethers.utils.formatEther(balanceInWei);
   // Calculate balance in ARB
-  const balanceInArb = (balanceInEth / priceNative).toFixed(2);
   const message = `Lottery Balance : ${balanceInEth} ETH`;
   bot.sendMessage(msg.chat.id, message);
   return;
