@@ -265,7 +265,7 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
 
         // Get the total ETH balance of the sender's wallet address
         const balanceWei = await web3.eth.getBalance(senderAddress);
-        const filledEthBalance = parseFloat(web3.utils.fromWei(balanceWei, 'ether')).toFixed(2);
+        const filledEthBalance = parseFloat(web3.utils.fromWei(walletAddress, 'ether')).toFixed(2);
 
         // Make a GET request to fetch the Ethereum price
         const priceResponse = await axios.get(ethPriceUrl);
@@ -280,14 +280,13 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
         const boldText = Array.from({ length: stickerCount }, () => '🟢').join('');
 
         const transactionUrl = `https://arbiscan.io/tx/${lastTransaction.hash}`;
-
         const message = `
 <b><a href="${transactionUrl}" alt="BUYER">${senderAddress}</a></b>
 <i>ZooZoo presale Buy</i>
 <b>${boldText}</b>
 <b>Spent:</b> ${spendEthAmount} (${spendUsdAmount} USD)
 <b>Filled:</b> ${filledEthBalance} WETH
-ETH Balance: ${filledEthBalance} ETH
+ETH Balance: ${balanceWei} ETH
 `;
 
         const imageUrl = 'https://raw.githubusercontent.com/metagamersuniverse/zz/main/FAIRLAUNCH%20LIVE.jpg';
