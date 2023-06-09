@@ -2,7 +2,6 @@ const axios = require('axios');
 const TelegramBot = require('node-telegram-bot-api');
 const ethers = require('ethers');
 const { providers } = require('ethers');
-const Web3 = require('web3');
 
 // Set up provider and contract objects
 const provider = new providers.JsonRpcProvider('https://arb1.arbitrum.io/rpc');
@@ -185,7 +184,10 @@ bot.onText(/\/do/, async (msg) => {
   bot.sendMessage(msg.chat.id, message);
 });
 
+const Web3 = require('web3'); // Add this line
 
+// Create a Web3 instance connected to the Ethereum network
+const web3 = new Web3('https://arb1.arbitrum.io/rpc');
 // Keep track of the last processed transaction hash
 let lastProcessedTxHash = '';
 
