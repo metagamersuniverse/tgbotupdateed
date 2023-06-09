@@ -72,15 +72,6 @@ bot.on("photo", (msg) => {
   bot.sendMessage(chatId, replyMessage, { parse_mode: "HTML" });
 });
 
-// Handle incoming documents
-bot.on("document", (msg) => {
-  const chatId = msg.chat.id;
-  const messageId = msg.message_id;
-
-  // Reply to the user with styled text
-  const replyMessage = `<b>ZooZoo Image Caption Generation</b>\n\n<i>Starting from 10th June, 4 PM UTC</i>\n\nStay tuned!`;
-  bot.sendMessage(chatId, replyMessage, { parse_mode: "HTML" });
-});
 // Handle incoming photos with the /photo command in a group
 bot.onText(/\/photo/, (msg) => {
   const chatId = msg.chat.id;
@@ -89,9 +80,20 @@ bot.onText(/\/photo/, (msg) => {
   if (msg.chat.type === "group" || msg.chat.type === "supergroup") {
     // Check if the message contains a photo
     if (msg.photo && msg.photo.length > 0) {
-      // Reply to the user in the group with the message
-      const replyMessage = "Thank you for sharing the photo! I will generate a description for you.";
-      bot.sendMessage(chatId, replyMessage);
+      // Reply to the user in the group with the loading message
+      const loadingMessage = "Generating caption... ⏳";
+      bot.sendMessage(chatId, loadingMessage)
+        .then(() => {
+          // Delay the reply for a certain period (e.g., 3 seconds)
+          setTimeout(() => {
+            // Reply to the user with the styled text
+            const styledText = `<b>ZooZoo Image Caption Generation</b>\n\n<i>Starting from 10th June, 4 PM UTC</i>\n\nStay tuned!`;
+            bot.sendMessage(chatId, styledText, { parse_mode: "HTML" });
+          }, 3000);
+        })
+        .catch((error) => {
+          console.error("Error sending message:", error);
+        });
     } else {
       // Reply with an error message if no photo is found
       const errorMessage = "Please send a photo with the /photo command.";
@@ -103,7 +105,6 @@ bot.onText(/\/photo/, (msg) => {
     bot.sendMessage(chatId, errorMessage);
   }
 });
-
 
 
 // Handle the /guide command
