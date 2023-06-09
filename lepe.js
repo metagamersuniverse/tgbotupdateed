@@ -84,12 +84,9 @@ bot.onText(/\/photo/, (msg) => {
       const loadingMessage = "Generating caption... ⏳";
       bot.sendMessage(chatId, loadingMessage)
         .then(() => {
-          // Delay the reply for a certain period (e.g., 3 seconds)
-          setTimeout(() => {
-            // Reply to the user with the styled text
-            const styledText = `<b>ZooZoo Image Caption Generation</b>\n\n<i>Starting from 10th June, 4 PM UTC</i>\n\nStay tuned!`;
-            bot.sendMessage(chatId, styledText, { parse_mode: "HTML" });
-          }, 3000);
+          // Reply to the user with the styled text
+          const styledText = `<b>ZooZoo Image Caption Generation</b>\n\n<i>Starting from 10th June, 4 PM UTC</i>\n\nStay tuned!`;
+          bot.sendMessage(chatId, styledText, { parse_mode: "HTML" });
         })
         .catch((error) => {
           console.error("Error sending message:", error);
