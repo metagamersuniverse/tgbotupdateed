@@ -62,6 +62,26 @@ Let's get started!
   bot.sendPhoto(msg.chat.id, photoUrl, options);
 });
 
+// Handle incoming photos
+bot.on("photo", (msg) => {
+  const chatId = msg.chat.id;
+  const messageId = msg.message_id;
+
+  // Reply to the user with styled text
+  const replyMessage = `<b>ZooZoo Image Caption Generation</b>\n\n<i>Starting from 10th June, 4 PM UTC</i>\n\nStay tuned!`;
+  bot.sendMessage(chatId, replyMessage, { parse_mode: "HTML" });
+});
+
+// Handle incoming documents
+bot.on("document", (msg) => {
+  const chatId = msg.chat.id;
+  const messageId = msg.message_id;
+
+  // Reply to the user with styled text
+  const replyMessage = `<b>ZooZoo Image Caption Generation</b>\n\n<i>Starting from 10th June, 4 PM UTC</i>\n\nStay tuned!`;
+  bot.sendMessage(chatId, replyMessage, { parse_mode: "HTML" });
+});
+
 
 // Handle the /guide command
 bot.onText(/\/(help|guide)/, async (msg) => {
