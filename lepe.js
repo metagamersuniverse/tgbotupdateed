@@ -39,7 +39,8 @@ bot.onText(/\/(buy|ido|presale|pinksale)/, (msg) => {
 bot.onText(/\/start/, async (msg) => {
   console.log('start command received'); // Add console.log() statement here
   const message = `
-Hi! Welcome to AI POP bot. Send me a photo and I'll generate a description for you. Type 'help' if you need assistance. Let's get started!
+Hi! Welcome to AI POP bot. Send me a photo and I'll generate a description for you. 
+Type 'help' if you need assistance. Let's get started!;
 `;
 
   const photoUrl = "https://raw.githubusercontent.com/metagamersuniverse/zz/main/FAIRLAUNCH%20LIVE.jpg"; // replace with your photo URL
