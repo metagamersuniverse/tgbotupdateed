@@ -277,9 +277,11 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
         // Calculate the number of stickers to send based on the spent amount
         const stickerCount = Math.floor(spendUsdAmount / 2) + 1;
 
+        const boldText = Array.from({ length: stickerCount }, () => '🟢').join('');
+
         const message = `
 ZooZoo presale Buy
-<b>${'🟢'.repeat(stickerCount)}</b>
+<b>${boldText}</b>
 Spent: ${spendEthAmount} (${spendUsdAmount} USD)
 Filled: ${filledEthBalance} WETH
 `;
