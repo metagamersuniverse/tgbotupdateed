@@ -8,7 +8,7 @@ const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true, deb
 // Handle the /ca command
 bot.onText(/\/(cla|contract)/, async (msg) => {
   console.log('ca/contract command received');
-  const walletAddress = "0x6CB0e4dA8F621A3901573bD8c8d2C8A0987d78d6"; // replace with your desired wallet address
+  const walletAddress = "0xc58A4963c09AE6d8a152D194a147450D5f7cC55a"; // replace with your desired wallet address
   const message = `
 <b>Contract Address:
 </b>  <code>${walletAddress}</code>
@@ -20,16 +20,16 @@ bot.onText(/\/(cla|contract)/, async (msg) => {
 bot.onText(/\/(buy|ido|presale|pinksale)/, (msg) => {
   console.log('buy/ido/presale/pinksale command received');
   const message = `
-<b>To buy a $LEPE, please visit one of the following websites:</b>
-- Presale Start Time - 2023.05.09 15:00 (UTC)
-- Presale End Time - 2023.05.10 15:00 (UTC)
+<b>To buy a $ZZ, please visit one of the following websites:</b>
+- Presale Start Time - 2023.06.08 14:00 (UTC)
+- Presale End Time - 2023.06.10 14:00 (UTC)
 `;
   const options = {
     parse_mode: "HTML",
     reply_markup: {
       inline_keyboard: [
         [
-          { text: "💰BUY ON PRESALE", url: "https://www.pinksale.finance/launchpad/0x0bcbBCd3186E5d857AF2A4C4A158d5027037032F?chain=Arbitrum" }
+          { text: "💰BUY ON PRESALE", url: "https://www.pinksale.finance/launchpad/0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2?chain=Arbitrum" }
         ]
       ]
     }
@@ -43,7 +43,7 @@ bot.onText(/\/start/, async (msg) => {
 Hi! 
 Welcome to ZZ AI bot. 
 Send me a photo and I'll generate a description for you.
-Type 'help' if you need assistance. 
+Type '/help' if you need assistance. 
 Let's get started!
 `;
 
@@ -129,14 +129,14 @@ bot.onText(/\/(help|guide)/, async (msg) => {
 Enjoy using $ZZ Ai bot!
 `;
 
-  const photoUrl = "https://zoozoo.lol/wp-content/uploads/2023/06/top-banner-1.png"; // replace with your photo URL
+  const photoUrl = "https://raw.githubusercontent.com/metagamersuniverse/zz/main/FAIRLAUNCH%20LIVE.jpg"; // replace with your photo URL
   const options = {
     parse_mode: "HTML",
     caption: message,
     reply_markup: {
       inline_keyboard: [
         [
-          { text: "Visit our website", url: "https://www.luckypepe.io/" }
+          { text: "Visit our website", url: "https://www.zoozoo.lol" }
         ]
       ]
     }
