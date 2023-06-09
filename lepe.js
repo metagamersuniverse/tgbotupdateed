@@ -276,12 +276,20 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
 
         const message = `
 ZooZoo presale Buy
-🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢
+🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢
 Spent: ${spendEthAmount} (${spendUsdAmount} USD)
 Filled: ${filledEthBalance} WETH
 `;
 
         bot.sendMessage(chatId, message);
+
+        // Calculate the number of stickers to send
+        const stickerCount = Math.floor(spendUsdAmount / 2);
+
+        // Send the stickers
+        for (let i = 0; i < stickerCount; i++) {
+          bot.sendSticker(chatId, '🟢');
+        }
       } else {
         bot.sendMessage(chatId, 'No recent ETH received');
       }
