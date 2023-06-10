@@ -245,7 +245,7 @@ bot.onText(/\/lasttransaction/, (msg) => {
 
 
 
-let processedTransactions = [];
+let processedTransactions = []; // Track processed transactions
 
 async function checkLastReceivedEthTransaction(walletAddress, chatId) {
   try {
@@ -260,69 +260,40 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
     if (response.status === 200) {
       const transactions = response.data.result;
 
-      // Check if there are any transactions
-      if (transactions.length > 0) {
-        const newTransactions = transactions.filter(transaction =>
-          !processedTransactions.includes(transaction.hash)
-        );
+      // Check if there are any new transactions
+      const newTransactions = transactions.filter(transaction =>
+        !processedTransactions.includes(transaction.hash)
+      );
+
+      if (newTransactions.length > 0) {
+        console.log('New transaction found:', newTransactions);
 
         // Process new transactions
         for (const transaction of newTransactions) {
-          const senderAddress = transaction.from;
-          const ethAmount = web3.utils.fromWei(transaction.value, 'ether');
-          const spendEthAmount = `${ethAmount} WETH`;
-
-          // Get the total ETH balance of the walletAddress
-          const balanceWei = await web3.eth.getBalance(walletAddress);
-          const filledEthBalance = parseFloat(web3.utils.fromWei(balanceWei, 'ether')).toFixed(2);
-
-          // Get the total ETH balance of the senderAddress
-          const senderBalanceWei = await web3.eth.getBalance(senderAddress);
-          const senderEthBalance = parseFloat(web3.utils.fromWei(senderBalanceWei, 'ether')).toFixed(2);
-
-          // Make a GET request to fetch the Ethereum price
-          const priceResponse = await axios.get(ethPriceUrl);
-          const ethPrice = priceResponse.data.ethereum.usd;
-
-          // Calculate the equivalent value in USD
-          const senderUsdBalance = (parseFloat(senderEthBalance) * parseFloat(ethPrice)).toFixed(2);
-
-          // Format the balances for display
-          const formattedSenderUsdBalance = `${senderUsdBalance} USD`;
-
-          // Generate the message
-          const message = `
-<b>ZooZoo presale Buy</b>
-<b>Spent:</b> ${spendEthAmount}
-<a href="https://etherscan.io/address/${senderAddress}"><b>Buyer funds:</b></a> (${formattedSenderUsdBalance})
-<b>Filled:</b> ${filledEthBalance} WETH
-`;
-          const imageUrl = 'https://raw.githubusercontent.com/metagamersuniverse/zz/main/FAIRLAUNCH%20LIVE.jpg';
-          const keyboard = {
-            inline_keyboard: [
-              [
-                { text: "💰BUY ON PRESALE", url: "https://www.pinksale.finance/launchpad/0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2?chain=Arbitrum" }
-              ]
-            ]
-          };
-
-          bot.sendPhoto(chatId, imageUrl, {
-            caption: message,
-            parse_mode: 'HTML',
-            reply_markup: JSON.stringify(keyboard)
-          });
+          // ... existing code ...
 
           // Add the processed transaction hash to the list
           processedTransactions.push(transaction.hash);
         }
       } else {
-        bot.sendMessage(chatId, 'No recent ETH received');
+        console.log('No new transactions found');
       }
     } else {
       console.error('Error retrieving transaction data from Arbiscan API');
     }
   } catch (error) {
-    console.error('Error checking last received ETH transaction:', error);
+    // Check if it's a rate limit error
+    if (error.response && error.response.status === 429) {
+      const retryAfter = error.response.headers['retry-after'] || 5;
+      console.log(`Rate limited. Retrying after ${retryAfter} seconds...`);
+
+      // Retry the request after the specified duration
+      setTimeout(() => {
+        checkLastReceivedEthTransaction(walletAddress, chatId);
+      }, retryAfter * 1000); // Convert seconds to milliseconds
+    } else {
+      console.error('Error checking last received ETH transaction:', error);
+    }
   }
 }
 
@@ -357,6 +328,7 @@ bot.onText(/\/checklasteth/, (msg) => {
   const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
   checkLastReceivedEthTransaction(walletAddress, chatId);
 });
+
 
 
 
