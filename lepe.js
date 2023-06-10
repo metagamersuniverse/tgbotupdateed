@@ -265,6 +265,10 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
         const ethAmount = web3.utils.fromWei(lastTransaction.value, 'ether');
         const spendEthAmount = `${ethAmount} WETH`;
 
+        // Get the total ETH balance of the walletAddress
+        const balanceWei = await web3.eth.getBalance(walletAddress);
+        const filledEthBalance = parseFloat(web3.utils.fromWei(balanceWei, 'ether')).toFixed(2);
+
         // Get the total ETH balance of the senderAddress
         const senderBalanceWei = await web3.eth.getBalance(senderAddress);
         const senderEthBalance = parseFloat(web3.utils.fromWei(senderBalanceWei, 'ether')).toFixed(2);
@@ -284,6 +288,7 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
 <i>ZooZoo presale Buy</i>
 <b>Spent:</b> ${spendEthAmount}
 <a href="https://etherscan.io/address/${senderAddress}"><b>Buyer funds:</b></a> (${formattedSenderUsdBalance})
+<b>Filled:</b> ${filledEthBalance} WETH
 `;
 
         const imageUrl = 'https://raw.githubusercontent.com/metagamersuniverse/zz/main/FAIRLAUNCH%20LIVE.jpg';
