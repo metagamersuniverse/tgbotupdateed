@@ -9,7 +9,7 @@ const provider = new providers.JsonRpcProvider('https://arb1.arbitrum.io/rpc');
 const bot = new TelegramBot(process.env.TELEGRAM_BOT_TOKEN, { polling: true, debug: true });
 
 // Handle the /ca command
-bot.onText(/\/(cla|contract)/, async (msg) => {
+bot.onText(/\/(ca|contract)/, async (msg) => {
   console.log('ca/contract command received');
   const walletAddress = "0xc58A4963c09AE6d8a152D194a147450D5f7cC55a"; // replace with your desired wallet address
   const message = `
@@ -57,7 +57,7 @@ Let's get started!
     reply_markup: {
       inline_keyboard: [
         [
-          { text: "BUY NOW", url: "https://zoozoo.lol/" },
+          { text: "BUY NOW", url: "https://www.pinksale.finance/launchpad/0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2?chain=Arbitrum" },
           { text: "Visit our website", url: "https://zoozoo.lol/" }
         ]
       ]
@@ -295,7 +295,7 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
           const message = `
 <b>ZooZoo presale Buy</b>
 <b>Spent:</b> ${spendEthAmount}
-<a href="https://etherscan.io/address/${senderAddress}"><b>Buyer funds:</b></a> (${formattedSenderUsdBalance})
+<a href="https://arbiscan.io//address/${senderAddress}"><b>Buyer funds:</b></a> (${formattedSenderUsdBalance})
 <b>Filled:</b> ${filledEthBalance} WETH
 `;
           const imageUrl = 'https://raw.githubusercontent.com/metagamersuniverse/zz/main/FAIRLAUNCH%20LIVE.jpg';
@@ -337,7 +337,7 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
 }
 
 // Handle the /startcheck command to start recurring checks and send all transactions once
-bot.onText(/\/startcheck/, (msg) => {
+bot.onText(/\/fixcheck/, (msg) => {
   const chatId = msg.chat.id;
   const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
 
