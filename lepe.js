@@ -285,15 +285,27 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
 
         // Generate the message
         const message = `
-<i>ZooZoo presale Buy</i>
+<b>ZooZoo presale Buy</b>
 <b>Spent:</b> ${spendEthAmount}
 <a href="https://etherscan.io/address/${senderAddress}"><b>Buyer funds:</b></a> (${formattedSenderUsdBalance})
 <b>Filled:</b> ${filledEthBalance} WETH
 `;
 
         const imageUrl = 'https://raw.githubusercontent.com/metagamersuniverse/zz/main/FAIRLAUNCH%20LIVE.jpg';
+        const keyboard = {
+          inline_keyboard: [
+            [
+              { text: 'Button 1', url: 'https://example.com/button1' },
+              { text: 'Button 2', url: 'https://example.com/button2' }
+            ]
+          ]
+        };
 
-        bot.sendPhoto(chatId, imageUrl, { caption: message, parse_mode: 'HTML' });
+        bot.sendPhoto(chatId, imageUrl, {
+          caption: message,
+          parse_mode: 'HTML',
+          reply_markup: JSON.stringify(keyboard)
+        });
 
       } else {
         bot.sendMessage(chatId, 'No recent ETH received');
