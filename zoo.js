@@ -244,7 +244,7 @@ bot.onText(/\/lasttransaction/, (msg) => {
 
 
 
-let processedTransactions = []; // Track processed transactions
+let processedTransactions = [];
 
 async function checkLastReceivedEthTransaction(walletAddress, chatId) {
   try {
@@ -252,14 +252,14 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
     const apiUrl = `https://api.arbiscan.io/api?module=account&action=txlist&address=${walletAddress}&startblock=0&endblock=latest&apikey=${apiKey}`;
     const ethPriceUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd';
 
-    // Make a GET request to the Arbiscan API to fetch transaction data
+    const ethPriceResponse = await axios.get(ethPriceUrl);
+    const ethPrice = ethPriceResponse.data.ethereum.usd;
+
     const response = await axios.get(apiUrl);
 
-    // Check if the API request was successful
     if (response.status === 200) {
       const transactions = response.data.result;
 
-      // Check if there are any new transactions
       const newTransactions = transactions.filter(transaction =>
         !processedTransactions.includes(transaction.hash)
       );
@@ -267,36 +267,26 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
       if (newTransactions.length > 0) {
         console.log('New transaction found:', newTransactions);
 
-        // Process new transactions
         for (const transaction of newTransactions) {
           const senderAddress = transaction.from;
           const ethAmount = web3.utils.fromWei(transaction.value, 'ether');
           const spendEthAmount = `${ethAmount} WETH`;
-          // Calculate the equivalent value in USD
-        const spendUsdAmount = (parseFloat(ethAmount) * parseFloat(ethPrice)).toFixed(2);
+          const spendUsdAmount = (parseFloat(ethAmount) * parseFloat(ethPrice)).toFixed(2);
 
-          // Get the total ETH balance of the walletAddress
           const balanceWei = await web3.eth.getBalance(walletAddress);
           const filledEthBalance = parseFloat(web3.utils.fromWei(balanceWei, 'ether')).toFixed(2);
 
-          // Get the total ETH balance of the senderAddress
           const senderBalanceWei = await web3.eth.getBalance(senderAddress);
           const senderEthBalance = parseFloat(web3.utils.fromWei(senderBalanceWei, 'ether')).toFixed(2);
-          // Calculate the number of stickers to send based on the spent amount
-        const stickerCount = Math.floor(spendUsdAmount / 2) + 1;
 
-        const boldText = Array.from({ length: stickerCount }, () => '🟢').join('');
+          const stickerCount = Math.floor(spendUsdAmount / 2) + 1;
 
-          // Make a GET request to fetch the Ethereum price
-          const priceResponse = await axios.get(ethPriceUrl);
-          const ethPrice = priceResponse.data.ethereum.usd;
+          const boldText = Array.from({ length: stickerCount }, () => '🟢').join('');
 
-          // Calculate the equivalent value in USD
           const senderUsdBalance = (parseFloat(senderEthBalance) * parseFloat(ethPrice)).toFixed(2);
 
-          // Format the balances for display
           const formattedSenderUsdBalance = `${senderUsdBalance} USD`;
-          // Generate the message
+
           const message = `
 <b>${boldText}</b>
 <b>ZooZoo presale Buy</b>
@@ -304,6 +294,7 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
 <a href="https://arbiscan.io//address/${senderAddress}"><b>Buyer funds:</b></a> (${formattedSenderUsdBalance})
 <b>Filled:</b> ${filledEthBalance} WETH
 `;
+
           const imageUrl = 'https://raw.githubusercontent.com/metagamersuniverse/zz/main/FAIRLAUNCH%20LIVE.jpg';
           const keyboard = {
             inline_keyboard: [
@@ -319,7 +310,6 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
             reply_markup: JSON.stringify(keyboard)
           });
 
-          // Add the processed transaction hash to the list
           processedTransactions.push(transaction.hash);
         }
       } else {
@@ -327,50 +317,40 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
       }
     }
   } catch (error) {
-    // Check if it's a rate limit error
     if (error.response && error.response.status === 429) {
       const retryAfter = error.response.headers['retry-after'] || 5;
       console.log(`Rate limited. Retrying after ${retryAfter} seconds...`);
 
-      // Retry the request after the specified duration
       setTimeout(() => {
         checkLastReceivedEthTransaction(walletAddress, chatId);
-      }, retryAfter * 1000); // Convert seconds to milliseconds
+      }, retryAfter * 1000);
     } else {
       console.error('Error checking last received ETH transaction:', error);
     }
   }
 }
 
-// Handle the /startcheck command to start recurring checks and send all transactions once
 bot.onText(/\/fixcheck/, (msg) => {
   const chatId = msg.chat.id;
-  const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
+  const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2';
 
-  // Send all transactions once
   checkLastReceivedEthTransaction(walletAddress, chatId);
 
-  // Schedule recurring checks
-  const interval = 10000; // Interval in milliseconds (e.g., 5000 = 5sec)
+  const interval = 10000;
   setInterval(() => {
     checkLastReceivedEthTransaction(walletAddress, chatId);
   }, interval);
 });
 
-// Handle the /stopcheck command to stop recurring checks
 bot.onText(/\/stoppcheck/, (msg) => {
-  // Clear the processed transactions
   processedTransactions = [];
-
-  // Stop recurring checks
   clearInterval(scheduleTransactionCheck);
   bot.sendMessage(msg.chat.id, 'Recurring checks stopped.');
 });
 
-// Handle the /checklasteth command for manual check
 bot.onText(/\/checklasteth/, (msg) => {
   const chatId = msg.chat.id;
-  const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
+  const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2';
   checkLastReceivedEthTransaction(walletAddress, chatId);
 });
 
