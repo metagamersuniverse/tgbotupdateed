@@ -295,8 +295,7 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
         const keyboard = {
           inline_keyboard: [
             [
-              { text: 'Button 1', url: 'https://example.com/button1' },
-              { text: 'Button 2', url: 'https://example.com/button2' }
+              { text: "💰BUY ON PRESALE", url: "https://www.pinksale.finance/launchpad/0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2?chain=Arbitrum" }
             ]
           ]
         };
