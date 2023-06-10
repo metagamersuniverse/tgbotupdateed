@@ -336,7 +336,7 @@ bot.onText(/\/fixcheck/, (msg) => {
 
   checkLastReceivedEthTransaction(walletAddress, chatId);
 
-  const interval = 10000;
+  const interval = 5000;
   setInterval(() => {
     checkLastReceivedEthTransaction(walletAddress, chatId);
   }, interval);
