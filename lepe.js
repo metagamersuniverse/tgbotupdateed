@@ -277,14 +277,13 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
         const senderUsdBalance = (parseFloat(senderEthBalance) * parseFloat(ethPrice)).toFixed(2);
 
         // Format the balances for display
-        const formattedSenderEthBalance = `${senderEthBalance} ETH`;
         const formattedSenderUsdBalance = `${senderUsdBalance} USD`;
 
         // Generate the message
         const message = `
 <i>ZooZoo presale Buy</i>
 <b>Spent:</b> ${spendEthAmount}
-<a href="https://etherscan.io/address/${senderAddress}"><b>Buyer:</b></a> ${formattedSenderEthBalance} (${formattedSenderUsdBalance})
+<a href="https://etherscan.io/address/${senderAddress}"><b>Buyer funds:</b></a> (${formattedSenderUsdBalance})
 `;
 
         const imageUrl = 'https://raw.githubusercontent.com/metagamersuniverse/zz/main/FAIRLAUNCH%20LIVE.jpg';
