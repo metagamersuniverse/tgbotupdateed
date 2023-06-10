@@ -265,6 +265,7 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
         const newTransactions = transactions.filter(transaction =>
           !processedTransactions.includes(transaction.hash)
         );
+        console.log('New transaction detected:', message);
 
         // Process new transactions
         for (const transaction of newTransactions) {
@@ -317,6 +318,7 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
         }
       } else {
         bot.sendMessage(chatId, 'No recent ETH received');
+        console.log('No recent ETH received');
       }
     } else {
       console.error('Error retrieving transaction data from Arbiscan API');
