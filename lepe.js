@@ -352,7 +352,7 @@ bot.onText(/\/startcheck/, (msg) => {
 });
 
 // Handle the /stopcheck command to stop recurring checks
-bot.onText(/\/stopcheck/, (msg) => {
+bot.onText(/\/stoppcheck/, (msg) => {
   // Clear the processed transactions
   processedTransactions = [];
 
