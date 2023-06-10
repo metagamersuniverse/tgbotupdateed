@@ -289,13 +289,13 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
 <i>ZooZoo presale Buy</i>
 <b>${boldText}</b>
 <b>Spent:</b> ${spendEthAmount} (${spendUsdAmount} USD)
-<b>Buyer :</b> [Buyer](https://etherscan.io/address/${senderAddress}) ${senderEthBalance} ETH
+<b>Buyer:</b> [<a href="https://etherscan.io/address/${senderAddress}">Buyer</a>] ${senderEthBalance} ETH
 `;
 
         const imageUrl = 'https://raw.githubusercontent.com/metagamersuniverse/zz/main/FAIRLAUNCH%20LIVE.jpg';
 
         bot.sendMessage(chatId, message, { parse_mode: 'HTML' });
-      
+
       } else {
         bot.sendMessage(chatId, 'No recent ETH received');
       }
