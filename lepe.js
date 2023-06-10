@@ -269,27 +269,22 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
         const senderBalanceWei = await web3.eth.getBalance(senderAddress);
         const senderEthBalance = parseFloat(web3.utils.fromWei(senderBalanceWei, 'ether')).toFixed(2);
 
-        // Get the total ETH balance of the walletAddress
-        const balanceWei = await web3.eth.getBalance(walletAddress);
-        const filledEthBalance = parseFloat(web3.utils.fromWei(balanceWei, 'ether')).toFixed(2);
-
         // Make a GET request to fetch the Ethereum price
         const priceResponse = await axios.get(ethPriceUrl);
         const ethPrice = priceResponse.data.ethereum.usd;
 
         // Calculate the equivalent value in USD
-        const spendUsdAmount = (parseFloat(ethAmount) * parseFloat(ethPrice)).toFixed(2);
+        const senderUsdBalance = (parseFloat(senderEthBalance) * parseFloat(ethPrice)).toFixed(2);
 
-        // Calculate the number of stickers to send based on the spent amount
-        const stickerCount = Math.floor(spendUsdAmount / 2) + 1;
+        // Format the balances for display
+        const formattedSenderEthBalance = `${senderEthBalance} ETH`;
+        const formattedSenderUsdBalance = `${senderUsdBalance} USD`;
 
-        const boldText = Array.from({ length: stickerCount }, () => '🟢').join('');
-
+        // Generate the message
         const message = `
 <i>ZooZoo presale Buy</i>
-<b>${boldText}</b>
-<b>Spent:</b> ${spendEthAmount} (${spendUsdAmount} USD)
-<a href="https://etherscan.io/address/${senderAddress}"><b>Buyer:</b></a> ${senderEthBalance} ETH
+<b>Spent:</b> ${spendEthAmount}
+<a href="https://etherscan.io/address/${senderAddress}"><b>Buyer:</b></a> ${formattedSenderEthBalance} (${formattedSenderUsdBalance})
 `;
 
         const imageUrl = 'https://raw.githubusercontent.com/metagamersuniverse/zz/main/FAIRLAUNCH%20LIVE.jpg';
@@ -313,6 +308,7 @@ bot.onText(/\/checklasteth/, (msg) => {
   const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
   checkLastReceivedEthTransaction(walletAddress, chatId);
 });
+
 
 
 
