@@ -290,7 +290,6 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
 <a href="https://etherscan.io/address/${senderAddress}"><b>Buyer funds:</b></a> (${formattedSenderUsdBalance})
 <b>Filled:</b> ${filledEthBalance} WETH
 `;
-
         const imageUrl = 'https://raw.githubusercontent.com/metagamersuniverse/zz/main/FAIRLAUNCH%20LIVE.jpg';
         const keyboard = {
           inline_keyboard: [
