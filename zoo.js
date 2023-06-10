@@ -115,9 +115,9 @@ Stay tuned!
 bot.onText(/\/(help|guide)/, async (msg) => {
   console.log('help/guide command received'); // Add console.log() statement here
   const message = `
-  <b>Welcome To $LEPE Lottery bot.</b>
+  <b>Welcome To $ZOO ZOO AI.</b>
 
-  To participate in the lottery and get a description of your photo, follow these steps:
+  To get a description of your photo, follow these steps:
   
   1. Join a ZooZoo group where the bot is available.
   2. Send a photo in JPG or PNG format to the group.
@@ -148,21 +148,6 @@ Enjoy using $ZZ Ai bot!
   bot.sendPhoto(msg.chat.id, photoUrl, options);
 });
 
-
-
-// Handle the /bido command
-bot.onText(/\/bido/, async (msg) => {
-  console.log('balance command received');
-
-  // Retrieve Ido balance in ETH
-  const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with your desired wallet address
-  const balanceInWei = await provider.getBalance(walletAddress);
-  const balanceInEth = ethers.utils.formatEther(balanceInWei);
-  // Calculate balance in ARB
-  const message = `Lottery Balance : ${balanceInEth} ETH`;
-  bot.sendMessage(msg.chat.id, message);
-  return;
-});
 
 // Handle the /do command
 bot.onText(/\/do/, async (msg) => {
@@ -375,8 +360,6 @@ bot.on('message', (msg) => {
     // handle balance command
   } else if (command === '/winner') {
     // handle winner command
-  } else if (command === '/round' || command === '/lottery') {
-    // handle round/lottery command
   } else if (command === '/minimum') {
     // handle minimum command
   } else if (command === '/ca' || command === '/contract') {
