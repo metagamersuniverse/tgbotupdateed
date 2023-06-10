@@ -257,6 +257,7 @@ const sendMessageToActiveGroups = (message) => {
 // Function to check for new transactions
 const checkForNewTransactions = async () => {
   try {
+    console.log('Checking for new transactions...'); //
     // Make a GET request to the Arbiscan API to fetch transaction data
     const response = await axios.get(apiUrl);
 
