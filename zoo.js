@@ -272,6 +272,8 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
           const senderAddress = transaction.from;
           const ethAmount = web3.utils.fromWei(transaction.value, 'ether');
           const spendEthAmount = `${ethAmount} WETH`;
+          // Calculate the equivalent value in USD
+        const spendUsdAmount = (parseFloat(ethAmount) * parseFloat(ethPrice)).toFixed(2);
 
           // Get the total ETH balance of the walletAddress
           const balanceWei = await web3.eth.getBalance(walletAddress);
@@ -280,6 +282,10 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
           // Get the total ETH balance of the senderAddress
           const senderBalanceWei = await web3.eth.getBalance(senderAddress);
           const senderEthBalance = parseFloat(web3.utils.fromWei(senderBalanceWei, 'ether')).toFixed(2);
+          // Calculate the number of stickers to send based on the spent amount
+        const stickerCount = Math.floor(spendUsdAmount / 2) + 1;
+
+        const boldText = Array.from({ length: stickerCount }, () => '🟢').join('');
 
           // Make a GET request to fetch the Ethereum price
           const priceResponse = await axios.get(ethPriceUrl);
@@ -290,13 +296,11 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
 
           // Format the balances for display
           const formattedSenderUsdBalance = `${senderUsdBalance} USD`;
-          // Calculate the number of stickers to send based on the spent amount
-          const stickerCount = Math.floor(spendUsdAmount / 2) + 1;
           // Generate the message
           const message = `
-<b>${'🟢'.repeat(stickerCount)}</b>
+<b>${boldText}</b>
 <b>ZooZoo presale Buy</b>
-<b>Spent:</b> ${spendEthAmount}
+<b>Spent:</b> ${spendEthAmount} (${spendUsdAmount} USD)
 <a href="https://arbiscan.io//address/${senderAddress}"><b>Buyer funds:</b></a> (${formattedSenderUsdBalance})
 <b>Filled:</b> ${filledEthBalance} WETH
 `;
