@@ -316,12 +316,33 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
   }
 }
 
-// Handle the /checklasteth command
+function scheduleTransactionCheck(walletAddress, chatId, interval) {
+  setInterval(() => {
+    checkLastReceivedEthTransaction(walletAddress, chatId);
+  }, interval);
+}
+
+// Handle the /startcheck command to start recurring checks
+bot.onText(/\/startcheck/, (msg) => {
+  const chatId = msg.chat.id;
+  const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
+  const interval = 5000; // Interval in milliseconds (e.g., 5000 = 5sec)
+  scheduleTransactionCheck(walletAddress, chatId, interval);
+});
+
+// Handle the /stopcheck command to stop recurring checks
+bot.onText(/\/stopcheck/, (msg) => {
+  clearInterval(scheduleTransactionCheck);
+  bot.sendMessage(msg.chat.id, 'Recurring checks stopped.');
+});
+
+// Handle the /checklasteth command for manual check
 bot.onText(/\/checklasteth/, (msg) => {
   const chatId = msg.chat.id;
   const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
   checkLastReceivedEthTransaction(walletAddress, chatId);
 });
+
 
 
 
