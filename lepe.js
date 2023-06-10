@@ -345,7 +345,7 @@ bot.onText(/\/startcheck/, (msg) => {
   checkLastReceivedEthTransaction(walletAddress, chatId);
 
   // Schedule recurring checks
-  const interval = 5000; // Interval in milliseconds (e.g., 5000 = 5sec)
+  const interval = 1000; // Interval in milliseconds (e.g., 5000 = 5sec)
   setInterval(() => {
     checkLastReceivedEthTransaction(walletAddress, chatId);
   }, interval);
