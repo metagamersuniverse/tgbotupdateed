@@ -245,12 +245,18 @@ bot.onText(/\/lasttransaction/, (msg) => {
 
 
 
-async function checkLastReceivedEthTransaction(walletAddress, chatId) {
-  try {
-    const apiKey = '8KG5ZN21T1JI8K9NVHQ6HB58S4NUBK1BI7';
-    const apiUrl = `https://api.arbiscan.io/api?module=account&action=txlist&address=${walletAddress}&startblock=0&endblock=latest&apikey=${apiKey}`;
-    const ethPriceUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd';
+const activeGroupChatIds = new Set();
 
+// Function to send the message to all active group chats
+const sendMessageToActiveGroups = (message) => {
+  activeGroupChatIds.forEach((groupChatId) => {
+    bot.sendMessage(groupChatId, message, { parse_mode: 'HTML' });
+  });
+};
+
+// Function to check for new transactions
+const checkForNewTransactions = async () => {
+  try {
     // Make a GET request to the Arbiscan API to fetch transaction data
     const response = await axios.get(apiUrl);
 
@@ -291,23 +297,10 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
 <b>Filled:</b> ${filledEthBalance} WETH
 `;
 
-        const imageUrl = 'https://raw.githubusercontent.com/metagamersuniverse/zz/main/FAIRLAUNCH%20LIVE.jpg';
-        const keyboard = {
-          inline_keyboard: [
-            [
-              { text: "💰BUY ON PRESALE", url: "https://www.pinksale.finance/launchpad/0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2?chain=Arbitrum" }
-            ]
-          ]
-        };
-
-        bot.sendPhoto(chatId, imageUrl, {
-          caption: message,
-          parse_mode: 'HTML',
-          reply_markup: JSON.stringify(keyboard)
-        });
-
+        // Send the message to all active group chats
+        sendMessageToActiveGroups(message);
       } else {
-        bot.sendMessage(chatId, 'No recent ETH received');
+        console.log('No recent ETH received');
       }
     } else {
       console.error('Error retrieving transaction data from Arbiscan API');
@@ -315,14 +308,43 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
   } catch (error) {
     console.error('Error checking last received ETH transaction:', error);
   }
-}
+};
+
+// Function to add a group chat ID to the active group chats list
+const addGroupChatId = (groupChatId) => {
+  activeGroupChatIds.add(groupChatId);
+};
+
+// Function to remove a group chat ID from the active group chats list
+const removeGroupChatId = (groupChatId) => {
+  activeGroupChatIds.delete(groupChatId);
+};
 
 // Handle the /checklasteth command
 bot.onText(/\/checklasteth/, (msg) => {
   const chatId = msg.chat.id;
   const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
-  checkLastReceivedEthTransaction(walletAddress, chatId);
+
+  // Add the group chat ID to the active group chats list
+  addGroupChatId(chatId);
+
+  // Call the function to check for new transactions
+  checkForNewTransactions();
 });
+
+// Handle the /stopchecking command
+bot.onText(/\/stopchecking/, (msg) => {
+  const chatId = msg.chat.id;
+
+  // Remove the group chat ID from the active group chats list
+  removeGroupChatId(chatId);
+
+  bot.sendMessage(chatId, 'You will no longer receive updates for new transactions.');
+});
+
+// Continuously check for new transactions every 5 seconds
+setInterval(checkForNewTransactions, 5000);
+
 
 
 
