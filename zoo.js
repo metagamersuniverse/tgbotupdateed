@@ -290,9 +290,11 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
 
           // Format the balances for display
           const formattedSenderUsdBalance = `${senderUsdBalance} USD`;
-
+          // Calculate the number of stickers to send based on the spent amount
+          const stickerCount = Math.floor(spendUsdAmount / 2) + 1;
           // Generate the message
           const message = `
+<b>${'🟢'.repeat(stickerCount)}</b>
 <b>ZooZoo presale Buy</b>
 <b>Spent:</b> ${spendEthAmount}
 <a href="https://arbiscan.io//address/${senderAddress}"><b>Buyer funds:</b></a> (${formattedSenderUsdBalance})
