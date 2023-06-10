@@ -245,6 +245,8 @@ bot.onText(/\/lasttransaction/, (msg) => {
 
 
 
+let lastProcessedTransaction = null;
+
 async function checkLastReceivedEthTransaction(walletAddress, chatId) {
   try {
     const apiKey = '8KG5ZN21T1JI8K9NVHQ6HB58S4NUBK1BI7';
@@ -260,51 +262,58 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
 
       // Check if there are any transactions
       if (transactions.length > 0) {
-        const lastTransaction = transactions[transactions.length - 1];
-        const senderAddress = lastTransaction.from;
-        const ethAmount = web3.utils.fromWei(lastTransaction.value, 'ether');
-        const spendEthAmount = `${ethAmount} WETH`;
+        const latestTransaction = transactions[transactions.length - 1];
 
-        // Get the total ETH balance of the walletAddress
-        const balanceWei = await web3.eth.getBalance(walletAddress);
-        const filledEthBalance = parseFloat(web3.utils.fromWei(balanceWei, 'ether')).toFixed(2);
+        // Check if the latest transaction is different from the last processed transaction
+        if (JSON.stringify(latestTransaction) !== JSON.stringify(lastProcessedTransaction)) {
+          const senderAddress = latestTransaction.from;
+          const ethAmount = web3.utils.fromWei(latestTransaction.value, 'ether');
+          const spendEthAmount = `${ethAmount} WETH`;
 
-        // Get the total ETH balance of the senderAddress
-        const senderBalanceWei = await web3.eth.getBalance(senderAddress);
-        const senderEthBalance = parseFloat(web3.utils.fromWei(senderBalanceWei, 'ether')).toFixed(2);
+          // Get the total ETH balance of the walletAddress
+          const balanceWei = await web3.eth.getBalance(walletAddress);
+          const filledEthBalance = parseFloat(web3.utils.fromWei(balanceWei, 'ether')).toFixed(2);
 
-        // Make a GET request to fetch the Ethereum price
-        const priceResponse = await axios.get(ethPriceUrl);
-        const ethPrice = priceResponse.data.ethereum.usd;
+          // Get the total ETH balance of the senderAddress
+          const senderBalanceWei = await web3.eth.getBalance(senderAddress);
+          const senderEthBalance = parseFloat(web3.utils.fromWei(senderBalanceWei, 'ether')).toFixed(2);
 
-        // Calculate the equivalent value in USD
-        const senderUsdBalance = (parseFloat(senderEthBalance) * parseFloat(ethPrice)).toFixed(2);
+          // Make a GET request to fetch the Ethereum price
+          const priceResponse = await axios.get(ethPriceUrl);
+          const ethPrice = priceResponse.data.ethereum.usd;
 
-        // Format the balances for display
-        const formattedSenderUsdBalance = `${senderUsdBalance} USD`;
+          // Calculate the equivalent value in USD
+          const senderUsdBalance = (parseFloat(senderEthBalance) * parseFloat(ethPrice)).toFixed(2);
 
-        // Generate the message
-        const message = `
+          // Format the balances for display
+          const formattedSenderUsdBalance = `${senderUsdBalance} USD`;
+
+          // Generate the message
+          const message = `
 <b>ZooZoo presale Buy</b>
 <b>Spent:</b> ${spendEthAmount}
 <a href="https://etherscan.io/address/${senderAddress}"><b>Buyer funds:</b></a> (${formattedSenderUsdBalance})
 <b>Filled:</b> ${filledEthBalance} WETH
 `;
-        const imageUrl = 'https://raw.githubusercontent.com/metagamersuniverse/zz/main/FAIRLAUNCH%20LIVE.jpg';
-        const keyboard = {
-          inline_keyboard: [
-            [
-              { text: "💰BUY ON PRESALE", url: "https://www.pinksale.finance/launchpad/0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2?chain=Arbitrum" }
+          const imageUrl = 'https://raw.githubusercontent.com/metagamersuniverse/zz/main/FAIRLAUNCH%20LIVE.jpg';
+          const keyboard = {
+            inline_keyboard: [
+              [
+                { text: "💰BUY ON PRESALE", url: "https://www.pinksale.finance/launchpad/0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2?chain=Arbitrum" }
+              ]
             ]
-          ]
-        };
+          };
 
-        bot.sendPhoto(chatId, imageUrl, {
-          caption: message,
-          parse_mode: 'HTML',
-          reply_markup: JSON.stringify(keyboard)
-        });
+          // Send the message
+          bot.sendPhoto(chatId, imageUrl, {
+            caption: message,
+            parse_mode: 'HTML',
+            reply_markup: JSON.stringify(keyboard)
+          });
 
+          // Update the last processed transaction
+          lastProcessedTransaction = latestTransaction;
+        }
       } else {
         bot.sendMessage(chatId, 'No recent ETH received');
       }
@@ -342,6 +351,7 @@ bot.onText(/\/checklasteth/, (msg) => {
   const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
   checkLastReceivedEthTransaction(walletAddress, chatId);
 });
+
 
 
 
