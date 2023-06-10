@@ -245,9 +245,9 @@ bot.onText(/\/lasttransaction/, (msg) => {
 
 
 
-let lastProcessedTransactionIndex = 0;
+let processedTransactions = [];
 
-async function checkLastReceivedEthTransactions(walletAddress, chatId) {
+async function checkLastReceivedEthTransaction(walletAddress, chatId) {
   try {
     const apiKey = '8KG5ZN21T1JI8K9NVHQ6HB58S4NUBK1BI7';
     const apiUrl = `https://api.arbiscan.io/api?module=account&action=txlist&address=${walletAddress}&startblock=0&endblock=latest&apikey=${apiKey}`;
@@ -260,11 +260,14 @@ async function checkLastReceivedEthTransactions(walletAddress, chatId) {
     if (response.status === 200) {
       const transactions = response.data.result;
 
-      // Check if there are any new transactions
-      if (transactions.length > lastProcessedTransactionIndex) {
-        // Iterate over new transactions
-        for (let i = lastProcessedTransactionIndex; i < transactions.length; i++) {
-          const transaction = transactions[i];
+      // Check if there are any transactions
+      if (transactions.length > 0) {
+        const newTransactions = transactions.filter(transaction =>
+          !processedTransactions.includes(transaction.hash)
+        );
+
+        // Process new transactions
+        for (const transaction of newTransactions) {
           const senderAddress = transaction.from;
           const ethAmount = web3.utils.fromWei(transaction.value, 'ether');
           const spendEthAmount = `${ethAmount} WETH`;
@@ -303,16 +306,15 @@ async function checkLastReceivedEthTransactions(walletAddress, chatId) {
             ]
           };
 
-          // Send the message
           bot.sendPhoto(chatId, imageUrl, {
             caption: message,
             parse_mode: 'HTML',
             reply_markup: JSON.stringify(keyboard)
           });
-        }
 
-        // Update the last processed transaction index
-        lastProcessedTransactionIndex = transactions.length;
+          // Add the processed transaction hash to the list
+          processedTransactions.push(transaction.hash);
+        }
       } else {
         bot.sendMessage(chatId, 'No recent ETH received');
       }
@@ -320,26 +322,31 @@ async function checkLastReceivedEthTransactions(walletAddress, chatId) {
       console.error('Error retrieving transaction data from Arbiscan API');
     }
   } catch (error) {
-    console.error('Error checking last received ETH transactions:', error);
+    console.error('Error checking last received ETH transaction:', error);
   }
 }
 
-function scheduleTransactionCheck(walletAddress, chatId, interval) {
-  setInterval(() => {
-    checkLastReceivedEthTransactions(walletAddress, chatId);
-  }, interval);
-}
-
-// Handle the /startcheck command to start recurring checks
+// Handle the /startcheck command to start recurring checks and send all transactions once
 bot.onText(/\/startcheck/, (msg) => {
   const chatId = msg.chat.id;
   const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
-  const interval = 5000; // Interval in milliseconds (e.g., 5000 = 5 seconds)
-  scheduleTransactionCheck(walletAddress, chatId, interval);
+
+  // Send all transactions once
+  checkLastReceivedEthTransaction(walletAddress, chatId);
+
+  // Schedule recurring checks
+  const interval = 5000; // Interval in milliseconds (e.g., 5000 = 5sec)
+  setInterval(() => {
+    checkLastReceivedEthTransaction(walletAddress, chatId);
+  }, interval);
 });
 
 // Handle the /stopcheck command to stop recurring checks
 bot.onText(/\/stopcheck/, (msg) => {
+  // Clear the processed transactions
+  processedTransactions = [];
+
+  // Stop recurring checks
   clearInterval(scheduleTransactionCheck);
   bot.sendMessage(msg.chat.id, 'Recurring checks stopped.');
 });
@@ -348,8 +355,9 @@ bot.onText(/\/stopcheck/, (msg) => {
 bot.onText(/\/checklasteth/, (msg) => {
   const chatId = msg.chat.id;
   const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
-  checkLastReceivedEthTransactions(walletAddress, chatId);
+  checkLastReceivedEthTransaction(walletAddress, chatId);
 });
+
 
 
 
