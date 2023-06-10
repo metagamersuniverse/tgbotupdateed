@@ -245,9 +245,9 @@ bot.onText(/\/lasttransaction/, (msg) => {
 
 
 
-let lastProcessedTransaction = null;
+let lastProcessedTransactionIndex = 0;
 
-async function checkLastReceivedEthTransaction(walletAddress, chatId) {
+async function checkLastReceivedEthTransactions(walletAddress, chatId) {
   try {
     const apiKey = '8KG5ZN21T1JI8K9NVHQ6HB58S4NUBK1BI7';
     const apiUrl = `https://api.arbiscan.io/api?module=account&action=txlist&address=${walletAddress}&startblock=0&endblock=latest&apikey=${apiKey}`;
@@ -260,14 +260,13 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
     if (response.status === 200) {
       const transactions = response.data.result;
 
-      // Check if there are any transactions
-      if (transactions.length > 0) {
-        const latestTransaction = transactions[transactions.length - 1];
-
-        // Check if the latest transaction is different from the last processed transaction
-        if (JSON.stringify(latestTransaction) !== JSON.stringify(lastProcessedTransaction)) {
-          const senderAddress = latestTransaction.from;
-          const ethAmount = web3.utils.fromWei(latestTransaction.value, 'ether');
+      // Check if there are any new transactions
+      if (transactions.length > lastProcessedTransactionIndex) {
+        // Iterate over new transactions
+        for (let i = lastProcessedTransactionIndex; i < transactions.length; i++) {
+          const transaction = transactions[i];
+          const senderAddress = transaction.from;
+          const ethAmount = web3.utils.fromWei(transaction.value, 'ether');
           const spendEthAmount = `${ethAmount} WETH`;
 
           // Get the total ETH balance of the walletAddress
@@ -310,10 +309,10 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
             parse_mode: 'HTML',
             reply_markup: JSON.stringify(keyboard)
           });
-
-          // Update the last processed transaction
-          lastProcessedTransaction = latestTransaction;
         }
+
+        // Update the last processed transaction index
+        lastProcessedTransactionIndex = transactions.length;
       } else {
         bot.sendMessage(chatId, 'No recent ETH received');
       }
@@ -321,13 +320,13 @@ async function checkLastReceivedEthTransaction(walletAddress, chatId) {
       console.error('Error retrieving transaction data from Arbiscan API');
     }
   } catch (error) {
-    console.error('Error checking last received ETH transaction:', error);
+    console.error('Error checking last received ETH transactions:', error);
   }
 }
 
 function scheduleTransactionCheck(walletAddress, chatId, interval) {
   setInterval(() => {
-    checkLastReceivedEthTransaction(walletAddress, chatId);
+    checkLastReceivedEthTransactions(walletAddress, chatId);
   }, interval);
 }
 
@@ -335,7 +334,7 @@ function scheduleTransactionCheck(walletAddress, chatId, interval) {
 bot.onText(/\/startcheck/, (msg) => {
   const chatId = msg.chat.id;
   const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
-  const interval = 5000; // Interval in milliseconds (e.g., 5000 = 5sec)
+  const interval = 5000; // Interval in milliseconds (e.g., 5000 = 5 seconds)
   scheduleTransactionCheck(walletAddress, chatId, interval);
 });
 
@@ -349,8 +348,9 @@ bot.onText(/\/stopcheck/, (msg) => {
 bot.onText(/\/checklasteth/, (msg) => {
   const chatId = msg.chat.id;
   const walletAddress = '0xD37EAaDe4Cb656e5439057518744fc70AF10BAF2'; // Replace with the desired wallet address
-  checkLastReceivedEthTransaction(walletAddress, chatId);
+  checkLastReceivedEthTransactions(walletAddress, chatId);
 });
+
 
 
 
